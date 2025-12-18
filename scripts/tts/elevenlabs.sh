@@ -65,18 +65,21 @@ if [ -n "$API_KEY" ]; then
   if [ "$HTTP_STATUS" = "200" ]; then
     log "ElevenLabs success, playing audio"
 
-    # Play audio (macOS)
+    # Play audio (macOS) - use nohup to survive parent exit
     if command -v afplay &>/dev/null; then
-      afplay "$AUDIO_FILE" &
+      nohup afplay "$AUDIO_FILE" &>/dev/null &
+      PLAY_PID=$!
     # Linux fallback
     elif command -v mpv &>/dev/null; then
-      mpv --no-video "$AUDIO_FILE" &>/dev/null &
+      nohup mpv --no-video "$AUDIO_FILE" &>/dev/null &
+      PLAY_PID=$!
     elif command -v play &>/dev/null; then
-      play "$AUDIO_FILE" &>/dev/null &
+      nohup play "$AUDIO_FILE" &>/dev/null &
+      PLAY_PID=$!
     fi
 
-    # Clean up after playback
-    (sleep 30 && rm -f "$AUDIO_FILE") &>/dev/null &
+    # Clean up after playback (wait longer for audio to finish)
+    (sleep 60 && rm -f "$AUDIO_FILE") &>/dev/null &
     exit 0
   else
     log "ElevenLabs API error: HTTP $HTTP_STATUS"
@@ -88,8 +91,8 @@ fi
 # Fallback to macOS 'say' command
 if [ "$USE_FALLBACK" = "true" ] && command -v say &>/dev/null; then
   log "Using macOS 'say' fallback"
-  # Use Samantha voice (good quality on macOS)
-  say -v Samantha "$TEXT" &
+  # Use Samantha voice (good quality on macOS) - nohup to survive parent exit
+  nohup say -v Samantha "$TEXT" &>/dev/null &
   exit 0
 fi
 

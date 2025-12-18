@@ -61,7 +61,7 @@ if [ -x "$PLUGIN_ROOT/scripts/tts/elevenlabs.sh" ]; then
 else
   log_debug "ElevenLabs script not found, using say fallback"
   if command -v say &>/dev/null; then
-    say "$TTS_TEXT" &
+    nohup say "$TTS_TEXT" &>/dev/null &
   fi
 fi
 
