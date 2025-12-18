@@ -1,0 +1,45 @@
+# Jekyll configuration for GitHub Pages
+# Neural Claude Code Plugin
+
+title: Neural Claude Code Plugin
+description: A sophisticated, self-improving agentic system for Claude Code implementing the Agent Expert Pattern
+url: "https://brolag.github.io"
+baseurl: "/neural-claude-code-plugin"
+
+# Author
+author:
+  name: Alfredo Bonilla
+  github: brolag
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+
+# Theme (using no theme - custom HTML/CSS)
+theme: null
+
+# Exclude from build
+exclude:
+  - README.md
+  - LICENSE
+  - Gemfile
+  - Gemfile.lock
+
+# Include files
+include:
+  - _pages
+
+# Plugins
+plugins:
+  - jekyll-seo-tag
+
+# SEO
+twitter:
+  card: summary_large_image
+social:
+  name: Neural Claude Code Plugin
+  links:
+    - https://github.com/brolag/neural-claude-code-plugin
+
+# Google Analytics (optional - add your tracking ID)
+# google_analytics: UA-XXXXXXXX-X

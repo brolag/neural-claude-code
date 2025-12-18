@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Claude Code Plugin - Self-Improving Agentic System</title>
+    <meta name="description" content="A sophisticated, self-improving agentic system for Claude Code implementing the Agent Expert Pattern. Supercharge your AI-assisted development.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="grid-background"></div>
+
+    <header>
+        <nav>
+            <div class="logo">
+                <span class="logo-icon">🧠</span>
+                <span class="logo-text">Neural Claude Code</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#agents">Agents</a></li>
+                <li><a href="#installation">Install</a></li>
+                <li><a href="https://github.com/brolag/neural-claude-code-plugin" class="btn-github">GitHub</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <div class="version-badge">v1.2.0</div>
+                <h1>Neural Claude Code <span class="gradient-text">Plugin</span></h1>
+                <p class="tagline">Self-improving agentic system for Claude Code</p>
+                <p class="description">
+                    Implement the <strong>Agent Expert Pattern</strong> — agents that execute tasks AND learn from them.
+                    Supercharge your AI-assisted development with specialized agents, multi-AI collaboration, and adaptive expertise.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#installation" class="btn btn-primary">Get Started</a>
+                    <a href="https://github.com/brolag/neural-claude-code-plugin" class="btn btn-secondary">View on GitHub</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">10+</span>
+                        <span class="stat-label">Agents</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">9</span>
+                        <span class="stat-label">Skills</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">7</span>
+                        <span class="stat-label">Output Styles</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">3</span>
+                        <span class="stat-label">AI Models</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        <span class="code-title">Agent Expert Pattern</span>
+                    </div>
+                    <pre><code><span class="comment"># The 4-step learning cycle</span>
+<span class="keyword">1. READ</span>    → Load expertise file
+<span class="keyword">2. VALIDATE</span> → Check codebase state
+<span class="keyword">3. EXECUTE</span>  → Perform the task
+<span class="keyword">4. IMPROVE</span>  → Update with learnings
+
+<span class="comment"># Confidence evolves over time</span>
+patterns:
+  - pattern: <span class="string">"Use PARA methodology"</span>
+    confidence: <span class="number">0.85</span>
+    successes: <span class="number">17</span>
+    failures: <span class="number">3</span></code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <h2>Core Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>Multi-AI Collaboration</h3>
+                    <p>Orchestrate Claude, Codex, and Gemini with intelligent routing based on task type and benchmarked strengths.</p>
+                    <div class="feature-detail">
+                        <code>/ai-collab &lt;problem&gt;</code>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Output Styles</h3>
+                    <p>Switch response formats mid-session: default, table, yaml, concise, tts, html, or genui.</p>
+                    <div class="feature-detail">
+                        <code>/output-style &lt;name&gt;</code>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3>Tiered Memory</h3>
+                    <p>Hot, warm, and cold memory tiers with global and project-level persistence.</p>
+                    <div class="feature-detail">
+                        <code>/remember</code> <code>/recall</code> <code>/forget</code>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Status Lines</h3>
+                    <p>Dynamic status bar showing model, git branch, prompt history, and agent name.</p>
+                    <div class="feature-detail">
+                        <code>🟣 opus │ 💡 create │ Nova │ main +2</code>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔊</div>
+                    <h3>Text-to-Speech</h3>
+                    <p>ElevenLabs integration for audio summaries on task completion.</p>
+                    <div class="feature-detail">
+                        <code>/output-style tts</code>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Meta-Agentics</h3>
+                    <p>Self-building system that creates agents, skills, and commands dynamically.</p>
+                    <div class="feature-detail">
+                        <code>/meta/prompt</code> <code>/meta/improve</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="agents" class="agents">
+            <h2>Specialized Agents</h2>
+            <p class="section-description">Each agent maintains expertise that evolves through usage</p>
+            <div class="agents-grid">
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <span class="agent-icon">🏗️</span>
+                        <h3>meta-agent</h3>
+                    </div>
+                    <p>Creates new agents dynamically based on patterns and requests</p>
+                </div>
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <span class="agent-icon">🧠</span>
+                        <h3>cognitive-amplifier</h3>
+                    </div>
+                    <p>Enhanced thinking, bias detection, multi-perspective analysis</p>
+                </div>
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <span class="agent-icon">💡</span>
+                        <h3>insight-synthesizer</h3>
+                    </div>
+                    <p>Cross-domain pattern discovery and breakthrough thinking</p>
+                </div>
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <span class="agent-icon">📐</span>
+                        <h3>framework-architect</h3>
+                    </div>
+                    <p>Transforms learning content into actionable frameworks</p>
+                </div>
+                <div class="agent-card highlight">
+                    <div class="agent-header">
+                        <span class="agent-icon">🤝</span>
+                        <h3>multi-ai</h3>
+                    </div>
+                    <p>Orchestrates Claude, Codex, and Gemini for complex problems</p>
+                    <div class="ai-badges">
+                        <span class="ai-badge claude">Claude 80.9%</span>
+                        <span class="ai-badge codex">Codex #1</span>
+                        <span class="ai-badge gemini">Gemini 1501</span>
+                    </div>
+                </div>
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <span class="agent-icon">🚀</span>
+                        <h3>optimizer</h3>
+                    </div>
+                    <p>Performance tuning and system optimization specialist</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="ai-comparison">
+            <h2>Multi-AI Intelligence</h2>
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>AI Model</th>
+                            <th>Benchmark</th>
+                            <th>Best For</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="model-badge claude">Claude Opus 4.5</span></td>
+                            <td>80.9% SWE-bench</td>
+                            <td>Architecture, accuracy, code quality</td>
+                        </tr>
+                        <tr>
+                            <td><span class="model-badge codex">GPT-5.1-Codex-Max</span></td>
+                            <td>Terminal-Bench #1</td>
+                            <td>DevOps, CLI tasks, 7+ hour sessions</td>
+                        </tr>
+                        <tr>
+                            <td><span class="model-badge gemini">Gemini 3 Pro</span></td>
+                            <td>1501 Elo LMArena</td>
+                            <td>Algorithms, competitive coding</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="installation" class="installation">
+            <h2>Installation</h2>
+            <div class="install-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Add Marketplace</h3>
+                        <div class="code-snippet">
+                            <code>claude plugin marketplace add brolag/neural-claude-code-plugin</code>
+                        </div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Install Plugin</h3>
+                        <div class="code-snippet">
+                            <code>claude plugin install neural-claude-code@brolag --scope user</code>
+                        </div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Set Up Hooks</h3>
+                        <div class="code-snippet">
+                            <code>export CLAUDE_PLUGIN_ROOT="$HOME/Sites/neural-claude-code-plugin"</code>
+                            <code>bash "$CLAUDE_PLUGIN_ROOT/scripts/setup-hooks.sh"</code>
+                        </div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Initialize Project</h3>
+                        <div class="code-snippet">
+                            <code>cd /path/to/project && claude</code>
+                            <code>> setup claude</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="requirements">
+                <h3>Requirements</h3>
+                <div class="req-grid">
+                    <div class="req required">
+                        <span class="req-icon">✓</span>
+                        <span>Claude Code CLI</span>
+                    </div>
+                    <div class="req required">
+                        <span class="req-icon">✓</span>
+                        <span>jq (JSON processing)</span>
+                    </div>
+                    <div class="req optional">
+                        <span class="req-icon">○</span>
+                        <span>Ollama (agent names)</span>
+                    </div>
+                    <div class="req optional">
+                        <span class="req-icon">○</span>
+                        <span>ElevenLabs API (TTS)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="commands">
+            <h2>Quick Commands</h2>
+            <div class="commands-grid">
+                <div class="command-card">
+                    <code>/question &lt;anything&gt;</code>
+                    <span>Answer any question</span>
+                </div>
+                <div class="command-card">
+                    <code>/meta/prompt &lt;name&gt;</code>
+                    <span>Create new command</span>
+                </div>
+                <div class="command-card">
+                    <code>/meta/improve &lt;agent&gt;</code>
+                    <span>Sync expertise</span>
+                </div>
+                <div class="command-card">
+                    <code>/meta/eval</code>
+                    <span>Run tests</span>
+                </div>
+                <div class="command-card">
+                    <code>/meta/brain</code>
+                    <span>System health</span>
+                </div>
+                <div class="command-card">
+                    <code>/output-style &lt;name&gt;</code>
+                    <span>Switch format</span>
+                </div>
+                <div class="command-card">
+                    <code>/remember &lt;fact&gt;</code>
+                    <span>Save to memory</span>
+                </div>
+                <div class="command-card">
+                    <code>/ai-collab &lt;problem&gt;</code>
+                    <span>Multi-AI consensus</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta">
+            <h2>Ready to supercharge your development?</h2>
+            <p>Join the neural network of AI-assisted coding</p>
+            <div class="cta-buttons">
+                <a href="https://github.com/brolag/neural-claude-code-plugin" class="btn btn-primary btn-large">
+                    Get Started on GitHub
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <span class="logo-icon">🧠</span>
+                <span>Neural Claude Code Plugin</span>
+            </div>
+            <p>Created by <a href="https://github.com/brolag">@brolag</a> • MIT License • v1.2.0</p>
+            <p class="footer-tagline">Self-improving AI development system</p>
+        </div>
+    </footer>
+</body>
+</html>
