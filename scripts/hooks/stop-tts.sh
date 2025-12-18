@@ -2,11 +2,15 @@
 # Stop Hook - TTS Summary
 # Extracts TTS summary from response and plays via ElevenLabs
 
-set -e
+# Don't use set -e as sourcing shell configs may have non-zero returns
 
-# Source user's shell config to get API keys
-[ -f "$HOME/.zshrc" ] && source "$HOME/.zshrc" 2>/dev/null || true
-[ -f "$HOME/.bashrc" ] && source "$HOME/.bashrc" 2>/dev/null || true
+# Source user's shell config to get API keys (just extract exports)
+if [ -f "$HOME/.zshrc" ]; then
+  export $(grep -E '^export\s+ELEVENLABS' "$HOME/.zshrc" 2>/dev/null | sed 's/export //' | xargs) 2>/dev/null || true
+fi
+if [ -f "$HOME/.bashrc" ]; then
+  export $(grep -E '^export\s+ELEVENLABS' "$HOME/.bashrc" 2>/dev/null | sed 's/export //' | xargs) 2>/dev/null || true
+fi
 
 PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code-plugin}"
 

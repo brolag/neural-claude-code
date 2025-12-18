@@ -2,9 +2,13 @@
 # Text-to-Speech Script
 # Uses ElevenLabs API if available, falls back to macOS 'say' command
 
-# Source user's shell config to get API keys
-[ -f "$HOME/.zshrc" ] && source "$HOME/.zshrc" 2>/dev/null || true
-[ -f "$HOME/.bashrc" ] && source "$HOME/.bashrc" 2>/dev/null || true
+# Extract ELEVENLABS env vars from shell config (safer than full source)
+if [ -f "$HOME/.zshrc" ]; then
+  export $(grep -E '^export\s+ELEVENLABS' "$HOME/.zshrc" 2>/dev/null | sed 's/export //' | xargs) 2>/dev/null || true
+fi
+if [ -f "$HOME/.bashrc" ]; then
+  export $(grep -E '^export\s+ELEVENLABS' "$HOME/.bashrc" 2>/dev/null | sed 's/export //' | xargs) 2>/dev/null || true
+fi
 
 # Configuration
 VOICE_ID="${ELEVENLABS_VOICE_ID:-21m00Tcm4TlvDq8ikWAM}"  # Rachel voice
