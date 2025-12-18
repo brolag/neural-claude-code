@@ -45,13 +45,90 @@ gemini -y "<prompt>"
 # You ARE Claude - provide your own analysis
 ```
 
+## Intelligent Routing Strategy
+
+### Task Classification Matrix
+
+Before querying AIs, classify the task:
+
+```yaml
+task_classification:
+  type: [algorithm|architecture|devops|review|debug|explain]
+  complexity: [simple|moderate|complex]
+  time_sensitivity: [low|medium|high]
+  risk_level: [low|medium|high|critical]
+```
+
+### Routing Decision Tree
+
+```
+                    ┌─────────────┐
+                    │ Task Type?  │
+                    └──────┬──────┘
+           ┌───────────────┼───────────────┐
+           ↓               ↓               ↓
+      Algorithm      Architecture      DevOps/CLI
+           │               │               │
+           ↓               ↓               ↓
+    ┌──────────┐    ┌──────────┐    ┌──────────┐
+    │ Gemini   │    │ Claude   │    │ Codex    │
+    │  (lead)  │    │  (lead)  │    │  (lead)  │
+    └──────────┘    └──────────┘    └──────────┘
+           │               │               │
+           └───────────────┴───────────────┘
+                           ↓
+                   ┌───────────────┐
+                   │ Risk Level?   │
+                   └───────┬───────┘
+              High/Critical │ Low/Medium
+                   ↓               ↓
+           ┌──────────────┐ ┌──────────────┐
+           │ Multi-AI     │ │ Single-AI    │
+           │ (all three)  │ │ (best match) │
+           └──────────────┘ └──────────────┘
+```
+
+### Routing Rules
+
+| Condition | Route To | Reason |
+|-----------|----------|--------|
+| `type=algorithm` | Gemini | 1501 Elo (highest) |
+| `type=architecture` | Claude | 80.9% SWE-bench |
+| `type=devops` OR `type=cli` | Codex | Terminal-Bench leader |
+| `risk=critical` | ALL | Maximum validation |
+| `complexity=simple` | Claude | Fastest, most accurate |
+| `time_sensitivity=high` | Claude | Quickest response |
+| `budget_constrained=true` | Gemini | Free tier available |
+
+### Single vs Multi Routing
+
+**Single AI** (efficiency):
+- Simple tasks
+- Time-sensitive
+- Budget-constrained
+- Clear specialty match
+
+**Multi-AI** (confidence):
+- High-stakes decisions
+- Ambiguous problems
+- Security-critical
+- Learning/exploration
+
 ## Collaboration Protocol
 
 ### Step 1: Analyze the Problem
-Determine which AI strengths are most relevant:
+Classify using the routing matrix:
+```
+Type: [algorithm|architecture|devops|review|debug|explain]
+Complexity: [simple|moderate|complex]
+Risk: [low|medium|high|critical]
+```
+
+Determine routing:
 - Need highest accuracy? Lead with Claude
 - Algorithmic challenge? Lead with Gemini
 - Long autonomous task? Lead with Codex
+- Critical decision? Use all three
 
 ### Step 2: Query AIs in Parallel
 

@@ -1,6 +1,6 @@
 {
   "name": "neural-claude-code",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Self-improving agentic system with meta-agents, meta-skills, expertise files, and multi-AI collaboration for Claude Code",
   "author": {
     "name": "Alfredo Bonilla",

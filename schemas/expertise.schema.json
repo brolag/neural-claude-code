@@ -1,0 +1,215 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/brolag/neural-claude-code-plugin/schemas/expertise.schema.json",
+  "title": "Agent Expertise File",
+  "description": "Schema for Agent Expert pattern expertise files (.yaml)",
+  "type": "object",
+  "required": ["domain", "version", "last_updated", "understanding"],
+  "properties": {
+    "domain": {
+      "type": "string",
+      "description": "The expertise domain (e.g., 'personal_knowledge_management', 'cognitive_enhancement')"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Version number, incremented on each update"
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date",
+      "description": "ISO date of last update (YYYY-MM-DD)"
+    },
+    "understanding": {
+      "type": "object",
+      "description": "Core knowledge and mental model",
+      "properties": {
+        "purpose": {
+          "type": "string",
+          "description": "Primary purpose of this agent/skill"
+        },
+        "key_files": {
+          "type": "object",
+          "description": "Important file paths in the project",
+          "additionalProperties": { "type": "string" }
+        },
+        "patterns": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              { "type": "string" },
+              { "$ref": "#/$defs/scored_pattern" }
+            ]
+          },
+          "description": "Discovered patterns (strings or scored objects)"
+        },
+        "core_techniques": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Key techniques or methods"
+        }
+      },
+      "additionalProperties": true
+    },
+    "effective_patterns": {
+      "type": "object",
+      "description": "Patterns with confidence scores grouped by category",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "oneOf": [
+            { "type": "string" },
+            { "$ref": "#/$defs/scored_pattern" }
+          ]
+        }
+      }
+    },
+    "lessons_learned": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          { "type": "string" },
+          { "$ref": "#/$defs/scored_lesson" }
+        ]
+      },
+      "description": "Validated learnings from usage"
+    },
+    "anti_patterns": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          { "type": "string" },
+          { "$ref": "#/$defs/scored_anti_pattern" }
+        ]
+      },
+      "description": "Things to avoid (negative constraints)"
+    },
+    "open_questions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Questions to resolve through usage"
+    },
+    "user_patterns": {
+      "type": "object",
+      "description": "User-specific learned preferences",
+      "additionalProperties": true
+    },
+    "user_preferences": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of discovered user preferences"
+    },
+    "metrics": {
+      "$ref": "#/$defs/metrics",
+      "description": "Usage and effectiveness metrics"
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "scored_pattern": {
+      "type": "object",
+      "required": ["pattern", "confidence"],
+      "properties": {
+        "pattern": {
+          "type": "string",
+          "description": "The pattern description"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Confidence score (0.0-1.0)"
+        },
+        "successes": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0,
+          "description": "Number of successful applications"
+        },
+        "failures": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0,
+          "description": "Number of failed applications"
+        },
+        "last_used": {
+          "type": "string",
+          "format": "date",
+          "description": "Last time this pattern was applied"
+        },
+        "source": {
+          "type": "string",
+          "description": "Where this pattern was learned from"
+        }
+      }
+    },
+    "scored_lesson": {
+      "type": "object",
+      "required": ["lesson", "confidence"],
+      "properties": {
+        "lesson": {
+          "type": "string",
+          "description": "The lesson learned"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "learned_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "context": {
+          "type": "string",
+          "description": "Context in which this was learned"
+        }
+      }
+    },
+    "scored_anti_pattern": {
+      "type": "object",
+      "required": ["anti_pattern", "severity"],
+      "properties": {
+        "anti_pattern": {
+          "type": "string",
+          "description": "What to avoid"
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "critical"],
+          "description": "How bad is this anti-pattern"
+        },
+        "reason": {
+          "type": "string",
+          "description": "Why this is bad"
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "total_invocations": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0
+        },
+        "successful_invocations": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0
+        },
+        "average_confidence": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "patterns_pruned": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0,
+          "description": "Number of low-confidence patterns removed"
+        }
+      }
+    }
+  }
+}

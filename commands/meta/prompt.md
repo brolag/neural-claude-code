@@ -1,7 +1,7 @@
 ---
 description: Meta-prompt that creates new prompts/commands
 allowed-tools: Read, Write, Glob, Grep
-argument-hint: <prompt-name> <purpose>
+argument-hint: <prompt-name> <purpose> [--dry-run] [--global]
 ---
 
 # Meta-Prompt: Prompt Generator
@@ -13,6 +13,8 @@ Generate new slash commands following the established agentic prompt format.
 
 ## Arguments
 - `$ARGUMENTS` - Format: `<prompt-name> <purpose description>`
+- `--dry-run` - Preview the generated prompt without writing to disk
+- `--global` - Create in global commands (`~/.claude/commands/`)
 
 ## Generation Protocol
 
@@ -53,6 +55,22 @@ argument-hint: [Optional arguments]
 ```
 
 ### Step 4: Write to Commands Directory
+
+**If `--dry-run`**:
+```
+📝 DRY RUN - Would create: .claude/commands/<name>.md
+
+---
+[Full generated prompt content here]
+---
+
+To create this file, run without --dry-run
+```
+
+**If `--global`**:
+Save to: `~/.claude/commands/<name>.md`
+
+**Default**:
 Save to: `.claude/commands/<name>.md`
 
 ### Step 5: Report Creation

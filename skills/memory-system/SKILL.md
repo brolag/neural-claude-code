@@ -6,30 +6,65 @@ allowed-tools: Read, Write, Glob, Grep, Bash
 
 # Memory System
 
-Manage persistent memory across sessions.
+Manage persistent memory across sessions with tiered global + project architecture.
 
-## Memory Tiers
+## Memory Architecture
+
+### Scope Tiers
+
+```
+┌─────────────────────────────────────────────────┐
+│                 GLOBAL MEMORY                    │
+│            ~/.claude/memory/                     │
+│  - User preferences across all projects          │
+│  - Universal patterns and learnings              │
+│  - Cross-project insights                        │
+└─────────────────────────────────────────────────┘
+                      ↓ inherits
+┌─────────────────────────────────────────────────┐
+│                PROJECT MEMORY                    │
+│           .claude/memory/                        │
+│  - Project-specific facts                        │
+│  - Codebase patterns                             │
+│  - Local context                                 │
+└─────────────────────────────────────────────────┘
+```
+
+### Access Priority
+
+1. **Project facts** - checked first (most specific)
+2. **Global facts** - fallback (universal knowledge)
+3. **Merged context** - combines both for full picture
+
+## Temperature Tiers
 
 ### Hot Memory (Context Window)
 - Current conversation
 - Loaded at session start from `active_context.md`
 - Fastest access
+- Ephemeral (lost on session end unless saved)
 
 ### Warm Memory (JSON/JSONL)
 - Recent events: `.claude/memory/events/`
 - Cached context: `.claude/memory/context-cache.json`
 - Facts: `.claude/memory/facts/`
 - Access within seconds
+- Persists across sessions
 
 ### Cold Memory (Archives)
 - `CLAUDE.md` - Project instructions
 - Session archives: `.claude/memory/session_logs/`
 - Historical patterns
+- Requires explicit retrieval
 
 ## Commands
 
-### `/remember <fact>`
+### `/remember <fact>` or `/remember --global <fact>`
 Save a fact to memory.
+
+**Scope**:
+- Default: Project memory (`.claude/memory/facts/`)
+- `--global`: Global memory (`~/.claude/memory/facts/`)
 
 **Process**:
 1. Parse the fact

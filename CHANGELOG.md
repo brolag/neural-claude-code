@@ -2,6 +2,83 @@
 
 All notable changes to the Neural Claude Code plugin will be documented here.
 
+## [1.1.0] - 2024-12-18
+
+### Added
+
+#### Expertise System Enhancements
+- **JSON Schema Validation** (`schemas/expertise.schema.json`)
+  - Required fields: `domain`, `version`, `last_updated`, `understanding`
+  - Confidence scores validated in 0.0-1.0 range
+  - Support for both simple and scored patterns/lessons
+
+- **Confidence Scoring System**
+  - Patterns now track `successes`, `failures`, `confidence`
+  - Formula: `confidence = successes / (successes + failures + 1)`
+  - Auto-pruning of low-confidence patterns (< 0.3)
+
+- **Anti-Patterns Support**
+  - New `anti_patterns` field for negative constraints
+  - Severity levels: low, medium, high, critical
+
+- **Metrics Tracking**
+  - `total_invocations`, `successful_invocations`
+  - `average_confidence`, `patterns_pruned`
+
+#### New Commands
+- `/meta/eval` - Automated testing against golden tasks
+  - Run individual or all agent/skill tests
+  - Generate detailed markdown reports
+  - CI/CD integration support
+
+- `/meta/brain` - System health dashboard
+  - Expertise file health scores
+  - Agent/skill activation status
+  - Memory statistics (hot/warm/cold)
+  - Actionable recommendations
+  - JSON output for scripting
+
+#### Enhanced Commands
+- `/meta/improve` now includes:
+  - Schema validation step
+  - Confidence score updates
+  - `--validate-only` mode
+  - `--prune` flag for low-confidence cleanup
+
+- `/meta/prompt` now includes:
+  - `--dry-run` mode to preview without writing
+  - `--global` flag for global commands
+
+#### Memory System
+- **Tiered Memory Architecture**
+  - Global memory: `~/.claude/memory/` (cross-project)
+  - Project memory: `.claude/memory/` (project-specific)
+  - `/remember --global` for global facts
+
+- **Temperature Tiers**
+  - Hot: Context window (instant)
+  - Warm: JSON files (seconds)
+  - Cold: Archives (manual)
+
+#### Multi-AI Routing
+- **Intelligent Routing Strategy** in `multi-ai` agent
+  - Task classification matrix (type, complexity, risk)
+  - Decision tree for AI selection
+  - Single vs Multi-AI routing rules
+
+#### Infrastructure
+- `schemas/expertise.schema.json` - Validation schema
+- `templates/expertise.template.yaml` - New expertise template
+- `hooks/post-commit-improve.md` - Git-triggered learning
+
+### Changed
+- Expertise files now support both simple strings and scored objects
+- Memory system documents global + project architecture
+- Multi-AI agent includes routing decision logic
+
+### Fixed
+- N/A (new features only)
+
 ## [1.0.0] - 2024-12-18
 
 ### Added

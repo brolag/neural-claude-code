@@ -1,0 +1,65 @@
+# {{DOMAIN}} Expertise
+# Mental model for the {{NAME}} agent/skill
+# Auto-updated after each use via Agent Expert pattern
+
+domain: {{DOMAIN}}
+version: 1
+last_updated: {{DATE}}
+
+# Core understanding - the agent's mental model
+understanding:
+  purpose: "{{PURPOSE}}"
+
+  key_files: {}
+  # Example:
+  #   main_entry: "src/index.ts"
+  #   config: ".claude/settings.json"
+
+  patterns: []
+  # Simple string patterns or scored patterns:
+  # - "Pattern description"
+  # - pattern: "Pattern with confidence"
+  #   confidence: 0.8
+  #   successes: 5
+  #   failures: 1
+
+  core_techniques: []
+
+# Effective patterns with confidence scores
+effective_patterns:
+  # Group patterns by category
+  # problem_solving:
+  #   - pattern: "Always decompose into 3-5 sub-problems first"
+  #     confidence: 0.9
+  #     successes: 12
+  #     failures: 1
+
+# Anti-patterns - things to AVOID
+anti_patterns: []
+# - anti_pattern: "Don't do X"
+#   severity: high
+#   reason: "Because Y happens"
+
+# Validated learnings from real usage
+lessons_learned: []
+# Simple strings or scored lessons:
+# - "Lesson description"
+# - lesson: "Lesson with tracking"
+#   confidence: 0.85
+#   learned_on: "2024-12-18"
+#   context: "While doing X"
+
+# Questions to resolve through usage
+open_questions:
+  - "{{INITIAL_QUESTION}}"
+
+# User-specific learned preferences
+user_patterns: {}
+user_preferences: []
+
+# Usage metrics for self-improvement
+metrics:
+  total_invocations: 0
+  successful_invocations: 0
+  average_confidence: 0.5
+  patterns_pruned: 0
