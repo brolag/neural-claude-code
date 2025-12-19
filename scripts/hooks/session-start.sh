@@ -15,22 +15,15 @@ mkdir -p "$DATA_DIR"
 # Generate session ID
 SESSION_ID="session-$(date +%s)-$$"
 
-# Generate agent name using Ollama (with timeout and fallback)
+# Generate agent name using the shared utility script
 generate_agent_name() {
-  local name=""
-
-  # Try Ollama first (5 second timeout)
-  if command -v ollama &>/dev/null; then
-    name=$(timeout 5 ollama run llama3.2:1b "Generate exactly one creative single-word agent name, just the name nothing else:" 2>/dev/null | head -1 | tr -d '[:space:]' | head -c 15)
+  if [ -x "$PLUGIN_ROOT/scripts/utils/agent-name.sh" ]; then
+    "$PLUGIN_ROOT/scripts/utils/agent-name.sh"
+  else
+    # Fallback to random feminine name
+    local names=("Nova" "Luna" "Aurora" "Iris" "Stella" "Aria" "Lyra" "Freya" "Athena" "Celeste" "Diana" "Electra" "Flora" "Gaia" "Hera" "Ivy" "Jade" "Kira" "Lila" "Maya" "Nyla" "Opal" "Pearl" "Quinn" "Ruby" "Sage" "Terra" "Uma" "Vera" "Willow")
+    echo "${names[$RANDOM % ${#names[@]}]}"
   fi
-
-  # Fallback to random name if Ollama fails
-  if [ -z "$name" ] || [ ${#name} -lt 2 ]; then
-    local names=("Nova" "Cipher" "Echo" "Spark" "Prism" "Flux" "Nexus" "Pulse" "Zen" "Arc" "Byte" "Core" "Delta" "Helix" "Ion" "Lux" "Orbit" "Quark" "Rune" "Sync" "Vex" "Warp" "Zephyr")
-    name="${names[$RANDOM % ${#names[@]}]}"
-  fi
-
-  echo "$name"
 }
 
 AGENT_NAME=$(generate_agent_name)
