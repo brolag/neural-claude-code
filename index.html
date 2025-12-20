@@ -529,6 +529,315 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--gray);
         }
+
+        /* Installation Section */
+        .installation-section {
+            max-width: 900px;
+        }
+
+        .install-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            background: var(--dark);
+            padding: 0.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: var(--gray);
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .tab-btn:hover {
+            color: var(--light);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .install-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+
+        .install-step {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .install-step:last-child {
+            margin-bottom: 0;
+        }
+
+        .install-step-number {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .install-step-content {
+            flex: 1;
+        }
+
+        .install-step-content h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .install-step-content > p {
+            color: var(--gray);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .code-block {
+            background: var(--darker);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .copy-btn {
+            padding: 0.3rem 0.75rem;
+            background: rgba(99, 102, 241, 0.2);
+            border: none;
+            border-radius: 6px;
+            color: var(--primary);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .copy-btn.copied {
+            background: var(--success);
+            color: white;
+        }
+
+        .code-block pre {
+            padding: 1rem;
+            margin: 0;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        .code-block code {
+            font-family: inherit;
+        }
+
+        .code-block .comment {
+            color: var(--gray);
+        }
+
+        .code-block .folder {
+            color: var(--accent);
+        }
+
+        .install-note {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-top: 1.5rem;
+        }
+
+        .install-note.success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .install-note.info {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .note-icon {
+            font-size: 1.25rem;
+        }
+
+        .install-note code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        /* File Tree */
+        .file-tree {
+            background: var(--darker);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .file-tree-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .file-tree pre.tree {
+            margin: 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            line-height: 1.7;
+            overflow-x: auto;
+        }
+
+        .structure-legend h4 {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .legend-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .legend-item {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .legend-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .legend-icon.purple { background: rgba(99, 102, 241, 0.15); }
+        .legend-icon.cyan { background: rgba(6, 182, 212, 0.15); }
+        .legend-icon.green { background: rgba(16, 185, 129, 0.15); }
+        .legend-icon.pink { background: rgba(236, 72, 153, 0.15); }
+
+        .legend-item strong {
+            display: block;
+            margin-bottom: 0.25rem;
+            font-size: 0.95rem;
+        }
+
+        .legend-item p {
+            color: var(--gray);
+            font-size: 0.85rem;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Quick Commands */
+        .quick-commands {
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .quick-commands h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .commands-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .commands-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .command-card {
+            background: var(--dark);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .command-card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .command-card code {
+            display: block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .command-card p {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin: 0;
+        }
     </style>
 </head>
 <body>
@@ -543,6 +852,7 @@
         <ul class="nav-links">
             <li><a href="#features">Features</a></li>
             <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#installation">Installation</a></li>
             <li><a href="https://github.com/brolag/neural-claude-code-plugin">GitHub</a></li>
         </ul>
         <a href="https://github.com/brolag/neural-claude-code-plugin" class="btn btn-primary">
@@ -700,6 +1010,289 @@
         </div>
     </section>
 
+    <section id="installation" class="section installation-section">
+        <div class="section-header">
+            <h2>Installation Guide</h2>
+            <p>Set up Neural Claude Code in your projects in minutes.</p>
+        </div>
+
+        <!-- Installation Tabs -->
+        <div class="install-tabs">
+            <button class="tab-btn active" data-tab="global">Global Setup</button>
+            <button class="tab-btn" data-tab="project">Project Setup</button>
+            <button class="tab-btn" data-tab="structure">File Structure</button>
+        </div>
+
+        <!-- Global Setup Tab -->
+        <div class="tab-content active" id="global">
+            <div class="install-card">
+                <div class="install-step">
+                    <div class="install-step-number">1</div>
+                    <div class="install-step-content">
+                        <h4>Clone the Plugin Repository</h4>
+                        <p>Clone the plugin to a permanent location on your machine.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Terminal</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="prompt">$</span> git clone https://github.com/brolag/neural-claude-code-plugin ~/Sites/neural-claude-code-plugin
+<span class="prompt">$</span> cd ~/Sites/neural-claude-code-plugin</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="install-step">
+                    <div class="install-step-number">2</div>
+                    <div class="install-step-content">
+                        <h4>Run Global Setup</h4>
+                        <p>This configures global hooks and sets up the plugin root.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Terminal</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="prompt">$</span> chmod +x scripts/setup-hooks.sh
+<span class="prompt">$</span> ./scripts/setup-hooks.sh</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="install-step">
+                    <div class="install-step-number">3</div>
+                    <div class="install-step-content">
+                        <h4>Set Environment Variable</h4>
+                        <p>Add this to your shell profile (~/.zshrc or ~/.bashrc).</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>~/.zshrc</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="comment"># Neural Claude Code Plugin</span>
+export CLAUDE_PLUGIN_ROOT="$HOME/Sites/neural-claude-code-plugin"</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="install-note success">
+                    <span class="note-icon">✓</span>
+                    <div>
+                        <strong>Done!</strong> The plugin is now installed globally. Claude Code will automatically use these hooks in all projects.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Setup Tab -->
+        <div class="tab-content" id="project">
+            <div class="install-card">
+                <div class="install-step">
+                    <div class="install-step-number">1</div>
+                    <div class="install-step-content">
+                        <h4>Create .claude Directory</h4>
+                        <p>Initialize the Neural Claude Code structure in your project.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Terminal</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="prompt">$</span> cd your-project
+<span class="prompt">$</span> mkdir -p .claude/{expertise,memory/events,memory/facts,memory/session_logs,scripts,data}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="install-step">
+                    <div class="install-step-number">2</div>
+                    <div class="install-step-content">
+                        <h4>Create Expertise Files</h4>
+                        <p>Add domain expertise for your project. Start with a base template.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>.claude/expertise/project.yaml</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="comment"># Project Expertise</span>
+domain: your_project_domain
+version: 1
+last_updated: 2025-01-01
+
+understanding:
+  project_type: "web-app"  <span class="comment"># or api, cli, library, etc.</span>
+  tech_stack:
+    - typescript
+    - react
+    - nodejs
+
+patterns:
+  - "Components go in src/components/"
+  - "API routes in src/api/"
+
+lessons_learned: []
+open_questions: []
+user_preferences: []</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="install-step">
+                    <div class="install-step-number">3</div>
+                    <div class="install-step-content">
+                        <h4>Create Expertise Manifest</h4>
+                        <p>Define load order and dependencies between expertise files.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>.claude/expertise/manifest.yaml</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code>version: 1
+last_updated: 2025-01-01
+
+load_order:
+  - project
+  - domain-specific
+
+confidence:
+  promotion_threshold: 0.7
+  deprecation_threshold: 0.3
+
+auto_update:
+  enabled: true</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="install-step">
+                    <div class="install-step-number">4</div>
+                    <div class="install-step-content">
+                        <h4>Add Project Hooks (Optional)</h4>
+                        <p>Override or extend global hooks with project-specific behavior.</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>.claude/scripts/session-start.sh</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="comment">#!/bin/bash</span>
+<span class="comment"># Project-specific session start hook</span>
+
+<span class="comment"># Source global hook first</span>
+if [ -f "$CLAUDE_PLUGIN_ROOT/scripts/hooks/session-start.sh" ]; then
+    source "$CLAUDE_PLUGIN_ROOT/scripts/hooks/session-start.sh"
+fi
+
+<span class="comment"># Add project-specific initialization here</span>
+echo '{"systemMessage": "Project: Your Project Name"}'</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="install-note info">
+                    <span class="note-icon">💡</span>
+                    <div>
+                        <strong>Tip:</strong> Copy templates from <code>~/Sites/neural-claude-code-plugin/templates/</code> for a quick start.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- File Structure Tab -->
+        <div class="tab-content" id="structure">
+            <div class="install-card">
+                <div class="file-tree">
+                    <div class="file-tree-title">📁 Project Structure</div>
+                    <pre class="tree"><code>your-project/
+├── .claude/
+│   ├── <span class="folder">expertise/</span>           <span class="comment"># Domain knowledge (YAML)</span>
+│   │   ├── manifest.yaml      <span class="comment"># Load order & dependencies</span>
+│   │   ├── project.yaml       <span class="comment"># Project-specific expertise</span>
+│   │   └── shared.yaml        <span class="comment"># Cross-domain knowledge</span>
+│   │
+│   ├── <span class="folder">memory/</span>              <span class="comment"># Persistent memory</span>
+│   │   ├── events/            <span class="comment"># Daily event logs (JSONL)</span>
+│   │   │   └── 2025-01-15.jsonl
+│   │   ├── facts/             <span class="comment"># Stored facts (JSON)</span>
+│   │   ├── session_logs/      <span class="comment"># Session transcripts</span>
+│   │   ├── active_context.md  <span class="comment"># Current context</span>
+│   │   ├── context-cache.json <span class="comment"># Hot memory cache</span>
+│   │   └── pattern-index.json <span class="comment"># Detected patterns</span>
+│   │
+│   ├── <span class="folder">scripts/</span>             <span class="comment"># Project hooks</span>
+│   │   ├── session-start.sh   <span class="comment"># On session start</span>
+│   │   ├── session-stop.sh    <span class="comment"># On session end</span>
+│   │   └── event-indexer.js   <span class="comment"># Pattern detection</span>
+│   │
+│   ├── <span class="folder">agents/</span>              <span class="comment"># Custom agents</span>
+│   ├── <span class="folder">skills/</span>              <span class="comment"># Reusable skills</span>
+│   ├── <span class="folder">commands/</span>            <span class="comment"># Slash commands</span>
+│   ├── <span class="folder">data/</span>                <span class="comment"># Session state</span>
+│   │   └── current-session.json
+│   │
+│   ├── settings.json          <span class="comment"># Project settings</span>
+│   └── CLAUDE.md              <span class="comment"># Project instructions</span>
+│
+└── ... your project files</code></pre>
+                </div>
+
+                <div class="structure-legend">
+                    <h4>Key Components</h4>
+                    <div class="legend-grid">
+                        <div class="legend-item">
+                            <span class="legend-icon purple">🧠</span>
+                            <div>
+                                <strong>expertise/</strong>
+                                <p>YAML files storing learned patterns, lessons, and user preferences. Auto-loaded at session start.</p>
+                            </div>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-icon cyan">💾</span>
+                            <div>
+                                <strong>memory/</strong>
+                                <p>Event logs, facts, and session history. Analyzed by /evolve for pattern detection.</p>
+                            </div>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-icon green">⚡</span>
+                            <div>
+                                <strong>scripts/</strong>
+                                <p>Hooks that run on session events. Extend global hooks with project-specific logic.</p>
+                            </div>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-icon pink">🤖</span>
+                            <div>
+                                <strong>agents/ & skills/</strong>
+                                <p>Custom agents and reusable skills specific to your project.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Commands -->
+        <div class="quick-commands">
+            <h3>Essential Commands</h3>
+            <div class="commands-grid">
+                <div class="command-card">
+                    <code>/evolve</code>
+                    <p>Analyze patterns and improve the system</p>
+                </div>
+                <div class="command-card">
+                    <code>/remember &lt;fact&gt;</code>
+                    <p>Save a fact to persistent memory</p>
+                </div>
+                <div class="command-card">
+                    <code>/recall &lt;query&gt;</code>
+                    <p>Search and retrieve from memory</p>
+                </div>
+                <div class="command-card">
+                    <code>/health</code>
+                    <p>Check system health and maintenance</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="section">
         <div class="section-header">
             <h2>The Numbers Speak</h2>
@@ -814,6 +1407,34 @@
                 });
             });
         });
+
+        // Installation tabs
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remove active from all tabs and content
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+                // Add active to clicked tab and corresponding content
+                this.classList.add('active');
+                document.getElementById(this.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Copy code functionality
+        function copyCode(btn) {
+            const codeBlock = btn.closest('.code-block');
+            const code = codeBlock.querySelector('code').innerText;
+
+            navigator.clipboard.writeText(code).then(() => {
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Copy';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
     </script>
 </body>
 </html>
