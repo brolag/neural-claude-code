@@ -1,378 +1,489 @@
 # Neural Claude Code Plugin
 
-A self-improving agentic system for Claude Code that implements the **Agent Expert** pattern - agents that execute AND learn.
+<p align="center">
+  <img src="https://img.shields.io/badge/Claude%20Code-Plugin-6366f1?style=for-the-badge&logo=anthropic" alt="Claude Code Plugin">
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License">
+  <img src="https://img.shields.io/badge/Version-1.2.0-ec4899?style=for-the-badge" alt="Version">
+</p>
 
-## Installation
+<p align="center">
+  <strong>Transform Claude Code into a self-improving AI that learns from every interaction.</strong>
+</p>
+
+<p align="center">
+  <a href="https://brolag.github.io/neural-claude-code-plugin">📚 Documentation</a> •
+  <a href="#quick-start">🚀 Quick Start</a> •
+  <a href="#features">✨ Features</a> •
+  <a href="#tutorials">📖 Tutorials</a>
+</p>
+
+---
+
+## 🧠 What is Neural Claude Code?
+
+Neural Claude Code implements the **Agent Expert** pattern - AI agents that don't just execute tasks, but **learn and improve** from every interaction.
+
+```
+Traditional AI: Execute → Forget → Repeat explanations forever
+Neural Claude:  Execute → Learn → Get smarter every session
+```
+
+### The Learning Loop
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    ACT-LEARN CYCLE                       │
+│                                                          │
+│   ┌──────────┐    ┌──────────┐    ┌──────────┐          │
+│   │  READ    │ → │ EXECUTE  │ → │  LEARN   │ ──┐       │
+│   │expertise │    │  task    │    │patterns  │   │       │
+│   └──────────┘    └──────────┘    └──────────┘   │       │
+│        ↑                                          │       │
+│        └──────────────────────────────────────────┘       │
+│                                                          │
+└─────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🚀 Quick Start
+
+### Installation (2 minutes)
 
 ```bash
-# Step 1: Add the marketplace
-claude plugin marketplace add brolag/neural-claude-code-plugin
+# 1. Clone the plugin
+git clone https://github.com/brolag/neural-claude-code-plugin ~/Sites/neural-claude-code-plugin
 
-# Step 2: Install the plugin
-claude plugin install neural-claude-code@brolag --scope user
+# 2. Run setup
+cd ~/Sites/neural-claude-code-plugin
+chmod +x scripts/setup-hooks.sh
+./scripts/setup-hooks.sh
 
-# Step 3: Set up hooks (enables TTS)
-export CLAUDE_PLUGIN_ROOT="$HOME/Sites/neural-claude-code-plugin"
-bash "$CLAUDE_PLUGIN_ROOT/scripts/setup-hooks.sh"
-
-# Step 4: Restart Claude Code
+# 3. Add to your shell profile (~/.zshrc or ~/.bashrc)
+echo 'export CLAUDE_PLUGIN_ROOT="$HOME/Sites/neural-claude-code-plugin"' >> ~/.zshrc
+source ~/.zshrc
 ```
 
-Or via slash commands in Claude Code:
-```
-/plugin marketplace add brolag/neural-claude-code-plugin
-/plugin install neural-claude-code@brolag --scope user
-```
-
-Then run the hook setup script from your terminal.
-
-> **First time?** See the [Complete Setup Guide](docs/SETUP.md) for detailed instructions including prerequisites, ElevenLabs TTS, and Ollama setup.
-
-## Features
-
-### Output Styles (v1.2.0)
-
-Switch response formats mid-session with `/output-style <name>`:
-
-| Style | Description |
-|-------|-------------|
-| `default` | Standard conversational responses |
-| `table` | Organized markdown tables |
-| `yaml` | Highly structured YAML (best for complex tasks) |
-| `concise` | Minimal tokens, maximum signal |
-| `tts` | Audio summary via ElevenLabs at response end |
-| `html` | Generate HTML documents, open in browser |
-| `genui` | Full generative UI with rich styling |
-
-### Status Lines (v1.2.0)
-
-Dynamic status bar with session state tracking:
-
-| Version | Shows |
-|---------|-------|
-| `v1` | Model, directory, git branch |
-| `v2` | + Last prompt with emoji indicator |
-| `v3` | + Agent name + trailing prompts |
-
-Format: `🟣 opus │ 💡 create readme │ Nova │ main +2`
-
-Emoji indicators: ❓ Questions, 💡 Create, 🔧 Fix, 🗑️ Delete, ✅ Test
-
-### ElevenLabs TTS (v1.2.0)
-
-Text-to-speech on task completion:
-- Use `/output-style tts` to enable
-- Summaries extracted via `---TTS_SUMMARY---` markers
-- Automatic audio playback (macOS)
-
-Requires `ELEVENLABS_API_KEY` environment variable.
-
-### Agent Names (v1.2.0)
-
-Creative agent names generated via Ollama (llama3.2:1b) to identify multiple Claude Code instances running in parallel.
-
-### Meta-Agentics (The System That Builds The System)
-
-| Component | Command/Agent | Purpose |
-|-----------|---------------|---------|
-| Meta-Prompt | `/meta/prompt` | Creates new commands |
-| Meta-Improve | `/meta/improve` | Syncs expertise files with schema validation |
-| Meta-Eval | `/meta/eval` | Test agents against golden tasks |
-| Meta-Brain | `/meta/brain` | System health dashboard |
-| Meta-Agent | `meta-agent` | Creates new agents |
-| Meta-Skill | `meta-skill` | Creates new skills |
-
-### Universal Commands
-
-| Command | Purpose |
-|---------|---------|
-| `/question <anything>` | Answer any question (project, web, general) |
-| `/meta:agent <name> <purpose>` | Create a new project-specific agent |
-| `/meta:skill <name> <purpose>` | Create a new project-specific skill |
-| `/meta:prompt <name> <purpose>` | Create a new command |
-| `/meta:improve <name>` | Sync agent expertise with reality |
-| `/meta:eval <name>` | Run automated tests |
-| `/meta:brain` | View system health and status |
-
-### Multi-AI Collaboration
-
-| Agent | Strength | Best For |
-|-------|----------|----------|
-| `codex` | Terminal-Bench #1 | DevOps, long sessions, CLI |
-| `gemini` | 1501 Elo | Algorithms, free tier |
-| `multi-ai` | All three | Consensus, high-stakes decisions |
-
-#### Intelligent Routing
-
-The `multi-ai` agent uses intelligent routing to pick the best AI:
-
-```yaml
-task_classification:
-  type: [algorithm|architecture|devops|review|debug|explain]
-  complexity: [simple|moderate|complex]
-  risk_level: [low|medium|high|critical]
-```
-
-| Condition | Routes To | Reason |
-|-----------|-----------|--------|
-| Algorithm problems | Gemini | 1501 Elo (highest) |
-| Architecture decisions | Claude | 80.9% SWE-bench |
-| DevOps/CLI tasks | Codex | Terminal-Bench leader |
-| Critical decisions | ALL | Maximum validation |
-
-### Cognitive Agents
-
-| Agent | Purpose |
-|-------|---------|
-| `cognitive-amplifier` | Complex decisions, bias detection |
-| `insight-synthesizer` | Cross-domain pattern discovery |
-| `framework-architect` | Transform content → frameworks |
-
-### Skills
-
-| Skill | Triggers |
-|-------|----------|
-| `deep-research` | "research", "investigate", "deep dive" |
-| `content-creation` | "create content", "write post" |
-| `project-setup` | "setup claude", "init project" |
-| `memory-system` | "remember", "recall", "forget" |
-| `worktree-manager` | "/wt-new", "/wt-list", "/wt-merge" |
-| `pattern-detector` | "/evolve", "find patterns" |
-
-## The Agent Expert Pattern
-
-Traditional agents forget. Agent Experts learn.
-
-```
-┌─────────────────────────────────────┐
-│       AGENT EXPERT CYCLE            │
-│                                     │
-│  1. READ    → Load expertise file   │
-│  2. VALIDATE → Check against code   │
-│  3. EXECUTE  → Perform task         │
-│  4. IMPROVE  → Update expertise     │
-│                                     │
-└─────────────────────────────────────┘
-```
-
-### How It Works
-
-1. **Expertise Files** (`.claude/expertise/*.yaml`) store an agent's "mental model"
-2. **Before tasks**, agents read their expertise file first
-3. **After tasks**, agents update their expertise with learnings
-4. **Over time**, agents become true experts on your codebase
-
-### Confidence Scoring
-
-Patterns track their effectiveness:
-
-```yaml
-patterns:
-  - pattern: "Use PARA methodology for organization"
-    confidence: 0.85  # (successes / (successes + failures + 1))
-    successes: 17
-    failures: 3
-    last_used: "2024-12-18"
-```
-
-Low-confidence patterns (< 0.3) are auto-pruned with `--prune`.
-
-### Schema Validation
-
-All expertise files are validated against `schemas/expertise.schema.json`:
-- Required fields: `domain`, `version`, `last_updated`, `understanding`
-- Confidence scores: 0.0-1.0 range
-- Valid date formats
-
-## Tiered Memory Architecture
-
-### Scope Tiers
-
-```
-┌─────────────────────────────────────────────────┐
-│                 GLOBAL MEMORY                    │
-│            ~/.claude/memory/                     │
-│  - User preferences across all projects          │
-│  - Universal patterns and learnings              │
-└─────────────────────────────────────────────────┘
-                      ↓ inherits
-┌─────────────────────────────────────────────────┐
-│                PROJECT MEMORY                    │
-│           .claude/memory/                        │
-│  - Project-specific facts                        │
-│  - Codebase patterns                             │
-└─────────────────────────────────────────────────┘
-```
-
-### Temperature Tiers
-
-| Tier | Location | Access Speed | Use For |
-|------|----------|--------------|---------|
-| Hot | Context window | Instant | Current session |
-| Warm | `.claude/memory/` | Seconds | Recent facts/events |
-| Cold | Archives, CLAUDE.md | Manual | Historical data |
-
-## Project Setup
-
-After installing the plugin, initialize it in your project:
+### Project Setup
 
 ```bash
-cd /path/to/your/project
+# In any project, create the Neural Claude structure
+cd your-project
+mkdir -p .claude/{expertise,memory/events,memory/facts,scripts,data}
+
+# Start Claude Code - expertise will auto-load!
 claude
 ```
 
-Then in Claude Code:
+> 📚 **Full installation guide:** [brolag.github.io/neural-claude-code-plugin](https://brolag.github.io/neural-claude-code-plugin/#installation)
+
+---
+
+## ✨ Features
+
+### 🧠 Self-Learning Expertise
+
+Claude automatically loads domain knowledge at session start and learns from every interaction.
+
+**How it works:**
+```yaml
+# .claude/expertise/project.yaml
+domain: my_project
+version: 3  # Auto-incremented as Claude learns
+last_updated: 2025-01-15
+
+understanding:
+  architecture: "React frontend, Node.js API, PostgreSQL"
+  key_files:
+    - src/App.tsx
+    - api/routes/
+
+patterns:
+  - "Components use TypeScript with strict mode"
+  - "API routes follow REST conventions"
+  - "Tests go in __tests__ folders"
+
+lessons_learned:
+  - "User prefers functional components over classes"
+  - "Always run tests before committing"
+
+user_preferences:
+  - "Spanish for content, English for code"
+  - "Conventional commits with emoji"
 ```
-> setup claude
+
+### 🔄 Act-Learn Cycle
+
+After significant work, Claude prompts you to capture learnings:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ 📝 LEARNING CHECKPOINT                                   │
+│                                                          │
+│ You've completed 8 significant actions.                  │
+│ Consider updating .claude/expertise/project.yaml with:   │
+│                                                          │
+│ • Patterns: Repeatable workflows that worked             │
+│ • Lessons: Insights from this execution                  │
+│ • Preferences: User behaviors learned                    │
+└─────────────────────────────────────────────────────────┘
 ```
 
-This creates:
-- `.claude/data/` - Session state (gitignored)
-- `.claude/expertise/` - Agent learning files
-- `.claude/memory/` - Project-specific memory
+### 📊 Pattern Detection
 
-For detailed setup including ElevenLabs TTS and Ollama, see [Complete Setup Guide](docs/SETUP.md).
-
-## Quick Start
+The `/evolve` command analyzes your workflows to detect repeating patterns:
 
 ```bash
-# Install the plugin
-claude plugin marketplace add brolag/neural-claude-code-plugin
-claude plugin install neural-claude-code@brolag --scope user
+> /evolve
 
-# In any project, initialize
-> setup claude
+Analyzing 156 events from last 30 days...
 
-# Check system health
-> /meta/brain
+Top Patterns Detected:
+  [85%] Read → Edit → Bash (test)     - 12 occurrences
+  [72%] Glob → Read → Edit            - 8 occurrences
+  [65%] Task → Read → Write           - 6 occurrences
 
-# Switch output style
-> /output-style yaml
-
-# Ask questions
-> /question where is the authentication logic?
-
-# Get multi-AI consensus
-> /ai-collab Should we use REST or GraphQL?
-
-# Sync expertise after changes
-> /meta/improve project
+Recommendations:
+  [HIGH] Create skill for: Read → Edit → Bash workflow
+  [MED]  Pattern "Glob → Read → Edit" approach stable
 ```
 
-> **See also:** [Fullstack App Example](examples/fullstack-app-setup.md) for a complete walkthrough of using the plugin to build a React + Node.js app.
+### 💾 Persistent Memory
 
-## Architecture
+Facts, events, and session logs persist across conversations:
 
-```
-neural-claude-code-plugin/
-├── .claude-plugin/
-│   ├── plugin.json          # Plugin manifest
-│   └── marketplace.json     # Marketplace config
-├── commands/
-│   ├── meta/
-│   │   ├── prompt.md        # Create prompts (--dry-run)
-│   │   ├── improve.md       # Sync expertise (--prune)
-│   │   ├── eval.md          # Run tests
-│   │   └── brain.md         # System status
-│   ├── question.md          # Universal Q&A
-│   └── output-style.md      # Switch output styles
-├── output-styles/           # Response format templates
-│   ├── default.md
-│   ├── table.md
-│   ├── yaml.md
-│   ├── concise.md
-│   ├── tts.md
-│   ├── html.md
-│   └── genui.md
-├── status-lines/            # Status bar scripts
-│   ├── v1.sh
-│   ├── v2.sh
-│   └── v3.sh
-├── scripts/
-│   ├── setup-hooks.sh       # One-time hook setup
-│   ├── hooks/
-│   │   ├── session-start.sh
-│   │   ├── user-prompt.sh
-│   │   └── stop-tts.sh
-│   ├── tts/
-│   │   └── elevenlabs.sh
-│   └── utils/
-│       └── agent-name.sh
-├── agents/
-│   ├── meta-agent.md        # Creates agents
-│   ├── cognitive-amplifier.md
-│   ├── insight-synthesizer.md
-│   ├── framework-architect.md
-│   ├── codex.md             # OpenAI Codex
-│   ├── gemini.md            # Google Gemini
-│   └── multi-ai.md          # Orchestrator + routing
-├── skills/
-│   ├── meta-skill/          # Creates skills
-│   ├── deep-research/
-│   ├── content-creation/
-│   ├── project-setup/
-│   ├── memory-system/       # Tiered memory
-│   ├── worktree-manager/
-│   └── pattern-detector/
-├── schemas/
-│   └── expertise.schema.json # Validation schema
-├── templates/
-│   └── expertise.template.yaml
-├── hooks/
-│   └── hooks.json           # Hook registrations
-├── docs/
-│   └── SETUP.md             # Complete setup guide
-├── examples/
-│   └── fullstack-app-setup.md # Real-world usage example
-├── LICENSE
-├── CHANGELOG.md
-└── README.md
+```bash
+> /remember The API uses JWT tokens with 24h expiry
+✓ Fact saved to memory
+
+> /recall authentication
+Found 3 relevant facts:
+  • The API uses JWT tokens with 24h expiry
+  • Auth middleware is in src/middleware/auth.ts
+  • Refresh tokens stored in Redis
 ```
 
-## New in v1.2.0
+### 🤖 Multi-AI Collaboration
 
-- **Output Styles**: 7 response formats (default, table, yaml, concise, tts, html, genui)
-- **Status Lines**: 3 versions with model, prompt, agent name, git info
-- **ElevenLabs TTS**: Audio summaries on task completion
-- **Agent Names**: Ollama-generated names for multi-instance identification
-- **Session State**: JSON tracking in `.claude/data/current-session.json`
-- **Hooks System**: SessionStart, UserPromptSubmit, Stop hooks
+Route tasks to the best AI for the job:
 
-## New in v1.1.0
+| AI | Strength | Best For |
+|-----|----------|----------|
+| **Claude** | 80.9% SWE-bench | Architecture, accuracy, complex reasoning |
+| **Codex** | Terminal-Bench #1 | DevOps, CLI, long autonomous sessions |
+| **Gemini** | 1501 Elo algorithms | Competitive coding, math, free tier |
 
-- **Expertise Schema Validation**: JSON Schema for expertise files
-- **Confidence Scoring**: Track pattern effectiveness (0.0-1.0)
-- **Auto-Pruning**: Remove low-confidence patterns with `--prune`
-- **`/meta/eval`**: Automated testing against golden tasks
-- **`/meta/brain`**: System health dashboard
-- **Git-triggered learning**: Auto-improve on commits
-- **Tiered Memory**: Global + project memory hierarchy
-- **Intelligent AI Routing**: Task-based routing matrix
-- **`--dry-run` mode**: Preview changes before writing
+```bash
+> /ai-collab Should we use REST or GraphQL for this API?
 
-## Requirements
+# Claude, Codex, and Gemini each analyze and provide perspectives
+# Final synthesis with consensus recommendation
+```
 
-| Requirement | Required | Purpose |
-|-------------|----------|---------|
-| Claude Code CLI | Yes | Core functionality |
-| `jq` | Yes | JSON processing for hooks |
-| Codex CLI | No | Multi-AI collaboration |
-| Gemini CLI | No | Multi-AI collaboration |
-| Ollama + llama3.2:1b | No | Creative agent names |
-| `ELEVENLABS_API_KEY` | No | Text-to-speech summaries |
+---
 
-## Documentation
+## 📖 Tutorials
 
-| Document | Description |
+### Tutorial 1: Creating Your First Expertise File
+
+```bash
+# Create expertise directory
+mkdir -p .claude/expertise
+
+# Create your first expertise file
+cat > .claude/expertise/project.yaml << 'EOF'
+domain: my_awesome_project
+version: 1
+last_updated: 2025-01-15
+
+understanding:
+  project_type: "web-app"
+  tech_stack:
+    - typescript
+    - react
+    - nodejs
+  structure:
+    frontend: "src/"
+    backend: "api/"
+    tests: "__tests__/"
+
+patterns:
+  - "Use functional components with hooks"
+  - "API routes in api/routes/"
+  - "Shared types in src/types/"
+
+lessons_learned: []
+
+open_questions:
+  - "What testing framework does the user prefer?"
+
+user_preferences: []
+EOF
+```
+
+Now when you start Claude Code, this expertise is automatically loaded!
+
+### Tutorial 2: Using Meta-Agents
+
+Meta-agents are special agents that create other agents and components.
+
+#### Creating a Custom Agent
+
+```bash
+> Create an agent for code review that checks for security issues
+
+# Claude uses the meta-agent to create:
+# .claude/agents/security-reviewer.md
+```
+
+The created agent will have:
+- Clear purpose and triggers
+- Tool permissions (Read, Grep, etc.)
+- Domain expertise integration
+
+#### Creating a Custom Skill
+
+```bash
+> Create a skill for database migrations
+
+# Claude uses meta-skill to create:
+# .claude/skills/db-migrations/skill.md
+# .claude/skills/db-migrations/tests.json
+```
+
+### Tutorial 3: The /evolve Command
+
+The `/evolve` command is your system's self-improvement engine:
+
+```bash
+> /evolve
+
+# What happens:
+# 1. Analyzes .claude/memory/events/*.jsonl
+# 2. Detects repeating tool sequences
+# 3. Calculates pattern confidence scores
+# 4. Suggests skills to create
+# 5. Updates expertise files
+# 6. Prunes low-confidence patterns
+```
+
+**Run it weekly** to keep your system improving!
+
+### Tutorial 4: Memory System
+
+#### Saving Facts
+
+```bash
+> /remember The deployment script is in scripts/deploy.sh
+> /remember Production uses AWS ECS with Fargate
+> /remember Database backups run at 3am UTC
+```
+
+#### Recalling Facts
+
+```bash
+> /recall deployment
+# Returns: The deployment script is in scripts/deploy.sh
+
+> /recall AWS
+# Returns: Production uses AWS ECS with Fargate
+```
+
+#### Forgetting Facts
+
+```bash
+> /forget deployment-script
+# Removes the fact from memory
+```
+
+### Tutorial 5: Output Styles
+
+Switch how Claude responds mid-session:
+
+```bash
+> /output-style yaml      # Structured YAML responses
+> /output-style table     # Markdown tables
+> /output-style concise   # Minimal, direct answers
+> /output-style tts       # Audio summary at end
+> /output-style html      # Generate HTML, open in browser
+```
+
+### Tutorial 6: Multi-AI Workflows
+
+#### Quick Routing
+
+```bash
+# Route to Codex for DevOps tasks
+> Ask Codex to set up the CI/CD pipeline
+
+# Route to Gemini for algorithm problems
+> Ask Gemini to optimize this sorting algorithm
+
+# Get all perspectives
+> /ai-collab What's the best caching strategy for this API?
+```
+
+#### Intelligent Routing
+
+The system automatically routes based on task type:
+
+| Task Type | Routed To | Why |
+|-----------|-----------|-----|
+| Algorithm/math | Gemini | Highest Elo rating |
+| Architecture | Claude | Best SWE-bench score |
+| DevOps/CLI | Codex | Terminal-Bench leader |
+| Critical decisions | All three | Maximum validation |
+
+---
+
+## 🛠️ Commands Reference
+
+### Core Commands
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `/evolve` | Self-improvement cycle | `/evolve` |
+| `/remember <fact>` | Save to memory | `/remember API key rotates monthly` |
+| `/recall <query>` | Search memory | `/recall database` |
+| `/forget <id>` | Remove from memory | `/forget api-key-fact` |
+| `/health` | System health check | `/health` |
+
+### Meta Commands
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `/meta:agent <name>` | Create new agent | `/meta:agent security-checker` |
+| `/meta:skill <name>` | Create new skill | `/meta:skill api-testing` |
+| `/meta:prompt <name>` | Create new command | `/meta:prompt daily-standup` |
+| `/meta:improve <name>` | Sync expertise | `/meta:improve project` |
+| `/meta:eval` | Run tests | `/meta:eval` |
+| `/meta:brain` | System dashboard | `/meta:brain` |
+
+### Style Commands
+
+| Command | Description |
+|---------|-------------|
+| `/output-style default` | Standard responses |
+| `/output-style yaml` | Structured YAML |
+| `/output-style table` | Markdown tables |
+| `/output-style concise` | Minimal output |
+| `/output-style tts` | With audio summary |
+| `/output-style html` | Generate HTML |
+
+### AI Collaboration
+
+| Command | Description |
+|---------|-------------|
+| `/ai-collab <problem>` | Get all AI perspectives |
+| `Ask Codex to...` | Route to Codex |
+| `Ask Gemini to...` | Route to Gemini |
+
+---
+
+## 🏗️ Project Structure
+
+```
+your-project/
+├── .claude/
+│   ├── expertise/              # 🧠 Domain knowledge
+│   │   ├── manifest.yaml       # Load order & dependencies
+│   │   ├── project.yaml        # Project expertise
+│   │   └── shared.yaml         # Cross-domain knowledge
+│   │
+│   ├── memory/                 # 💾 Persistent memory
+│   │   ├── events/             # Daily event logs (JSONL)
+│   │   ├── facts/              # Stored facts
+│   │   ├── session_logs/       # Session history
+│   │   └── pattern-index.json  # Detected patterns
+│   │
+│   ├── agents/                 # 🤖 Custom agents
+│   ├── skills/                 # ⚡ Reusable skills
+│   ├── commands/               # 📝 Slash commands
+│   ├── scripts/                # 🔧 Hooks & utilities
+│   │
+│   ├── settings.json           # Project settings
+│   └── CLAUDE.md               # Project instructions
+```
+
+---
+
+## 🔧 Configuration
+
+### Expertise Manifest
+
+Control how expertise is loaded:
+
+```yaml
+# .claude/expertise/manifest.yaml
+version: 1
+last_updated: 2025-01-15
+
+load_order:
+  - project          # Load first
+  - frontend
+  - backend
+  - shared           # Load last
+
+confidence:
+  promotion_threshold: 0.7    # Patterns above this → shared
+  deprecation_threshold: 0.3  # Patterns below this → pruned
+  decay_rate: 0.05            # Weekly decay for unused patterns
+
+auto_update:
+  enabled: true
+  triggers:
+    - task_completion
+    - evolve_command
+```
+
+### Environment Variables
+
+```bash
+# Required
+export CLAUDE_PLUGIN_ROOT="$HOME/Sites/neural-claude-code-plugin"
+
+# Optional - for TTS
+export ELEVENLABS_API_KEY="your-key"
+
+# Optional - for multi-AI
+# (Codex and Gemini CLIs must be installed separately)
+```
+
+---
+
+## 📚 Documentation
+
+| Resource | Description |
 |----------|-------------|
-| [Complete Setup Guide](docs/SETUP.md) | Step-by-step installation and configuration |
-| [Fullstack App Example](examples/fullstack-app-setup.md) | Real-world usage with React + Node.js |
-| [CHANGELOG](CHANGELOG.md) | Version history and changes |
+| [🌐 Landing Page](https://brolag.github.io/neural-claude-code-plugin) | Interactive guide with installation |
+| [📖 Installation Guide](https://brolag.github.io/neural-claude-code-plugin/#installation) | Step-by-step setup |
+| [📋 Changelog](CHANGELOG.md) | Version history |
 
-## License
+---
 
-MIT
+## 🤝 Contributing
 
-## Author
+Contributions are welcome! See our [contribution guidelines](CONTRIBUTING.md).
 
-Alfredo Bonilla ([@brolag](https://github.com/brolag))
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+---
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) for details.
+
+---
+
+## 👤 Author
+
+**Alfredo Bonilla** ([@brolag](https://github.com/brolag))
+
+---
+
+<p align="center">
+  <strong>🧠 Built with Claude Code • Self-improving AI that learns from you</strong>
+</p>
