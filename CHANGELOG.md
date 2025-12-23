@@ -2,6 +2,84 @@
 
 All notable changes to the Neural Claude Code plugin will be documented here.
 
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [1.4.0] - 2024-12-23
+
+### Added
+
+#### Prompt Engineering Skill
+- **CRISP-E Framework** for prompt quality assessment
+  - 6 dimensions: Clarity, Richness, Integrity, Structure, Precision, Executability
+  - Weighted scoring (20%/20%/20%/20%/10%/10%)
+  - Behavioral anchors for consistent evaluation
+
+- **`/prompt-review <file>`** - Assess prompt quality
+  - Generates detailed CRISP-E score report
+  - Identifies critical issues with suggested fixes
+  - Scoring guide with actionable recommendations
+
+- **`/prompt-improve <file>`** - Multi-AI prompt improvement
+  - Parallel review by Gemini + Codex
+  - Synthesizes feedback into Critical/Important/Minor categories
+  - Auto-applies fixes and creates versioned output
+  - Before/after score comparison
+
+- **`/prompt-validate <file>`** - Research verification
+  - Extracts URLs, claims, organizations, stats
+  - Verifies against official sources
+  - Generates verification report ([V], [?], [X] markers)
+
+- **Antipattern Documentation**
+  - Oracle Assumption, Verification Lie, Scale Trap
+  - Context Gap, Infinite Scope, Format Drift
+
+---
+
+## [1.3.0] - 2024-12-22
+
+### Added
+
+#### Plan-Execute Skill
+- **Opus + Gemini Orchestration** for 60-70% cost savings
+  - Claude Opus handles planning and review
+  - Gemini Flash handles execution of simple steps
+  - Intelligent routing based on task complexity
+
+- **Learning Loop Improvements**
+  - Enhanced pattern detection from 3-AI analysis
+  - Better confidence score calculations
+
+### Fixed
+- **TTS Deduplication** - Hash-based prevention of duplicate playback
+- **TTS Bilingual Support** - Improved text extraction reliability
+- **Agent Names** - Consistent feminine names via shared utility
+
+---
+
+## [1.2.1] - 2024-12-21
+
+### Added
+
+#### Multi-Voice TTS
+- Per-project voice assignment via `~/.claude/tts-voices.json`
+- Agent identification in TTS announcements ("Dorothy reporting...")
+- Voice pool with bilingual support (English + Spanish)
+
+#### Meta Commands
+- `/meta:agent <name>` - Create custom agents from description
+- `/meta:skill <name>` - Create custom skills from workflow
+
+### Fixed
+- `mktemp` usage for audio file creation on macOS
+- API key extraction from shell config
+- Temp file cleanup after playback
+
+---
+
 ## [1.2.0] - 2024-12-18
 
 ### Added
