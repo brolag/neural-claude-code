@@ -7,6 +7,77 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.6.0] - 2025-12-29
+
+### Added
+
+#### Parallel Verification Skill
+- **`/pv <problem>`** - AlphaGo-style parallel hypothesis exploration
+  - **Diverge Phase**: Generate 3-5 distinct hypotheses for any problem
+  - **Explore Phase**: Spawn multiple agents in parallel to investigate each path
+  - **Verify Phase**: Cross-check results for contradictions, test edge cases
+  - **Converge Phase**: Synthesize the strongest solution from all paths
+  - Inspired by DeepMind's approach that beat the world Go champion
+
+- **Multi-AI Enhancement**
+  - Route different hypotheses to different models (Opus, Codex, Gemini)
+  - True cognitive diversity, not just prompt variations
+  - Configurable: `num_hypotheses`, `agent_type`, `timeout_per_agent`
+
+- **Best Use Cases**
+  - Complex debugging (multiple possible root causes)
+  - Architecture decisions (trade-offs need multi-angle analysis)
+  - Mathematical proofs (one error ruins everything)
+  - Strategic planning (decision trees need exploration)
+
+#### Smart Task Router
+- **`/route <task>`** - Intelligent multi-AI cost optimization
+  - Analyzes tasks and recommends optimal AI routing
+  - Decision matrix based on task characteristics
+
+- **Routing Tiers**
+  - **Qwen (Local)**: Boilerplate, syntax, examples → 100% savings
+  - **Gemini**: Algorithms, data transforms → 89% savings
+  - **Codex**: DevOps, terminal, long sessions → 65% savings
+  - **Opus**: Architecture, security, critical code → Premium accuracy
+
+- **Plan-Execute Pattern** recommendation for complex tasks
+  - Opus plans (5-10% tokens) → Gemini executes (70-80%) → Opus reviews (10-20%)
+  - 60-70% cost savings on multi-step implementations
+
+#### Skill Telemetry System
+- **`scripts/log-skill-execution.sh`** - Track skill performance
+  - Logs: skill name, trigger type (manual/auto), outcome, duration
+  - Updates `skill-performance.json` with metrics
+  - Tracks: total executions, completion rate, dismissal rate, auto-trigger rate
+
+- **Performance Metrics**
+  - Enables data-driven skill improvement via `/evolve`
+  - Identifies underperforming or over-triggered skills
+
+#### Documentation
+- **`docs/ROUTING_PLAYBOOK.md`** - Quick reference for multi-AI routing
+  - 60-second decision tree
+  - Quick commands table
+  - Daily routing habits guide
+  - Monthly savings estimates
+
+### Usage
+
+```bash
+# Parallel verification for complex problems
+/pv Why is our API returning 500 errors intermittently?
+
+# Smart routing for cost optimization
+/route implement binary search in Python
+/route set up GitHub Actions CI/CD
+
+# Log skill execution
+./scripts/log-skill-execution.sh deep-research manual completed 120
+```
+
+---
+
 ## [1.5.0] - 2024-12-24
 
 ### Added
