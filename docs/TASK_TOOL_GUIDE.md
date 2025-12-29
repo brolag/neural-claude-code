@@ -1,116 +1,182 @@
 # Task Tool Usage Guide
 
-**Goal**: Increase Task tool usage to 5%+ of tool calls.
+> **Platform**: Claude Code only. The Task tool is a Claude Code feature for launching sub-agents.
 
-## Why Use Task Tool (Sub-Agents)?
+## What is the Task Tool?
 
-| Direct Tools | Task Tool (Sub-Agents) |
-|--------------|------------------------|
-| Simple, focused queries | Complex, exploratory searches |
-| 1-2 file operations | Multi-file investigation |
-| Known file paths | Unknown file locations |
-| Quick lookups | Deep research |
+The Task tool spawns **sub-agents** - separate Claude instances that run with their own context window. Results are returned to your main conversation.
 
-**Key Insight**: Sub-agents have **fresh context**, so they don't pollute your main conversation with exploration noise.
+### Invocation Syntax
+
+```
+Task(subagent_type) "prompt describing the task"
+```
+
+**Required parameters:**
+- `subagent_type`: One of `Explore`, `Plan`, `general-purpose`, or custom agents
+- `prompt`: Clear description of what the sub-agent should do
+
+**Optional parameters:**
+- `model`: `sonnet` (default), `opus`, `haiku`
+- `run_in_background`: `true` to continue working while agent runs
+
+### Example Invocations
+
+```javascript
+// Codebase exploration
+Task(Explore) "How does the authentication system work?"
+
+// Architecture planning
+Task(Plan) "Design the implementation for user notifications"
+
+// Complex multi-step task
+Task(general-purpose) "Refactor all API endpoints to use async/await"
+
+// Background execution
+Task(Explore, run_in_background=true) "Analyze the test coverage"
+```
 
 ## When to Use Task Tool
 
-### ALWAYS Use Task for:
+### Use Task When:
 
-1. **Codebase Exploration**
-   - Bad: Multiple Glob + Grep + Read calls
-   - Good: `Task(Explore) "How does X work?"`
+| Situation | Why Task Helps |
+|-----------|----------------|
+| Exploration (unknown structure) | Fresh context avoids pollution |
+| 4+ sequential tool calls needed | Sub-agent handles complexity |
+| Research requiring synthesis | Agent can read, analyze, summarize |
+| Planning with many considerations | Isolated thinking space |
 
-2. **Research Questions**
-   - Bad: WebSearch + WebFetch + manual synthesis
-   - Good: `Task(deep-research) "Research best practices for X"`
+### Do NOT Use Task When:
 
-3. **Multi-File Changes**
-   - Bad: Read file1, Read file2, Edit file1, Edit file2
-   - Good: `Task(general-purpose) "Update all files that use old API"`
+| Situation | Why Direct is Better |
+|-----------|---------------------|
+| Single file read/edit | Task overhead not worth it |
+| Known file path | Just use Read directly |
+| Quick grep for a string | Grep is faster |
+| Edits requiring your review | Keep in main context |
+| Sequential dependent steps | Context continuity matters |
+| Sensitive operations | Keep visible in main thread |
 
-4. **Planning Complex Features**
-   - Bad: Think in main context
-   - Good: `Task(Plan) "Design implementation for feature X"`
+## Cost & Performance Considerations
 
-## Agent Selection Quick Reference
+| Factor | Task Tool | Direct Tools |
+|--------|-----------|--------------|
+| Latency | Higher (agent startup) | Lower |
+| Token usage | Separate context window | Shared context |
+| Visibility | Results summarized | Full detail visible |
+| Control | Less (agent decides) | More (you decide) |
 
-| Need | Use Agent |
-|------|-----------|
-| "How does X work?" | `Explore` |
-| "Find all files that..." | `Explore` |
-| "Plan implementation of..." | `Plan` |
-| "Design architecture for..." | `Plan` |
-| Research question | `deep-research` |
-| Long DevOps/terminal task | `codex` |
-| Algorithm problem | `gemini` |
-| Critical decision | `multi-ai` |
-| Complex multi-step task | `general-purpose` |
+**Rule of thumb**: Task tool is worth the overhead when exploration would add 1000+ tokens of noise to your main context.
 
-## Quick Decision Tree
+## Agent Types
+
+### Built-in Agents
+
+| Agent | Context | Best For |
+|-------|---------|----------|
+| `Explore` | Fresh (no history) | Codebase questions, file discovery |
+| `Plan` | Full conversation | Architecture decisions |
+| `general-purpose` | Full conversation | Complex multi-step tasks |
+
+### When to Use Each
 
 ```
-Is it a simple file read?
-├─ YES → Use Read tool directly
-└─ NO → Continue...
+Need to understand code you haven't seen?
+→ Task(Explore)
 
-Is it exploration/research?
-├─ YES → Task(Explore) or Task(deep-research)
-└─ NO → Continue...
+Need to plan something based on our discussion?
+→ Task(Plan)
 
-Will it require 3+ tool calls?
+Need to execute a complex task with many steps?
+→ Task(general-purpose)
+```
+
+## Parallel Execution
+
+Launch multiple independent tasks in ONE message:
+
+```javascript
+// Both run concurrently
+Task(Explore) "Analyze the auth module"
+Task(Explore) "Analyze the payment module"
+```
+
+**Caveats:**
+- Results return in arbitrary order
+- You must synthesize/merge findings yourself
+- Don't parallelize dependent tasks
+
+## Decision Framework
+
+```
+Is it a single, known file operation?
+├─ YES → Direct tool (Read, Edit, Write)
+└─ NO ↓
+
+Would exploration add 1000+ tokens of noise?
+├─ YES → Task(Explore)
+└─ NO ↓
+
+Do you need the agent to make decisions?
 ├─ YES → Task(general-purpose)
-└─ NO → Do it directly
+└─ NO → Direct tools with your judgment
 
-Is it architecture/planning?
+Is it architecture/planning based on our conversation?
 ├─ YES → Task(Plan)
-└─ NO → Do it directly
+└─ NO → Think in main context
 ```
 
-## Parallel Agent Pattern
+## Troubleshooting
 
-For independent tasks, launch multiple agents in ONE message:
+### Task returns low-quality results
+- Make prompt more specific
+- Add constraints ("focus on X, ignore Y")
+- Use `opus` model for complex tasks
 
-```
-Task(Explore) "Analyze auth module"
-Task(Explore) "Analyze payment module"
-```
+### Task takes too long
+- Use `haiku` for simple explorations
+- Break into smaller, parallel tasks
+- Check if direct tools would be faster
 
-Both run concurrently, results synthesized after.
+### Task misses important context
+- `Explore` has NO conversation history
+- Use `general-purpose` if context matters
+- Or provide context explicitly in prompt
 
-## Anti-Patterns to Fix
+### Results don't integrate well
+- Ask task to output in specific format
+- Request "bullet points" or "table format"
+- Synthesize in main context after
 
-| Anti-Pattern | Instead Use |
-|--------------|-------------|
-| Grep → Read → Grep → Read | `Task(Explore)` |
-| Multiple sequential WebSearch | `Task(deep-research)` |
-| Reading 5+ files to understand | `Task(Explore)` |
+## Measuring Success
+
+Track these metrics (not just usage %):
+
+| Metric | Good Sign |
+|--------|-----------|
+| Context saved | Task prevented 1000+ noise tokens |
+| Time saved | Task faster than manual exploration |
+| Quality | Task found things you'd have missed |
+| Rework | Low need to redo Task's work |
 
 ## Add to Your CLAUDE.md
 
-Copy this section to your project's CLAUDE.md:
-
 ```markdown
-## Task Tool / Sub-Agent Usage
+## Task Tool Guidelines
 
-Use Task tool instead of direct tool calls when:
+Use Task for exploration/research, direct tools for known operations.
 
-| Situation | Use |
-|-----------|-----|
-| Exploring codebase | `Task(Explore)` |
-| Research questions | `Task(deep-research)` |
-| Multi-file investigation | `Task(general-purpose)` |
-| Architecture planning | `Task(Plan)` |
-| 3+ tool calls needed | `Task(general-purpose)` |
-| Need AI consensus | `Task(multi-ai)` |
+| Use Task | Use Direct |
+|----------|------------|
+| "How does X work?" | Single file read |
+| Multi-file investigation | Known file path |
+| Research + synthesis | Quick grep |
+| Architecture planning | Edits needing review |
 
-**Quick Decision**: If you're about to do Grep → Read → Grep → Read,
-stop and use `Task(Explore)` instead.
-
-**Parallel Agents**: For independent tasks, launch multiple Task calls
-in ONE message.
+**Overhead check**: Is the exploration worth agent startup cost?
 ```
 
 ---
 
-*Part of Neural Claude Code Plugin*
+*Part of Neural Claude Code Plugin - For Claude Code users only*
