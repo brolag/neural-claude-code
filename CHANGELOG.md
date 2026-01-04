@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.7.1] - 2026-01-04
+
+### Added
+
+- **`/loop-plan "<task>"`** - Safe autonomous execution with planning
+  - Mandatory analysis phase before execution
+  - Auto-generates structured todo.md with validations
+  - Calculates max iterations based on complexity
+  - Requires approval before starting loop
+  - Built-in abort conditions for stuck loops
+
+---
+
 ## [1.7.0] - 2026-01-04
 
 ### Added

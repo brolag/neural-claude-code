@@ -3,7 +3,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Claude%20Code-Plugin-6366f1?style=for-the-badge&logo=anthropic" alt="Claude Code Plugin">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License">
-  <img src="https://img.shields.io/badge/Version-1.7.0-ec4899?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/Version-1.7.1-ec4899?style=for-the-badge" alt="Version">
 </p>
 
 <p align="center">
@@ -451,24 +451,34 @@ The system automatically routes based on task type:
 
 ### Tutorial 7: Neural Loop (Autonomous Sessions)
 
-Run tasks autonomously for hours using the Ralph Wiggum pattern:
+Run tasks autonomously for hours using the Ralph Wiggum pattern.
+
+#### Recommended: Use /loop-plan (Safest)
 
 ```bash
-# Start a neural loop
-> /loop-start "Implement user authentication with JWT tokens and tests" --max 30 --promise "AUTH_COMPLETE"
+# Analyzes, plans, then executes with safety harnesses
+> /loop-plan "Implement user authentication with JWT tokens"
 
-# The loop will:
-# 1. Work on the task
-# 2. Run tests automatically (test-on-stop hook)
-# 3. If tests fail, re-inject prompt with failures
-# 4. Continue until you output "AUTH_COMPLETE" or hit 30 iterations
+# What happens:
+# 1. Analyzes codebase and affected files
+# 2. Creates structured todo.md with validations
+# 3. Calculates safe max iterations
+# 4. Asks for approval
+# 5. Executes loop with proper exit criteria
 ```
 
-**Best Practices:**
+#### Manual: Use /loop-start (Advanced)
+
+```bash
+# Direct loop - YOU must define safety constraints
+> /loop-start "Fix all TypeScript errors. Run 'npm run typecheck' after each fix. Output TYPES_FIXED when 0 errors" --max 15 --promise "TYPES_FIXED"
+```
+
+**Safety Rules:**
 - Always set `--max` to prevent runaway loops
-- Include clear completion criteria in the task
+- Include validation command in prompt
+- Define measurable exit criteria
 - Use TDD (write tests first)
-- Combine with `/todo-new` for structured workflows
 
 **Todo-Driven Development:**
 
@@ -489,7 +499,7 @@ Run tasks autonomously for hours using the Ralph Wiggum pattern:
   "active": true,
   "iteration": 7,
   "max_iterations": 20,
-  "completion_promise": "AUTH_COMPLETE"
+  "completion_promise": "TYPES_FIXED"
 }
 ```
 
@@ -547,6 +557,7 @@ Run tasks autonomously for hours using the Ralph Wiggum pattern:
 
 | Command | Description | Example |
 |---------|-------------|---------|
+| `/loop-plan "<task>"` | Plan + execute with safety harnesses | `/loop-plan "Add authentication"` |
 | `/loop-start "<task>"` | Start autonomous loop | `/loop-start "Build API" --max 20 --promise "DONE"` |
 | `/loop-cancel` | Stop active loop | `/loop-cancel` |
 | `/loop-status` | Check loop status | `/loop-status` |
