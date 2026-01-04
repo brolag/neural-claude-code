@@ -7,6 +7,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.7.0] - 2026-01-04
+
+### Added
+
+#### Neural Loop - Autonomous Iteration System
+- **`/loop-start "<task>"`** - Start autonomous iteration loops
+  - Based on the [Ralph Wiggum pattern](https://ghuntley.com/ralph/)
+  - Runs tasks for hours unattended using Stop hooks
+  - Re-injects prompt with context when Claude tries to exit
+  - Options: `--max <n>` (max iterations), `--promise "<text>"` (completion phrase)
+
+- **`/loop-cancel`** - Stop active loops immediately
+- **`/loop-status`** - Check current loop state and iteration count
+
+- **Test-on-Stop Hook**
+  - Automatically runs tests when Claude stops
+  - Auto-detects project type (npm, cargo, pytest, go, make)
+  - Feeds test failures back into next iteration
+  - Telegram notifications on test failures
+
+- **Todo-Driven Development**
+  - **`/todo-new "<task>"`** - Generate structured todo.md from template
+  - **`/todo-check`** - Check progress on current todo
+  - Phased approach with validation steps between phases
+  - Optimized for use with neural-loop
+
+- **Scripts**
+  - `scripts/neural-loop/neural-loop.sh` - Stop hook for iteration
+  - `scripts/neural-loop/start.sh` - Start loop sessions
+  - `scripts/neural-loop/cancel.sh` - Cancel active loops
+  - `scripts/neural-loop/test-on-stop.sh` - Auto-test runner
+
+- **Templates**
+  - `templates/todo-workflow.md` - Structured todo template
+
+### Best Use Cases
+- Large refactors with tests
+- Building features with TDD
+- Batch operations with verification
+- Complex implementations requiring iteration
+
+---
+
 ## [1.6.0] - 2025-12-29
 
 ### Added

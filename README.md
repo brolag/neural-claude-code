@@ -3,7 +3,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Claude%20Code-Plugin-6366f1?style=for-the-badge&logo=anthropic" alt="Claude Code Plugin">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License">
-  <img src="https://img.shields.io/badge/Version-1.5.0-ec4899?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/Version-1.7.0-ec4899?style=for-the-badge" alt="Version">
 </p>
 
 <p align="center">
@@ -116,6 +116,20 @@ CRISP-E framework for prompt quality assessment and improvement.
 
 ### 🌳 Git Worktrees
 Parallel development with `/wt-new`, `/wt-merge`, `/wt-clean`.
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 🔄 Neural Loop
+Autonomous iteration with `/loop-start`. Run tasks for hours unattended.
+
+</td>
+<td width="50%">
+
+### ✅ Test-on-Stop
+Auto-run tests when Claude stops. Feed failures back into the loop.
 
 </td>
 </tr>
@@ -435,6 +449,50 @@ The system automatically routes based on task type:
 | Complex multi-step | Opus→Gemini→Opus | Cost optimization |
 | Critical decisions | All three | Maximum validation |
 
+### Tutorial 7: Neural Loop (Autonomous Sessions)
+
+Run tasks autonomously for hours using the Ralph Wiggum pattern:
+
+```bash
+# Start a neural loop
+> /loop-start "Implement user authentication with JWT tokens and tests" --max 30 --promise "AUTH_COMPLETE"
+
+# The loop will:
+# 1. Work on the task
+# 2. Run tests automatically (test-on-stop hook)
+# 3. If tests fail, re-inject prompt with failures
+# 4. Continue until you output "AUTH_COMPLETE" or hit 30 iterations
+```
+
+**Best Practices:**
+- Always set `--max` to prevent runaway loops
+- Include clear completion criteria in the task
+- Use TDD (write tests first)
+- Combine with `/todo-new` for structured workflows
+
+**Todo-Driven Development:**
+
+```bash
+# Create structured todo for complex task
+> /todo-new "Build REST API for user management"
+
+# Creates todo.md with phases and validation steps
+# Then start the loop:
+> /loop-start "Follow todo.md step by step" --max 20 --promise "TASK_COMPLETE"
+```
+
+**Check progress anytime:**
+
+```bash
+> /loop-status
+{
+  "active": true,
+  "iteration": 7,
+  "max_iterations": 20,
+  "completion_promise": "AUTH_COMPLETE"
+}
+```
+
 ---
 
 ## 🛠️ Commands Reference
@@ -485,6 +543,16 @@ The system automatically routes based on task type:
 |---------|-------------|---------|
 | `/yt-learn <url>` | Extract YouTube video into knowledge note | `/yt-learn https://youtube.com/watch?v=abc` |
 
+### Neural Loop Commands
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `/loop-start "<task>"` | Start autonomous loop | `/loop-start "Build API" --max 20 --promise "DONE"` |
+| `/loop-cancel` | Stop active loop | `/loop-cancel` |
+| `/loop-status` | Check loop status | `/loop-status` |
+| `/todo-new "<task>"` | Create structured todo | `/todo-new "Implement auth"` |
+| `/todo-check` | Check todo progress | `/todo-check` |
+
 ### AI Collaboration
 
 | Command | Description |
@@ -516,6 +584,8 @@ your-project/
 │   ├── skills/                 # ⚡ Reusable skills
 │   ├── commands/               # 📝 Slash commands
 │   ├── scripts/                # 🔧 Hooks & utilities
+│   │   └── neural-loop/        # 🔄 Autonomous iteration
+│   ├── templates/              # 📋 Workflow templates
 │   │
 │   ├── settings.json           # Project settings
 │   └── CLAUDE.md               # Project instructions
