@@ -143,12 +143,15 @@ if [ "$ANNOUNCE" = "true" ]; then
 fi
 log_debug "Final TTS text: $TTS_TEXT"
 
-# Call ElevenLabs TTS script
-if [ -x "$PLUGIN_ROOT/scripts/tts/elevenlabs.sh" ]; then
+# Check if ElevenLabs is enabled (default: true for backwards compatibility)
+USE_ELEVENLABS=$(jq -r '.use_elevenlabs // true' "$VOICE_CONFIG" 2>/dev/null)
+
+# Call TTS
+if [ "$USE_ELEVENLABS" = "true" ] && [ -x "$PLUGIN_ROOT/scripts/tts/elevenlabs.sh" ]; then
   log_debug "Calling ElevenLabs script with voice $ELEVENLABS_VOICE_ID"
   echo "$TTS_TEXT" | "$PLUGIN_ROOT/scripts/tts/elevenlabs.sh"
 else
-  log_debug "ElevenLabs script not found, using say fallback"
+  log_debug "Using macOS say (ElevenLabs disabled or not available)"
   if command -v say &>/dev/null; then
     nohup say "$TTS_TEXT" &>/dev/null &
   fi
