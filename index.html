@@ -851,6 +851,7 @@
         </div>
         <ul class="nav-links">
             <li><a href="#features">Features</a></li>
+            <li><a href="#neural-loop">Neural Loop</a></li>
             <li><a href="#how-it-works">How It Works</a></li>
             <li><a href="#installation">Installation</a></li>
             <li><a href="https://github.com/brolag/neural-claude-code-plugin">GitHub</a></li>
@@ -958,6 +959,85 @@
                 <div class="feature-icon red">⚡</div>
                 <h3>Self-Evolution</h3>
                 <p>Run /evolve to analyze patterns, generate skills, and improve the system. Claude gets better over time.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="neural-loop" class="section" style="background: linear-gradient(180deg, transparent, rgba(236, 72, 153, 0.03), transparent);">
+        <div class="section-header">
+            <h2>Neural Loop</h2>
+            <p>Autonomous iteration system for extended unattended sessions. Based on the <a href="https://ghuntley.com/ralph/" style="color: var(--primary);">Ralph Wiggum pattern</a>.</p>
+        </div>
+
+        <div class="features-grid" style="margin-bottom: 3rem;">
+            <div class="feature-card">
+                <div class="feature-icon pink">🔄</div>
+                <h3>Autonomous Iteration</h3>
+                <p>Run tasks for hours unattended. Claude keeps working until completion or max iterations reached.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon green">🧪</div>
+                <h3>Test-Driven Loops</h3>
+                <p>Auto-runs tests on each iteration. Failures are fed back into the next cycle for automatic fixing.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon cyan">📱</div>
+                <h3>Telegram Notifications</h3>
+                <p>Get notified when loops complete, fail, or need attention. Stay informed while away.</p>
+            </div>
+        </div>
+
+        <div class="install-card">
+            <h3 style="margin-bottom: 1.5rem;">Loop Commands</h3>
+
+            <div class="code-block" style="margin-bottom: 1.5rem;">
+                <div class="code-header">
+                    <span>Start a Loop</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code><span class="prompt">/loop-start</span> "Implement user auth with tests" <span class="comment">--max 30 --promise "AUTH_COMPLETE"</span></code></pre>
+            </div>
+
+            <div class="code-block" style="margin-bottom: 1.5rem;">
+                <div class="code-header">
+                    <span>Safe Loop with Planning</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code><span class="prompt">/loop-plan</span> "Refactor database layer"  <span class="comment"># Analyzes first, requires approval</span></code></pre>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>Check Status</span>
+                    </div>
+                    <pre><code><span class="prompt">/loop-status</span></code></pre>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>Cancel Loop</span>
+                    </div>
+                    <pre><code><span class="prompt">/loop-cancel</span></code></pre>
+                </div>
+            </div>
+
+            <div class="install-note info" style="margin-top: 1.5rem;">
+                <span class="note-icon">💡</span>
+                <div>
+                    <strong>How it works:</strong> Stop hooks intercept session exits, run tests, and re-inject the prompt with context. Claude continues until the completion promise appears or max iterations reached.
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 2rem; text-align: center;">
+            <h4 style="margin-bottom: 1rem;">Best Use Cases</h4>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <span style="background: rgba(99, 102, 241, 0.1); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem;">Large refactors</span>
+                <span style="background: rgba(236, 72, 153, 0.1); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem;">TDD workflows</span>
+                <span style="background: rgba(6, 182, 212, 0.1); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem;">Batch operations</span>
+                <span style="background: rgba(16, 185, 129, 0.1); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem;">Complex implementations</span>
             </div>
         </div>
     </section>
@@ -1284,12 +1364,12 @@ echo '{"systemMessage": "Project: Your Project Name"}'</code></pre>
                     <p>Save a fact to persistent memory</p>
                 </div>
                 <div class="command-card">
-                    <code>/recall &lt;query&gt;</code>
-                    <p>Search and retrieve from memory</p>
+                    <code>/loop-start</code>
+                    <p>Start autonomous iteration loop</p>
                 </div>
                 <div class="command-card">
-                    <code>/health</code>
-                    <p>Check system health and maintenance</p>
+                    <code>/loop-plan</code>
+                    <p>Safe loop with planning phase</p>
                 </div>
             </div>
         </div>
