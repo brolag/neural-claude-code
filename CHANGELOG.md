@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.0.1] - 2026-01-08
+
+### Added
+- **`/pdf-learn`** - PDF document learning skill
+  - Auto-installs PyMuPDF if not present
+  - Extracts text, TOC, and metadata from PDFs
+  - Generates structured learning notes in inbox/
+  - Supports `--focus`, `--summary`, and `--pages` options
+  - Handles large PDFs (50MB+) with strategic sampling
+
+---
+
 ## [2.0.0] - 2026-01-08
 
 ### Neural Loop v2 - Major Upgrade
