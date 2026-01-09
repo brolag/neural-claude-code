@@ -7,6 +7,74 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.0.0] - 2026-01-09
+
+### Loop v3 - Unified Autonomous Coding Loop
+
+Major unification of Ralph Wiggum and Neural Loop into a single system based on research from:
+- [awesome-claude-code](https://github.com/hesreallyhim/awesome-claude-code) - 19.7k stars
+- [awesome-claude-code-subagents](https://github.com/VoltAgent/awesome-claude-code-subagents) - 100+ agents
+- [obra/superpowers](https://github.com/obra/superpowers) - Battle-tested TDD patterns
+- Claude Code Changelog v2.1.0+ features
+
+### Added
+
+#### Unified `/loop` Command
+- **`/loop "task"`** - HITL mode (interactive, you watch)
+- **`/loop "task" --afk`** - AFK mode (Docker sandbox, autonomous)
+- **`/loop "task" --once`** - Single iteration (Ralph-style)
+- **`--ai <cli>`** - Force Claude or Codex CLI
+- **`--plan`** - Run planning phase first
+- Auto-detect CLI (Claude vs Codex)
+
+#### `/ralph` Alias (Backward Compatibility)
+- `/ralph "task"` → `/loop "task" --once`
+- `/ralph afk 10 "task"` → `/loop "task" --afk --max 10`
+- `/ralph setup` → Initialize loop files
+
+#### TDD Skill (`/tdd`)
+Based on obra/superpowers RED-GREEN-REFACTOR:
+- Strict test-first enforcement
+- Task decomposition (2-5 min chunks)
+- AAA pattern (Arrange-Act-Assert)
+- Anti-pattern detection
+- Integration with Loop and debugging
+
+#### Debugging Skill (`/debug`)
+Based on obra/superpowers systematic-debugging:
+- 4-phase root cause analysis (Observe, Hypothesize, Test, Fix)
+- Defense in depth strategies
+- Condition-based waiting for async
+- Structured output format
+
+#### Code Reviewer Agent
+Read-only quality guardian from VoltAgent patterns:
+- Limited tools: Glob, Grep, Read (no edits)
+- Review types: Quick, Deep, Security, PR
+- Checklist templates per language
+- Structured output format
+
+### Changed
+
+#### Skills with `context: fork`
+- `deep-research` - Now runs in isolated sub-agent
+- `content-creation` - Now runs in isolated sub-agent
+
+#### Updated Commands
+- `/loop-status` - Enhanced for v3 with mode display
+- `/loop-cancel` - With reason tracking
+
+### Migration
+
+| Old Command | New Command |
+|-------------|-------------|
+| `/ralph once` | `/loop "task" --once` |
+| `/ralph afk 10` | `/loop "task" --afk --max 10` |
+| `/loop-start "task"` | `/loop "task"` |
+| `/loop-start --sandbox` | `/loop "task" --afk` |
+
+---
+
 ## [2.0.1] - 2026-01-08
 
 ### Added
