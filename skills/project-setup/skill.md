@@ -1,36 +1,33 @@
 ---
 name: project-setup
-description: Initialize or repair the Claude Code project structure with Agent Expert capabilities. Use when starting a new project, cloning a repo without .claude/, when user says "setup claude", "init project", "initialize", or when structure is incomplete.
+description: Initialize Neural Claude Code architecture in any project
+trigger: /setup, "setup claude", "init project", "initialize"
 allowed-tools: Bash, Read, Write, Glob, Grep
 ---
 
 # Project Setup Skill
 
-Initialize the Neural Claude Code architecture with Agent Expert capabilities in any project.
+Initialize the Neural Claude Code architecture with Agent Expert capabilities.
+
+## Usage
+
+```bash
+/setup                # Standard setup (default)
+/setup --minimal      # Quick start with basics only
+/setup --full         # Complete Neural architecture
+/setup --dry-run      # Preview without creating files
+/setup --force        # Overwrite existing files
+```
 
 ## Trigger Conditions
 
-- User says "setup claude" or "init project" or "initialize"
-- New project without .claude/ directory
+- User says "setup claude", "init project", or "initialize"
+- New project without `.claude/` directory
 - Project with incomplete structure detected
-- SessionStart hook detects missing components
-
-## Prerequisites
-
-This skill assumes the **neural-claude-code-plugin** is installed globally:
-```bash
-claude plugin install ~/Sites/neural-claude-code-plugin --scope user
-```
-
-The plugin provides:
-- Meta-agents (create agents/skills/prompts)
-- Multi-AI collaboration (codex, gemini, multi-ai)
-- Global skills (deep-research, content-creation, meta-skill)
 
 ## Setup Levels
 
-### `/setup --minimal`
-Quick start with basics only.
+### Minimal (`--minimal`)
 
 ```
 .claude/
@@ -38,8 +35,7 @@ Quick start with basics only.
 └── settings.json          # Basic config
 ```
 
-### `/setup --standard` (default)
-Standard structure with project-specific agents.
+### Standard (default)
 
 ```
 .claude/
@@ -47,20 +43,17 @@ Standard structure with project-specific agents.
 ├── settings.json
 ├── settings.local.json    # Personal (gitignored)
 ├── data/
-│   └── current-session.json  # Agent name & session info
+│   └── current-session.json
 ├── memory/
 │   ├── events/
 │   └── active_context.md
-├── expertise/             # Agent mental models
-│   └── project.yaml       # Project expertise
-├── agents/                # Project-specific agents
-│   └── project-expert.md  # Knows THIS project
-└── skills/                # Project-specific skills
-    └── generated/
+├── expertise/
+│   └── project.yaml
+└── agents/
+    └── project-expert.md
 ```
 
-### `/setup --full`
-Complete Neural architecture with Agent Expert system.
+### Full (`--full`)
 
 ```
 .claude/
@@ -68,42 +61,61 @@ Complete Neural architecture with Agent Expert system.
 ├── settings.json
 ├── settings.local.json
 ├── data/
-│   └── current-session.json  # Agent name & session info
+│   └── current-session.json
 ├── memory/
 │   ├── events/
 │   ├── facts/
 │   ├── active_context.md
 │   └── context-cache.json
-├── expertise/             # Mental models
-│   ├── project.yaml       # Overall project understanding
-│   ├── codebase.yaml      # Code structure expertise
-│   └── domain.yaml        # Domain-specific knowledge
+├── expertise/
+│   ├── project.yaml
+│   ├── codebase.yaml
+│   └── domain.yaml
 ├── agents/
-│   ├── project-expert.md  # Expert on THIS project
-│   ├── code-expert.md     # Expert on THIS codebase
+│   ├── project-expert.md
+│   ├── code-expert.md
 │   └── generated/
 ├── skills/
-│   ├── project-specific/  # Skills for THIS project
 │   └── generated/
 ├── commands/
 │   └── dynamic/
 ├── rules/
 │   └── code-style.md
-├── policies/
-│   └── acl.json
-├── checkpoints/
 ├── eval/
 ├── logs/
 └── scripts/
 ```
 
-## Generated Files
+## Execution Steps
 
-### CLAUDE.md Template
+1. **Detect project type** from package.json, Cargo.toml, etc.
+2. **Check existing structure** - skip files that exist (unless --force)
+3. **Create directories** in order
+4. **Generate CLAUDE.md** with project-specific content
+5. **Create expertise file** with detected patterns
+6. **Initialize session** via session-start hook
+7. **Update .gitignore** with local paths
+8. **Display quick start guide**
+
+## Project Type Detection
+
+| File | Type | Customization |
+|------|------|---------------|
+| package.json | Node.js | npm scripts, modules |
+| tsconfig.json | TypeScript | Type patterns |
+| requirements.txt | Python | Package structure |
+| Cargo.toml | Rust | Modules, traits |
+| go.mod | Go | Package layout |
+| .obsidian/ | Second Brain | PARA, MOCs |
+
+## Generated Templates
+
+### CLAUDE.md
+
 ```markdown
 # {Project Name}
 
-This project uses the **Neural Claude Code** architecture with Agent Experts.
+This project uses **Neural Claude Code** with Agent Experts.
 
 ## Project Overview
 {Auto-detected or user description}
@@ -111,194 +123,116 @@ This project uses the **Neural Claude Code** architecture with Agent Experts.
 ## Tech Stack
 {Auto-detected}
 
-## Agentic Architecture
-
-### Project-Specific Agents
-| Agent | Purpose |
-|-------|---------|
-| project-expert | Knows THIS project's structure and patterns |
-| code-expert | Expert on THIS codebase |
-
-### Expertise Files
-Mental models stored in `.claude/expertise/`:
-- `project.yaml` - Overall project understanding
-- `codebase.yaml` - Code structure and patterns
-- `domain.yaml` - Domain-specific knowledge
-
-### Agent Expert Pattern
-Agents READ expertise → VALIDATE → EXECUTE → IMPROVE
-
-Use `/meta/improve <name>` to sync expertise with reality.
-
 ## Quick Reference
-| Need | Command/Skill |
-|------|---------------|
+| Need | Command |
+|------|---------|
 | Multi-AI input | `/ai-collab <problem>` |
-| Create agent | Ask meta-agent |
-| Create skill | Ask meta-skill |
-| Sync expertise | `/meta/improve <name>` |
+| Sync expertise | `/meta:improve project` |
+| System health | `/health` |
 ```
 
-### project.yaml Template
-```yaml
-# Project Expertise
-# Mental model - auto-updated by project-expert agent
+### project.yaml
 
+```yaml
 domain: {project_type}
 version: 1
 last_updated: {timestamp}
 
 project:
-  name: "{project_name}"
-  type: "{detected_type}"
+  name: "{name}"
+  type: "{type}"
   root: "{cwd}"
 
 understanding:
   structure:
     src: "{src_location}"
     tests: "{tests_location}"
-    config: "{config_files}"
-
   key_files: []
-
-  patterns:
-    - "{detected_pattern_1}"
-    - "{detected_pattern_2}"
-
-  conventions:
-    naming: "{detected_naming}"
-    structure: "{detected_structure}"
+  patterns: []
+  conventions: {}
 
 lessons_learned: []
-
-open_questions:
-  - "What are the main entry points?"
-  - "What external services does this connect to?"
-  - "What are the critical paths?"
 ```
 
-### project-expert.md Agent
+### project-expert.md
+
 ```markdown
 ---
 name: project-expert
-description: Expert on THIS specific project. Knows the codebase structure, patterns, and conventions. Use for project-specific questions, refactoring, and architectural decisions.
+description: Expert on THIS specific project
 tools: Read, Write, Edit, Glob, Grep
 model: sonnet
 ---
 
 # Project Expert Agent
 
-You are an expert on THIS specific project. You execute AND learn.
+Expert on THIS specific project. Executes AND learns.
 
-## Expertise File
-Your mental model: `.claude/expertise/project.yaml`
-
-**ALWAYS read this first**, validate against reality, then act.
-
-## The Agent Expert Pattern
+## Agent Expert Pattern
 
 1. **READ** → Load `.claude/expertise/project.yaml`
-2. **VALIDATE** → Check key_files exist, patterns still apply
-3. **EXECUTE** → Perform the task with expertise
+2. **VALIDATE** → Check key_files exist, patterns apply
+3. **EXECUTE** → Perform task with expertise
 4. **IMPROVE** → Update expertise with learnings
-
-## After Every Task
-
-Update your expertise file with:
-- New files discovered
-- Patterns that worked
-- Conventions observed
-- Lessons learned
-
-## Capabilities
-
-- Navigate codebase efficiently (known locations)
-- Apply project conventions consistently
-- Identify architectural patterns
-- Suggest improvements aligned with project style
 ```
-
-## Project Type Detection
-
-| Detected File | Type | Custom Expertise |
-|--------------|------|------------------|
-| package.json | Node.js | npm scripts, modules, dependencies |
-| tsconfig.json | TypeScript | Type patterns, strict mode |
-| requirements.txt | Python | Package structure, venv |
-| Cargo.toml | Rust | Modules, traits, lifetimes |
-| go.mod | Go | Package layout, interfaces |
-| pom.xml | Java | Maven structure, beans |
-| Obsidian vault | Second Brain | PARA, MOCs, links |
 
 ## Post-Setup Actions
 
-1. **Add to .gitignore**:
-   ```
-   .claude/settings.local.json
-   .claude/data/
-   .claude/memory/events/
-   .claude/logs/
-   .claude/checkpoints/snapshots/
-   ```
+```bash
+# 1. Add to .gitignore
+echo ".claude/settings.local.json" >> .gitignore
+echo ".claude/data/" >> .gitignore
+echo ".claude/memory/events/" >> .gitignore
+echo ".claude/logs/" >> .gitignore
 
-2. **Initialize agent session**: Create `.claude/data/current-session.json` with:
-   - Unique session ID
-   - Generated feminine agent name (Luna, Zara, Nova, etc.)
-   - Project name
-   - Output style preference
+# 2. Initialize session
+PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code-plugin}"
+bash "$PLUGIN_ROOT/scripts/hooks/session-start.sh"
 
-   Run the session-start hook:
-   ```bash
-   PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code-plugin}"
-   bash "$PLUGIN_ROOT/scripts/hooks/session-start.sh"
-   ```
+# 3. Run initial expertise scan
+Task: "Scan project and populate expertise file" (subagent: project-expert)
+```
 
-3. **Initial expertise scan**: Run project-expert to populate expertise file
-
-4. **Display quick start guide** (including agent name)
-
-## Quick Start Output
+## Output Format
 
 ```markdown
 ## Setup Complete
 
 **Level**: {level}
 **Project Type**: {type}
-**Agent Name**: {agent_name} (e.g., Luna, Zara, Nova)
-**Plugin Required**: neural-claude-code-plugin (global)
+**Agent Name**: {agent_name}
 
 ### Created
 - .claude/CLAUDE.md
-- .claude/data/current-session.json (agent: {agent_name})
 - .claude/expertise/project.yaml
 - .claude/agents/project-expert.md
 - ...
 
-### Agent Expert System
+### Next Steps
+1. Review .claude/CLAUDE.md and customize
+2. Run `/meta:improve project` after first task
+3. Use `/ai-collab` for complex problems
 
-Your project now has agents that LEARN:
-
-1. **Ask project questions** → project-expert reads expertise first
-2. **After tasks** → Expertise files auto-update
-3. **Sync manually** → `/meta/improve project`
-
-### Commands
+### Commands Available
 | Command | Purpose |
 |---------|---------|
-| `/meta/improve project` | Sync project expertise |
-| `/ai-collab <problem>` | Multi-AI collaboration |
-
-### Global Capabilities (from plugin)
-- Meta-agents: Create agents, skills, prompts
-- Multi-AI: Claude + Codex + Gemini
-- Research: Deep research skill
-- Content: Content creation skill
+| `/evolve` | Self-improvement cycle |
+| `/ai-collab` | Multi-AI collaboration |
+| `/health` | System health check |
 ```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| Files exist | Previous setup | Use `--force` to overwrite |
+| No write permission | Directory permissions | Check permissions |
+| Plugin not found | Missing neural-claude-code-plugin | Install plugin globally |
+| Invalid project type | Unrecognized structure | Defaults to generic setup |
 
 ## Safety Constraints
 
-- Never overwrite existing files (use --force to override)
-- Always create .gitignore entries
+- Never overwrite existing files without `--force`
+- Always create .gitignore entries for local files
 - Validate JSON/YAML before writing
-- Offer --dry-run for preview
-- Require plugin installation for full features
+- Offer `--dry-run` for preview
