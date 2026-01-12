@@ -65,9 +65,52 @@ Generate content from the second brain knowledge base for external sharing.
 - Add internal/external links
 - Meta description for SEO
 
+## Usage
+
+```bash
+# Create content from topic
+/content "productivity tips" --platform twitter
+
+# Generate thread from note
+/content --from "inbox/learning-note.md" --type thread
+
+# Create article draft
+/content "second brain methodology" --platform blog
+```
+
 ## Output
 
 - Platform-optimized content
 - Source citations from vault
 - Suggested hashtags/tags
 - Content calendar recommendations
+
+## Output Format
+
+```markdown
+## Content Created
+
+**Platform**: [Twitter/LinkedIn/Blog]
+**Type**: [Thread/Post/Article]
+**Source**: [vault notes used]
+
+### Content
+[The actual content]
+
+### Hashtags
+#tag1 #tag2 #tag3
+
+### Publishing Notes
+- Best time to post: [recommendation]
+- Related content to schedule: [suggestions]
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| No source material | Topic not in vault | Research topic first or provide context |
+| Platform not supported | Unknown platform | Use generic format |
+| Content too long | Exceeds platform limits | Auto-split into series |
+
+**Fallback**: If vault search fails, generate content from general knowledge with disclaimer.

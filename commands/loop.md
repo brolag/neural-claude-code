@@ -234,3 +234,38 @@ From Ralph Wiggum + Anthropic research:
 | `/loop-start "task"` | `/loop "task"` |
 | `/loop-start --sandbox` | `/loop "task" --afk` |
 | `/loop-start --type coverage` | `/loop "task" --type coverage` |
+
+## Output Format
+
+```markdown
+## Loop Started
+
+**Task**: [description]
+**Mode**: [HITL/AFK/Once]
+**Max Iterations**: [n]
+**Type**: [feature/coverage/lint/entropy]
+**AI**: [claude/codex]
+
+### Status
+Iteration [x]/[n] - [current activity]
+
+### Progress
+- [x] Feature 1 completed
+- [ ] Feature 2 in progress
+- [ ] Feature 3 pending
+
+### Completion
+Loop will exit when: "[promise]" is stated
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| AI CLI not found | Claude/Codex not installed | Install required CLI |
+| Loop already active | Previous loop running | Run `/loop-cancel` first |
+| features.json missing | Not initialized | Run with `--init` flag |
+| Docker not available | AFK mode requires Docker | Install Docker or use HITL mode |
+| Max iterations reached | Loop didn't complete | Increase --max or check task scope |
+
+**Fallback**: If loop script fails, work directly on the task without loop framework.

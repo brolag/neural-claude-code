@@ -214,6 +214,34 @@ TDD sessions produce:
 - Implementation files with minimal, tested code
 - Commit history showing RED-GREEN-REFACTOR cycle
 
+## Usage
+
+```bash
+# Start TDD for a feature
+/tdd "Add user email verification"
+
+# TDD for bug fix
+/tdd "Fix: users can login with expired tokens"
+
+# TDD with specific test framework
+/tdd "Implement cart" --framework jest
+
+# TDD in loop mode
+/loop "Implement feature" --type feature  # Uses TDD automatically
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| Test passes immediately | Test doesn't test new behavior | Rewrite test to fail first |
+| Cannot make test pass | Implementation too complex | Break into smaller tests |
+| Refactor breaks tests | Over-refactoring | Revert, smaller refactor steps |
+| No test framework | Project not configured | Set up test framework first |
+| Flaky test | Non-deterministic behavior | Fix test isolation |
+
+**Fallback**: If TDD cycle breaks, return to last green state and retry with smaller steps.
+
 ## Related Skills
 
 - `code-reviewer` - Reviews test coverage

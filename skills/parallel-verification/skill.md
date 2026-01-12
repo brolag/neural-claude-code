@@ -245,6 +245,61 @@ Works with:
 - `cognitive-amplifier` agent - Enhanced for complex problems
 - `multi-ai` agent - For cross-model verification
 
+## Usage
+
+```bash
+# Basic parallel verification
+/pv "Why is our API returning 500 errors intermittently?"
+
+# With custom hypothesis count
+/pv "Debug the flaky test" --paths 5
+
+# Multi-AI mode (different models per path)
+/pv "Architecture decision" --multi-ai
+
+# Quick mode (3 paths, faster convergence)
+/pv "Simple problem" --quick
+```
+
+## Output Format
+
+```markdown
+## Parallel Verification Complete
+
+**Problem**: [statement]
+**Hypotheses Explored**: [n]
+**Winner**: Hypothesis [X]
+
+### Hypothesis Summary
+| Path | Approach | Confidence | Status |
+|------|----------|------------|--------|
+| A | [approach] | 8/10 | ✅ Winner |
+| B | [approach] | 4/10 | ❌ Ruled out |
+| C | [approach] | 6/10 | ⚠️ Partial |
+
+### Solution
+[Detailed winning solution]
+
+### Evidence
+- [Evidence 1]
+- [Evidence 2]
+
+### Pruned Paths
+- Path B failed because: [reason]
+- Path C was close but: [missing element]
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| All paths low confidence | Problem too ambiguous | Rephrase with more context |
+| Agent timeout | Complex hypothesis | Increase timeout or simplify |
+| No consensus | Genuinely uncertain | Report uncertainty, suggest more data |
+| Contradictory results | Flawed hypotheses | Re-diverge with better framing |
+
+**Fallback**: If parallel execution fails, run hypotheses sequentially.
+
 ## Metrics
 
 Track:

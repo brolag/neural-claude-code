@@ -168,6 +168,55 @@ Track over time in `.claude/eval/metrics.json`:
 - Results feed into optimizer
 - Alerts on regression (score drop > 10%)
 
+## Usage
+
+```bash
+# Run full evaluation suite
+/eval
+
+# Quick evaluation (easy tasks only)
+/eval --quick
+
+# Filter by tag
+/eval --tag multi-ai
+
+# Run single task
+/eval --task task-001
+```
+
+## Output Format
+
+```markdown
+## Evaluation Complete
+
+**Date**: [date]
+**Tasks**: [n] run
+**Score**: [x]% ([passed]/[total])
+
+### Results
+| Task | Status | Score | Time |
+|------|--------|-------|------|
+| task-001 | ✅ | 1.0 | 2.5s |
+| task-002 | ❌ | 0.0 | 3.1s |
+
+### Failed Tasks
+- **task-002**: Expected X, got Y
+
+### Trend
+[improving/declining/stable] vs last run
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| Golden tasks not found | Missing file | Run `/setup` to create template |
+| Task timeout | Execution too slow | Increase timeout or simplify task |
+| Invalid expected format | Schema mismatch | Validate against schema |
+| Fixture missing | Test file not found | Create fixture or skip task |
+
+**Fallback**: If evaluation fails completely, run subset of basic tasks.
+
 ## Safety Constraints
 
 - Run in isolated test environment

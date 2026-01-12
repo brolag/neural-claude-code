@@ -197,7 +197,7 @@ For complex topics, plan includes `ai_consult` tasks:
 - Main finding in first sentence
 - Explicit uncertainty acknowledgment
 
-## Examples
+## Usage
 
 ```bash
 # Basic research - 3-4 tasks
@@ -208,4 +208,22 @@ For complex topics, plan includes `ai_consult` tasks:
 
 # Technical deep dive - 5-6 tasks with AI consultation
 /research "agentic coding patterns 2025"
+
+# Research with output location
+/research "topic" --save-to inbox/
+
+# Quick research (fewer sources)
+/research "topic" --quick
 ```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| No search results | Query too specific | Broaden search terms |
+| Rate limited | Too many WebSearch calls | Wait and retry with fewer tasks |
+| Source unreachable | WebFetch failed | Skip source, note in report |
+| Conflicting sources | Disagreement between sources | Note conflict, assess credibility |
+| AI consultation failed | External AI unavailable | Continue without that perspective |
+
+**Fallback**: If web search fails, attempt research using only local vault knowledge.

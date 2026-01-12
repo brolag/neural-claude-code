@@ -111,6 +111,58 @@ Output:
 - Trigger phrases
 - Usage examples
 
+## Usage
+
+```bash
+# Create skill from request
+"create a skill for generating commit messages"
+
+# Create skill from pattern
+"make this workflow a skill"
+
+# Triggered by pattern-detector
+[Automatic when patterns identified]
+```
+
+## Output Format
+
+```markdown
+## Skill Created
+
+**Name**: [skill-name]
+**Location**: .claude/skills/[name]/
+**Status**: shadow mode (7 days)
+
+### Files Created
+- SKILL.md - Main definition
+- expertise.yaml - Learning model
+
+### Trigger Phrases
+- "[phrase 1]"
+- "[phrase 2]"
+
+### Usage Examples
+```
+/[command] [args]
+```
+
+### Next Steps
+1. Test the skill manually
+2. Review after shadow period
+3. Activate when confident
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| Duplicate skill | Name already exists | Choose different name or update existing |
+| Invalid workflow | Cannot parse process | Ask for clearer workflow description |
+| Missing tools | Required tools not available | Adjust skill to use available tools |
+| Schema violation | Invalid SKILL.md format | Fix format and regenerate |
+
+**Fallback**: If skill generation fails, create command instead (simpler structure).
+
 ## Quality Standards
 
 Generated skills must:

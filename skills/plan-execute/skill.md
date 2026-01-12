@@ -175,6 +175,33 @@ All success criteria met.
 - Network latency between models
 - Some tasks are faster Opus-only (single-shot answers)
 
+## Usage
+
+```bash
+# Complex feature implementation
+/plan-execute "Add user authentication with JWT tokens, including login/logout endpoints, middleware, and tests"
+
+# Large refactor
+/plan-execute "Migrate all class components to functional components with hooks"
+
+# Research + Action
+/plan-execute "Research best practices for error handling in this codebase and implement them"
+
+# With explicit executor
+/plan-execute "task" --executor opus  # Skip Gemini, all Opus
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| Gemini unavailable | CLI not installed or network issue | Fall back to Opus-only mode |
+| Step execution fails | Gemini error on step | Retry once, then escalate to Opus |
+| Plan too complex | Too many steps or dependencies | Break into sub-plans |
+| Success criteria not met | Execution incomplete | Opus revises plan, re-executes |
+
+**Fallback**: If orchestration fails, complete entire task in Opus mode.
+
 ## Related
 
 - `/ai-collab` - Get perspectives from all three AIs

@@ -303,6 +303,33 @@ await waitFor(() => element.isVisible());
 # Each iteration uses debugging skill for failures
 ```
 
+## Usage
+
+```bash
+# Debug a specific error
+/debug "TypeError: Cannot read property 'email' of undefined"
+
+# Debug test failure
+/debug "test 'user login' fails intermittently"
+
+# Debug performance issue
+/debug "API response time increased 5x after last deploy"
+
+# Debug with context
+/debug --file src/auth.ts --line 42 "null reference error"
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| Cannot reproduce | Environment difference | Document exact steps, check env vars |
+| Multiple root causes | Complex issue | Address one at a time, re-test |
+| Fix introduces regression | Incomplete testing | Add more test cases before fix |
+| Hypothesis exhausted | All ruled out | Gather more data, consider external factors |
+
+**Fallback**: If systematic debugging fails after 3 hypotheses, escalate to `/ai-collab` for multi-perspective analysis.
+
 ## Related Skills
 
 - `tdd` - Write regression tests after fixing

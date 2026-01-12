@@ -147,6 +147,54 @@ User can:
 - Python 3
 - `youtube-transcript-api` package (auto-installed on first run)
 
+## Usage
+
+```bash
+# Learn from a video
+/yt-learn https://youtube.com/watch?v=abc123
+
+# Learn with specific focus
+/yt-learn https://youtu.be/xyz789 --focus "marketing strategies"
+
+# Quick summary only
+/yt-learn https://youtube.com/watch?v=def456 --summary
+```
+
+## Output Format
+
+```markdown
+## Video Learning Complete
+
+**Video**: [Title]
+**Channel**: [Name]
+**Duration**: [length]
+**Saved to**: inbox/[date]-[title].md
+
+### Key Insights
+1. [Insight 1]
+2. [Insight 2]
+3. [Insight 3]
+
+### Action Items
+- [ ] [Action 1]
+- [ ] [Action 2]
+
+### Connections
+- Related to: [[existing note]]
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| Invalid URL | Not a YouTube URL | Provide valid youtube.com or youtu.be URL |
+| No transcript | Video has no captions | Try WebFetch fallback or manual transcript |
+| API rate limit | Too many requests | Wait and retry |
+| Package missing | youtube-transcript-api not installed | Auto-installs on first use |
+| Private video | Video not accessible | Request public video or manual transcript |
+
+**Fallback**: If transcript API fails, try WebFetch on youtubetranscript.com.
+
 ## Quality Criteria
 
 - Clear identification of main topics

@@ -123,6 +123,30 @@ After detecting patterns:
 3. Queue for skill-builder if approved
 4. Update active_context.md with insights
 
+## Usage
+
+```bash
+# Run pattern detection
+/evolve --detect-patterns
+
+# Analyze specific period
+/patterns --from "2025-12-01" --to "2025-12-17"
+
+# Focus on specific pattern type
+/patterns --type command_sequence
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| No events found | Empty logs | Accumulate more usage data |
+| Too few patterns | Low usage frequency | Lower threshold or wait longer |
+| Pattern conflict | Overlapping patterns | Merge similar patterns |
+| Memory parsing error | Corrupted JSONL | Repair or skip corrupted entries |
+
+**Fallback**: If event logs unavailable, analyze current session only.
+
 ## Safety Constraints
 
 - Read-only analysis (no modifications)

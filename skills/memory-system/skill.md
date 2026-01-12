@@ -213,6 +213,52 @@ if __name__ == "__main__":
     print(json.dumps(fact))
 ```
 
+## Usage
+
+```bash
+# Remember a fact (project scope)
+/remember "User prefers dark mode themes"
+
+# Remember globally
+/remember --global "Always use TypeScript"
+
+# Search memory
+/recall "user preferences"
+
+# Forget a fact
+/forget fact-abc123
+
+# Forget by query
+/forget "outdated preference"
+```
+
+## Output Format
+
+```markdown
+## Memory: [action]
+
+**Action**: [remembered/recalled/forgotten]
+**Scope**: [project/global]
+
+### Details
+[Fact content or search results]
+
+### Location
+[File path where stored/found]
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| Memory dir not found | Not initialized | Run `/setup` to create structure |
+| JSON parse error | Corrupted fact file | Repair or delete corrupted file |
+| Duplicate fact | Already exists | Skip or update existing |
+| Fact not found | Invalid ID or query | Check ID or broaden search |
+| Write permission denied | File system issue | Check directory permissions |
+
+**Fallback**: If structured memory fails, fall back to CLAUDE.md for critical facts.
+
 ## Safety Constraints
 
 - Never store sensitive data (passwords, keys)

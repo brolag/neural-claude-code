@@ -163,6 +163,57 @@ cd ../worktrees/tests-auth && claude -p "Write auth tests"
 /wt-merge tests-auth
 ```
 
+## Usage
+
+```bash
+# Create new worktree
+/wt-new auth-feature
+
+# List active worktrees
+/wt-list
+
+# Check specific worktree status
+/wt-status auth-feature
+
+# Merge completed feature
+/wt-merge auth-feature
+
+# Clean up worktree
+/wt-clean auth-feature
+
+# Clean all stale worktrees
+/wt-clean --stale
+
+# Sync memory between worktrees
+/wt-sync
+```
+
+## Output Format
+
+```markdown
+## Worktree: [action]
+
+**Feature**: [name]
+**Branch**: feature/[name]
+**Path**: ../worktrees/[name]
+**Status**: [created/merged/removed]
+
+### Next Steps
+[Action-specific instructions]
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| Invalid name | Not kebab-case | Use lowercase letters, numbers, hyphens |
+| Worktree exists | Duplicate name | Choose different name or clean existing |
+| Uncommitted changes | Dirty working tree | Commit or stash changes first |
+| Branch exists | Previous incomplete cleanup | Delete branch manually or use --force |
+| Merge conflict | Divergent branches | Resolve conflicts in worktree first |
+
+**Fallback**: If worktree creation fails, fall back to regular branch workflow.
+
 ## Safety Constraints
 
 - Never create worktrees inside existing worktrees

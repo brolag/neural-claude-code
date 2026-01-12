@@ -79,6 +79,59 @@ Six dimensions for evaluating prompts:
 └─────────────────┘
 ```
 
+## Usage
+
+```bash
+# Review a prompt's quality
+/prompt-review prompts/my-prompt.md
+
+# Get AI feedback and auto-improve
+/prompt-improve prompts/my-prompt.md
+
+# Verify research results
+/prompt-validate results/research-output.md
+
+# Review all prompts in directory
+/prompt-review commands/*.md --batch
+```
+
+## Output Format
+
+```markdown
+## Prompt Review: [filename]
+
+**Overall Score**: [X.X]/5.0
+
+### CRISP-E Breakdown
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Clarity | X/5 | [notes] |
+| Richness | X/5 | [notes] |
+| Integrity | X/5 | [notes] |
+| Structure | X/5 | [notes] |
+| Precision | X/5 | [notes] |
+| Executability | X/5 | [notes] |
+
+### Issues Found
+- [Issue 1]
+- [Issue 2]
+
+### Recommendations
+- [Recommendation 1]
+- [Recommendation 2]
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| File not found | Invalid path | Check file path |
+| Not a prompt file | Wrong file type | Provide .md prompt file |
+| Parse error | Malformed prompt | Fix YAML frontmatter |
+| External AI unavailable | Gemini/Codex offline | Continue with single-AI review |
+
+**Fallback**: If multi-AI review fails, use single-model CRISP-E assessment.
+
 ## Files
 
 - `review.md` - CRISP-E assessment logic

@@ -188,6 +188,28 @@ An agent that uses LSP to trace code paths, build dependency graphs, and explain
 }
 ```
 
+## Usage
+
+```bash
+# Analyze latest Claude Code changelog
+/changelog-architect
+
+# Triggered automatically
+"analyze changelog"
+"what's new in claude code"
+"feature synergies"
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| Fetch failed | GitHub unreachable | Retry or use cached changelog |
+| No versions found | Parse error | Check changelog format |
+| Empty synergies | No new features | Focus on existing feature combinations |
+
+**Fallback**: If WebFetch fails, ask user to paste changelog content.
+
 ## Notes
 
 - This skill is most valuable after Claude Code updates

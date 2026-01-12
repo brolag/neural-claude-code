@@ -143,3 +143,47 @@ allowed-tools: {Minimal tools needed}
 3. Generate skill at `.claude/skills/generated/commit-message-generator/`
 4. Create tests for various diff scenarios
 5. Report: "Created commit-message-generator skill in shadow mode"
+
+## Usage
+
+```bash
+# Create skill from request
+"create a skill for generating commit messages"
+"make a skill that validates JSON schemas"
+
+# Create from detected pattern
+[Automatic when optimizer identifies repeated workflow]
+```
+
+## Output Format
+
+```markdown
+## Skill Created
+
+**Name**: [skill-name]
+**Location**: .claude/skills/generated/[name]/
+**Status**: shadow mode
+
+### Files
+- SKILL.md
+- tests.json
+- _meta.json
+
+### Triggers
+- "[phrase 1]"
+- "[phrase 2]"
+
+### Test Command
+/eval --skill [skill-name]
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| Duplicate name | Skill exists | Choose different name or version existing |
+| Invalid input | Unclear workflow | Ask for more specific description |
+| Test generation failed | Cannot determine test cases | Request example inputs/outputs |
+| Schema validation failed | Invalid structure | Fix and regenerate |
+
+**Fallback**: If full skill creation fails, create minimal SKILL.md for manual completion.
