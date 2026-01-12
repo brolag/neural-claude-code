@@ -7,6 +7,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.0.2] - 2026-01-11
+
+### Fixed
+
+#### CRISP-E Compliance for All Prompts
+Comprehensive prompt improvement across all commands and skills:
+
+**Commands (22 files)**:
+- Added `## Usage` section with bash examples
+- Added `## Error Handling` tables (Error | Cause | Resolution)
+- Added `## Output Format` markdown templates
+- Added **Fallback** behavior documentation
+
+Files updated: `pv.md`, `question.md`, `recall.md`, `route.md`, `sync.md`,
+`changelog-architect.md`, `gh-learn.md`, `loop-cancel.md`, `loop-coverage.md`,
+`loop-entropy.md`, `loop-init.md`, `loop-lint.md`, `loop-plan.md`, `loop-start.md`,
+`loop-status.md`, `loop.md`, `output-style.md`, `pdf-learn.md`, `plan-execute.md`,
+`ralph.md`, `todo-check.md`, `todo-new.md`, `yt-learn.md`
+
+**Skills (15 files)**:
+- Added `## Usage` section to all skills
+- Added `## Output Format` structured templates
+- Added `## Error Handling` tables with fallback behaviors
+
+Skills updated: `changelog-architect`, `content-creation`, `debugging`,
+`deep-research`, `evaluator`, `memory-system`, `meta-skill`,
+`parallel-verification`, `pattern-detector`, `plan-execute`,
+`prompt-engineering`, `skill-builder`, `tdd`, `worktree-manager`, `youtube-learner`
+
+**Total**: 37 files improved, +1,205 lines added
+
+---
+
 ## [3.0.1] - 2026-01-11
 
 ### Fixed
