@@ -7,6 +7,91 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [4.0.0] - 2026-01-20
+
+### Major Cleanup Release - Anti-Bloat Consolidation
+
+Complete system audit and cleanup following the 5 Critical Questions framework:
+1. **Frequency**: Is this done 5+ times per week?
+2. **Complexity**: Does it take 3+ steps manually?
+3. **Consistency**: Is the process the same each time?
+4. **Value**: Does automating save significant time/effort?
+5. **Existing**: Is there already something that does this?
+
+### Archived (Moved to `*/archived/`)
+
+#### Commands (14 archived → 14 remaining)
+**Loop fragments** (replaced by unified `/loop`):
+- `loop-cancel.md`, `loop-coverage.md`, `loop-entropy.md`
+- `loop-init.md`, `loop-lint.md`, `loop-plan.md`
+- `loop-start.md`, `loop-status.md`
+
+**Learn fragments** (replaced by unified `/learn`):
+- `gh-learn.md`, `pdf-learn.md`, `yt-learn.md`
+
+**Deprecated**:
+- `ralph.md` (alias for `/loop --once`)
+- `sync.md` (rarely used)
+- `output-style.md` (merged into hooks)
+
+#### Agents (4 archived → 7 remaining)
+**Speculative agents** (Claude doesn't need templates to roleplay):
+- `meta-agent.md` - Replaced by meta-skill
+- `meta-architect.md` - Overlaps with meta-agent
+- `framework-architect.md` - Too theoretical
+- `insight-synthesizer.md` - Better as a skill
+
+**Remaining agents**:
+- `codex.md` - Route to OpenAI Codex
+- `cognitive-amplifier.md` - Complex decisions
+- `gemini.md` - Route to Google Gemini
+- `optimizer.md` - Self-improvement
+- `multi-ai.md` - Orchestrate all AIs
+- `dispatcher.md` - Smart routing
+- `code-reviewer.md` - Read-only reviews
+
+#### Skills (1 archived)
+- `latex-pdf-generator.md` - Loose file, moved to archived
+
+### Changed
+
+#### `/evolve` Command Rewritten
+Now includes:
+- **5 Critical Questions** evaluation framework
+- **6-phase process**: AUDIT → ANALYZE → EVALUATE → CLEAN → IMPROVE → CREATE
+- **Anti-bloat principles**: 10:1 rule, Improve > Create, Delete > Archive > Keep
+- **Decision framework** requiring user approval for changes
+- **Iron Law**: Must answer YES to 4/5 questions before creating anything
+
+#### Documentation
+- Updated README.md with unified `/loop` and `/learn` commands
+- Removed references to archived commands
+- Version bumped to 4.0.0
+
+### Migration
+
+| Old Command | New Command |
+|-------------|-------------|
+| `/loop-start "task"` | `/loop "task"` |
+| `/loop-cancel` | (use Ctrl+C or timeout) |
+| `/loop-status` | (check progress.txt) |
+| `/loop-coverage "task"` | `/loop "task" --type coverage` |
+| `/loop-lint "task"` | `/loop "task" --type lint` |
+| `/loop-entropy "task"` | `/loop "task" --type entropy` |
+| `/yt-learn <url>` | `/learn <url>` |
+| `/gh-learn <url>` | `/learn <url>` |
+| `/pdf-learn <path>` | `/learn <path>` |
+| `/ralph "task"` | `/loop "task" --once` |
+
+### Stats
+
+- **Commands**: 28 → 14 (50% reduction)
+- **Agents**: 11 → 7 (36% reduction)
+- **Skills**: 20 → 19 (5% reduction)
+- **Total lines removed**: ~3,000
+
+---
+
 ## [3.1.0] - 2026-01-12
 
 ### Claude Code v2.1.x Integration - Hidden Patterns Release

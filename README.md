@@ -3,7 +3,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Claude%20Code-Plugin-6366f1?style=for-the-badge&logo=anthropic" alt="Claude Code Plugin">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License">
-  <img src="https://img.shields.io/badge/Version-3.1.1-ec4899?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/Version-4.0.0-ec4899?style=for-the-badge" alt="Version">
 </p>
 
 <p align="center">
@@ -79,8 +79,11 @@ source ~/.zshrc
 # Remember something
 /remember The API uses JWT tokens
 
-# Run autonomous loop
-/loop-start "Fix all tests" --max 10
+# Run autonomous loop (unified command)
+/loop "Fix all tests" --max 10
+
+# Learn from any source (auto-detects type)
+/learn https://github.com/user/repo
 
 # Get multi-AI perspectives
 /pv-mesh Should we use GraphQL?
