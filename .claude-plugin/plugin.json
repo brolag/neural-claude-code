@@ -1,32 +1,59 @@
 {
   "name": "neural-claude-code",
-  "version": "1.3.0",
-  "description": "Self-improving agentic system with learnings memory, output styles, TTS, meta-agents, and multi-AI collaboration for Claude Code",
+  "version": "4.0.0",
+  "description": "Self-improving agentic system that transforms Claude Code into a persistent, learning AI assistant with memory, neural loops, and multi-AI orchestration (Claude + Codex + Gemini)",
+  "shortDescription": "Make Claude Code learn, remember, and orchestrate multiple AIs",
   "author": {
     "name": "Alfredo Bonilla",
-    "url": "https://github.com/brolag"
+    "url": "https://github.com/brolag",
+    "twitter": "@broaboricua"
   },
-  "homepage": "https://github.com/brolag/neural-claude-code-plugin",
+  "homepage": "https://brolag.github.io/neural-claude-code-plugin",
   "repository": "https://github.com/brolag/neural-claude-code-plugin",
+  "documentation": "https://github.com/brolag/neural-claude-code-plugin/tree/main/docs",
   "license": "MIT",
   "keywords": [
     "claude-code",
-    "agents",
-    "meta-agents",
-    "self-improving",
-    "second-brain",
-    "productivity",
-    "AI-collaboration",
-    "agent-experts",
-    "codex",
-    "gemini",
-    "output-styles",
-    "status-lines",
-    "tts",
-    "elevenlabs",
-    "learnings",
-    "memory-system"
+    "claude-code-plugin",
+    "claude-code-extension",
+    "persistent-memory",
+    "self-improving-ai",
+    "agentic-system",
+    "multi-ai-orchestration",
+    "autonomous-coding",
+    "neural-loops",
+    "ai-learning",
+    "claude-agents",
+    "codex-integration",
+    "gemini-integration",
+    "developer-productivity",
+    "ai-memory",
+    "expertise-system",
+    "ai-assistant",
+    "llm-plugin",
+    "code-automation",
+    "ai-collaboration"
   ],
+  "capabilities": [
+    "persistent-memory",
+    "self-learning",
+    "multi-ai-routing",
+    "autonomous-loops",
+    "expertise-management",
+    "pattern-detection",
+    "parallel-verification"
+  ],
+  "ai_discovery": {
+    "llms_txt": "/llms.txt",
+    "subagents_txt": "/subagents.txt",
+    "schema_type": "SoftwareApplication"
+  },
+  "stats": {
+    "agents": 7,
+    "skills": 19,
+    "commands": 14
+  },
   "commands": "./commands/",
-  "agents": "./agents/"
+  "agents": "./agents/",
+  "skills": "./skills/"
 }

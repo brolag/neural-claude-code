@@ -1,0 +1,140 @@
+# Neural Claude Code - Agent Discovery Manifest
+# Version: 1.0
+# Spec: https://claudelog.com/inventions/sub-agents-txt/
+
+name: neural-claude-code
+version: 4.0.0
+description: Self-improving agentic system with persistent memory, neural loops, and multi-AI orchestration for Claude Code
+author: Alfredo Bonilla (@brolag)
+repository: https://github.com/brolag/neural-claude-code-plugin
+homepage: https://brolag.github.io/neural-claude-code-plugin
+license: MIT
+
+# Core Capabilities
+capabilities:
+  - persistent-memory: Remember facts, events, and patterns across sessions
+  - self-learning: Load and update domain expertise automatically
+  - neural-loops: Run autonomous coding sessions (/loop command)
+  - multi-ai: Route tasks to Claude, Codex, or Gemini based on strengths
+  - skills-system: 19+ reusable capabilities
+
+# Multi-AI Agents
+agents:
+  - name: codex
+    description: Route tasks to OpenAI Codex for DevOps, long sessions, and terminal operations
+    path: agents/codex.md
+    best_for: [devops, cli, long-running-tasks, terminal-bench]
+
+  - name: gemini
+    description: Route tasks to Google Gemini for algorithms, math, and competitive coding
+    path: agents/gemini.md
+    best_for: [algorithms, math, competitive-coding, free-tier]
+
+  - name: multi-ai
+    description: Orchestrate all three AIs (Claude, Codex, Gemini) for high-stakes decisions
+    path: agents/multi-ai.md
+    best_for: [critical-decisions, consensus, verification]
+
+  - name: dispatcher
+    description: Smart task routing to the optimal AI based on task characteristics
+    path: agents/dispatcher.md
+    best_for: [task-routing, optimization]
+
+  - name: code-reviewer
+    description: Read-only code quality analysis without making changes
+    path: agents/code-reviewer.md
+    best_for: [code-review, quality-assurance, read-only]
+
+  - name: cognitive-amplifier
+    description: Enhanced decision-making for complex problems with bias detection
+    path: agents/cognitive-amplifier.md
+    best_for: [complex-decisions, bias-detection, analysis]
+
+  - name: optimizer
+    description: System self-improvement and performance analysis
+    path: agents/optimizer.md
+    best_for: [optimization, performance, self-improvement]
+
+# Key Commands
+commands:
+  - name: /loop
+    description: Unified autonomous coding loop with interactive, AFK, and single modes
+    example: /loop "Add authentication" --afk --max 30
+
+  - name: /remember
+    description: Save facts to persistent memory
+    example: /remember API uses JWT tokens
+
+  - name: /recall
+    description: Search accumulated knowledge
+    example: /recall database schema
+
+  - name: /pv-mesh
+    description: Parallel multi-AI verification (Claude + Codex + Gemini)
+    example: /pv-mesh "Is this architecture correct?"
+
+  - name: /evolve
+    description: Run self-improvement cycle to detect patterns and clean bloat
+    example: /evolve
+
+  - name: /research-swarm
+    description: Launch parallel research agents on multiple topics
+    example: /research-swarm "React vs Vue vs Svelte"
+
+# Skills (Reusable Capabilities)
+skills:
+  - name: memory-system
+    trigger: /remember, /recall, /forget
+    description: Three-tier persistent memory (hot, warm, cold)
+
+  - name: deep-research
+    trigger: research queries
+    description: Multi-source investigation with 4-phase orchestration
+
+  - name: tdd
+    trigger: /tdd
+    description: RED-GREEN-REFACTOR test-driven development cycle
+
+  - name: debugging
+    trigger: /debug
+    description: 4-phase root cause analysis
+
+  - name: parallel-verification
+    trigger: /pv
+    description: AlphaGo-style verification with multiple perspectives
+
+  - name: pattern-detector
+    trigger: /evolve
+    description: Automatically find automation opportunities
+
+  - name: worktree-manager
+    trigger: /wt-* commands
+    description: Git worktree management for parallel development
+
+# Installation
+installation:
+  type: git-clone
+  steps:
+    - command: git clone https://github.com/brolag/neural-claude-code-plugin ~/Sites/neural-claude-code-plugin
+      description: Clone the repository
+    - command: cd ~/Sites/neural-claude-code-plugin && ./scripts/setup-hooks.sh
+      description: Setup Claude Code hooks
+    - command: export CLAUDE_PLUGIN_ROOT="$HOME/Sites/neural-claude-code-plugin"
+      description: Add to shell profile (~/.zshrc or ~/.bashrc)
+
+# Security
+security:
+  permissions:
+    - read: All files in project
+    - write: .claude/ directory only by default
+    - execute: Scripts in scripts/ directory
+  sandboxing: AFK mode runs in Docker sandbox
+  audit: All changes logged to memory system
+
+# Documentation Links
+documentation:
+  quickstart: docs/tutorials/01-installation.md
+  commands: docs/reference/commands.md
+  agents: docs/reference/agents.md
+  skills: docs/reference/skills.md
+  architecture: docs/explanation/architecture.md

@@ -1,0 +1,113 @@
+# Neural Claude Code Plugin
+
+> A self-improving agentic system that transforms Claude Code into a persistent, learning AI assistant with multi-AI orchestration.
+
+## Overview
+
+Neural Claude Code solves the problem of stateless AI sessions. Traditional Claude Code starts from zero every time - users must repeatedly explain project structure, conventions, and preferences. Neural Claude Code remembers everything.
+
+**Core Value Proposition:**
+- Traditional: Execute -> Forget -> Repeat forever
+- Neural: Execute -> Learn -> Improve always
+
+## Key Capabilities
+
+### Persistent Memory System
+Three-tier memory architecture:
+- Hot Memory: Current context window
+- Warm Memory: JSON files for facts, events, sessions (instant access)
+- Cold Memory: Archives and historical patterns
+
+Commands: `/remember`, `/recall`, `/forget`
+
+### Self-Learning Expertise
+YAML-based domain knowledge that persists across sessions. Claude loads expertise at session start and learns from every interaction. Located in `.claude/expertise/` directory.
+
+### Neural Loops
+Autonomous coding sessions with the unified `/loop` command:
+- Interactive mode (human-in-the-loop)
+- AFK mode (away-from-keyboard, fully autonomous)
+- Single iteration mode
+- Example: `/loop "Add authentication" --afk --max 30`
+
+### Multi-AI Orchestration
+Route tasks to the optimal AI based on benchmarked strengths:
+- Claude Opus 4.5 (80.9% SWE-bench): Architecture, code review, accuracy-critical
+- GPT-5.1-Codex-Max (77.9% SWE-bench): CLI, DevOps, long sessions
+- Gemini 3 Pro (76.2% SWE-bench): Algorithms, competitive coding
+
+Commands: `/pv` (parallel verification), `/pv-mesh` (mesh verification)
+
+### Skills System
+19 reusable capabilities including:
+- Memory management
+- Deep research and content creation
+- Test-driven development (TDD)
+- Debugging (4-phase root cause analysis)
+- Pattern detection
+- Parallel verification
+
+### Agents
+7 specialized agents:
+- code-reviewer: Read-only code quality analysis
+- multi-ai: Orchestrate all three AIs for high-stakes decisions
+- dispatcher: Smart task routing
+- codex: Route to OpenAI Codex
+- gemini: Route to Google Gemini
+- cognitive-amplifier: Complex decision support
+- optimizer: Self-improvement patterns
+
+## Installation
+
+```bash
+# 1. Clone
+git clone https://github.com/brolag/neural-claude-code-plugin ~/Sites/neural-claude-code-plugin
+
+# 2. Setup hooks
+cd ~/Sites/neural-claude-code-plugin && ./scripts/setup-hooks.sh
+
+# 3. Add to shell (~/.zshrc or ~/.bashrc)
+export CLAUDE_PLUGIN_ROOT="$HOME/Sites/neural-claude-code-plugin"
+```
+
+## Documentation
+
+- [Installation Guide](docs/tutorials/01-installation.md): Step-by-step setup
+- [First Expertise File](docs/tutorials/02-first-expertise.md): Create your first learning file
+- [First Neural Loop](docs/tutorials/03-first-loop.md): Run autonomous coding
+- [Commands Reference](docs/reference/commands.md): All slash commands
+- [Agents Reference](docs/reference/agents.md): Available agents
+- [Skills Reference](docs/reference/skills.md): Available skills
+- [Architecture](docs/explanation/architecture.md): System design
+- [Multi-AI Strategy](docs/explanation/multi-ai.md): AI routing logic
+- [Memory How-To](docs/how-to/memory.md): Using persistent memory
+- [Neural Loops How-To](docs/how-to/neural-loops.md): Autonomous coding guide
+
+## Technical Details
+
+- **Version**: 4.0.0
+- **License**: MIT
+- **Author**: Alfredo Bonilla (@brolag)
+- **Repository**: https://github.com/brolag/neural-claude-code-plugin
+- **Homepage**: https://brolag.github.io/neural-claude-code-plugin
+
+## Design Principles
+
+1. Files over databases - Everything is human-readable YAML/JSON
+2. Hooks over patches - Extend via hooks, don't modify core
+3. Progressive enhancement - Works without configuration
+4. Explicit over implicit - Knowledge is visible and traceable
+5. Anti-bloat philosophy - Consolidate and clean before adding
+
+## Use Cases
+
+- **Long-running projects**: Claude remembers your codebase conventions
+- **Team consistency**: Share expertise files for consistent AI behavior
+- **Autonomous coding**: Run multi-hour coding sessions unattended
+- **Multi-AI workflows**: Use the best AI for each specific task
+- **Knowledge accumulation**: Build up project-specific knowledge over time
+
+## Optional
+
+- [llms-full.txt](llms-full.txt): Complete documentation in single file
+- [subagents.txt](subagents.txt): Agent discovery manifest
