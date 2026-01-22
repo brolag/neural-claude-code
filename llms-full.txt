@@ -1,0 +1,413 @@
+# Neural Claude Code Plugin - Complete Documentation
+
+> A self-improving agentic system that transforms Claude Code into a persistent, learning AI assistant with multi-AI orchestration.
+
+**Version:** 4.0.0
+**Author:** Alfredo Bonilla (@brolag)
+**License:** MIT
+**Repository:** https://github.com/brolag/neural-claude-code-plugin
+**Homepage:** https://brolag.github.io/neural-claude-code-plugin
+
+---
+
+## Overview
+
+Neural Claude Code solves the problem of stateless AI sessions. Traditional Claude Code starts from zero every time - users must repeatedly explain project structure, conventions, and preferences.
+
+**The Core Problem:**
+```
+Traditional: Execute → Forget → Repeat forever
+Neural:      Execute → Learn  → Improve always
+```
+
+Neural Claude Code adds:
+- Persistent memory across sessions
+- Self-learning expertise system
+- Autonomous coding loops
+- Multi-AI orchestration (Claude + Codex + Gemini)
+
+---
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    NEURAL CLAUDE CODE                            │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │                     CLAUDE CODE CLI                        │   │
+│  │  (The AI that runs commands and writes code)              │   │
+│  └──────────────────────────────────────────────────────────┘   │
+│                              │                                   │
+│           ┌──────────────────┼──────────────────┐               │
+│           ▼                  ▼                  ▼               │
+│  ┌─────────────────┐ ┌─────────────┐ ┌─────────────────┐       │
+│  │   EXPERTISE     │ │   MEMORY    │ │    HOOKS        │       │
+│  │   (.yaml)       │ │   (.json)   │ │    (.sh)        │       │
+│  │                 │ │             │ │                 │       │
+│  │ Domain knowledge│ │ Facts       │ │ Session start   │       │
+│  │ Patterns        │ │ Events      │ │ Stop actions    │       │
+│  │ Lessons         │ │ Sessions    │ │ Auto-testing    │       │
+│  └─────────────────┘ └─────────────┘ └─────────────────┘       │
+│           │                  │                  │               │
+│           └──────────────────┴──────────────────┘               │
+│                              │                                   │
+│                              ▼                                   │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │                    SKILLS & AGENTS                         │   │
+│  │  (Reusable capabilities and specialized assistants)       │   │
+│  └──────────────────────────────────────────────────────────┘   │
+│                              │                                   │
+│                              ▼                                   │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │                    MULTI-AI LAYER                          │   │
+│  │  Claude + Codex + Gemini (optional)                       │   │
+│  └──────────────────────────────────────────────────────────┘   │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Core Components
+
+**1. Expertise System**
+- YAML files in `.claude/expertise/`
+- Loaded at session start via hooks
+- Updated automatically as Claude learns
+- Domain knowledge, patterns, lessons learned
+
+**2. Memory System (Three Tiers)**
+| Tier | Storage | Speed | Contents |
+|------|---------|-------|----------|
+| Hot | Context window | Instant | Current conversation |
+| Warm | JSON files | Seconds | Facts, recent events |
+| Cold | Archives | Manual | Old sessions, logs |
+
+**3. Hooks System**
+- `SessionStart` - Load expertise and context
+- `UserPromptSubmit` - Process user input
+- `Stop` - Run tests, TTS, logging
+
+**4. Skills & Agents**
+- Skills: Reusable workflows (e.g., `/tdd`, `/debug`)
+- Agents: Specialized personas with domain expertise
+
+---
+
+## Installation
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/brolag/neural-claude-code-plugin ~/Sites/neural-claude-code-plugin
+
+# 2. Setup hooks
+cd ~/Sites/neural-claude-code-plugin && ./scripts/setup-hooks.sh
+
+# 3. Add to shell profile (~/.zshrc or ~/.bashrc)
+export CLAUDE_PLUGIN_ROOT="$HOME/Sites/neural-claude-code-plugin"
+```
+
+---
+
+## Commands Reference
+
+### Core Commands
+
+| Command | Description |
+|---------|-------------|
+| `/evolve` | Run self-improvement cycle |
+| `/health` | System health check |
+| `/question` | Answer any question |
+
+### Memory Commands
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `/remember <fact>` | Save to memory | `/remember API uses JWT` |
+| `/recall <query>` | Search memory | `/recall database` |
+| `/forget <id>` | Remove from memory | `/forget jwt-fact` |
+
+### Loop Commands (Autonomous Coding)
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `/loop "task"` | Unified loop | `/loop "Fix all errors"` |
+| `/loop "task" --afk` | AFK mode (sandbox) | `/loop "Build API" --afk` |
+| `/loop "task" --once` | Single iteration | `/loop "Quick fix" --once` |
+| `/loop-plan "task"` | Plan before loop | `/loop-plan "Add auth"` |
+| `/loop-status` | Check progress | `/loop-status` |
+| `/loop-cancel` | Stop active loop | `/loop-cancel` |
+
+**Loop Options:**
+- `--max <n>` - Maximum iterations (default: 20)
+- `--promise "<text>"` - Completion phrase
+- `--type <type>` - Loop type: feature, coverage, lint, entropy
+- `--afk` - Run in Docker sandbox
+- `--once` - Single iteration only
+
+### AI Collaboration Commands
+
+| Command | Description |
+|---------|-------------|
+| `/ai-collab <problem>` | Get all AI perspectives |
+| `/pv-mesh <problem>` | Parallel Multi-AI (3x faster) |
+| `/plan-execute <task>` | Opus plans + Gemini executes |
+| `/route <task>` | Get routing recommendation |
+| `/pv <problem>` | Parallel verification (single AI) |
+
+### Research Commands
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `/research-swarm <topic>` | Parallel research agents | `/research-swarm "React vs Vue"` |
+| `/yt-learn <url>` | Learn from YouTube | `/yt-learn https://...` |
+| `/pdf-learn <file>` | Learn from PDF | `/pdf-learn ./doc.pdf` |
+| `/gh-learn <url>` | Learn from GitHub repo | `/gh-learn https://github.com/...` |
+
+### Output Style Commands
+
+| Command | Description |
+|---------|-------------|
+| `/output-style default` | Standard responses |
+| `/output-style yaml` | Structured YAML |
+| `/output-style table` | Markdown tables |
+| `/output-style concise` | Minimal output |
+| `/output-style tts` | With audio summary |
+| `/output-style html` | Generate HTML |
+
+### Meta Commands (Create New Components)
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `/meta:agent <name>` | Create agent | `/meta:agent security-checker` |
+| `/meta:skill <name>` | Create skill | `/meta:skill api-testing` |
+| `/meta:prompt <name>` | Create command | `/meta:prompt deploy` |
+
+### TDD & Debugging
+
+| Command | Description |
+|---------|-------------|
+| `/tdd` | Start TDD workflow (RED-GREEN-REFACTOR) |
+| `/debug` | Start 4-phase debugging workflow |
+
+### Worktree Commands (Parallel Development)
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `/wt-new <name>` | Create worktree | `/wt-new feature-auth` |
+| `/wt-list` | List worktrees | `/wt-list` |
+| `/wt-merge <name>` | Merge worktree | `/wt-merge feature-auth` |
+| `/wt-clean <name>` | Remove worktree | `/wt-clean feature-auth` |
+
+---
+
+## Agents Reference
+
+### Multi-AI Agents
+
+| Agent | Purpose | Best For |
+|-------|---------|----------|
+| `codex` | OpenAI Codex routing | DevOps, long sessions, terminal |
+| `gemini` | Google Gemini routing | Algorithms, math, free tier |
+| `multi-ai` | Orchestrate all AIs | Critical decisions |
+| `dispatcher` | Smart task routing | Optimal AI selection |
+
+### Development Agents
+
+| Agent | Purpose | Best For |
+|-------|---------|----------|
+| `code-reviewer` | Read-only QA | Code review without changes |
+| `rapid-prototyper` | Quick MVPs | New projects, experiments |
+| `frontend-developer` | UI/UX | React, Vue, CSS |
+| `backend-architect` | APIs/databases | Server-side design |
+| `ai-engineer` | ML/AI features | LLM integration |
+| `devops-automator` | CI/CD | Deployments, infrastructure |
+| `test-writer-fixer` | Testing | Write tests, fix failures |
+
+### Cognitive Agents
+
+| Agent | Purpose | Best For |
+|-------|---------|----------|
+| `cognitive-amplifier` | Enhanced decision-making | Complex problems, bias detection |
+| `insight-synthesizer` | Cross-domain patterns | Breakthrough ideas |
+
+### Meta Agents
+
+| Agent | Purpose | Best For |
+|-------|---------|----------|
+| `meta-architect` | Create agents | Dynamic agent generation |
+| `optimizer` | System improvement | Performance analysis |
+
+---
+
+## Skills Reference
+
+### Core Skills
+
+| Skill | Trigger | Description |
+|-------|---------|-------------|
+| `memory-system` | `/remember`, `/recall`, `/forget` | Persistent memory |
+| `project-setup` | `/setup`, "init project" | Initialize .claude structure |
+
+### Learning Skills
+
+| Skill | Trigger | Description |
+|-------|---------|-------------|
+| `youtube-learner` | `/yt-learn <url>` | Extract from YouTube videos |
+| `deep-research` | Research queries | Multi-source investigation |
+| `content-creation` | Content requests | Create from knowledge |
+| `newsletter-launch` | `/newsletter` | Full content pack from research |
+
+### Development Skills
+
+| Skill | Trigger | Description |
+|-------|---------|-------------|
+| `tdd` | `/tdd` | RED-GREEN-REFACTOR cycle |
+| `debugging` | `/debug` | 4-phase root cause analysis |
+| `parallel-verification` | `/pv` | AlphaGo-style verification |
+
+### Workflow Skills
+
+| Skill | Trigger | Description |
+|-------|---------|-------------|
+| `worktree-manager` | `/wt-*` commands | Git worktree management |
+| `pattern-detector` | `/evolve` | Find automation patterns |
+| `skill-builder` | "create a skill" | Generate new skills |
+
+### AI Orchestration Skills
+
+| Skill | Trigger | Description |
+|-------|---------|-------------|
+| `plan-execute` | `/plan-execute` | Opus + Gemini orchestration |
+
+---
+
+## Multi-AI Strategy
+
+Neural Claude Code routes tasks to the optimal AI based on benchmarked strengths:
+
+| AI | Benchmark | Best For |
+|----|-----------|----------|
+| Claude Opus 4.5 | 80.9% SWE-bench | Architecture, code review, accuracy-critical tasks |
+| GPT-5.1-Codex-Max | 77.9% SWE-bench, Terminal-Bench leader | CLI, DevOps, long sessions |
+| Gemini 3 Pro | 76.2% SWE-bench, 1501 Elo | Algorithms, competitive coding, free tier |
+
+### Routing Decisions
+
+The `dispatcher` agent automatically routes based on:
+- Task type (architecture vs implementation)
+- Required accuracy level
+- Session length expectations
+- Cost considerations
+
+### Parallel Verification (`/pv-mesh`)
+
+For critical decisions, run all three AIs in parallel:
+1. Claude analyzes the problem
+2. Codex provides implementation perspective
+3. Gemini offers algorithmic insights
+4. Results are synthesized for best outcome
+
+---
+
+## Neural Loops (Autonomous Coding)
+
+Neural Loops enable autonomous coding sessions with safety harnesses.
+
+### Modes
+
+**Interactive Mode (Default)**
+```
+/loop "Add user authentication"
+```
+Human-in-the-loop: Claude proposes, you approve.
+
+**AFK Mode (Autonomous)**
+```
+/loop "Build REST API" --afk --max 30
+```
+Fully autonomous in Docker sandbox. Set iteration limits.
+
+**Single Iteration**
+```
+/loop "Quick bug fix" --once
+```
+One iteration, then stop.
+
+### Safety Features
+
+- Iteration limits (default: 20, max: 100)
+- Docker sandbox for AFK mode
+- Automatic test running
+- Progress checkpoints
+- Cancel anytime with `/loop-cancel`
+
+---
+
+## Design Principles
+
+1. **Files over databases** - Everything is human-readable YAML/JSON
+2. **Hooks over patches** - Extend via hooks, don't modify core
+3. **Progressive enhancement** - Works without configuration
+4. **Explicit over implicit** - Knowledge is visible and traceable
+5. **Anti-bloat philosophy** - Consolidate, clean, improve before adding
+
+---
+
+## Use Cases
+
+### Long-Running Projects
+Claude remembers your codebase conventions, architecture decisions, and lessons learned across months of development.
+
+### Team Consistency
+Share expertise files in your repo for consistent AI behavior across team members.
+
+### Autonomous Coding
+Run multi-hour coding sessions unattended with AFK mode. Come back to completed features.
+
+### Multi-AI Workflows
+Use the best AI for each specific task. Claude for architecture, Codex for DevOps, Gemini for algorithms.
+
+### Knowledge Accumulation
+Build up project-specific knowledge over time. Every interaction makes Claude smarter about your project.
+
+---
+
+## FAQ
+
+**Q: What is Neural Claude Code?**
+A: Neural Claude Code is a plugin that transforms Claude Code into a self-improving AI assistant. It adds persistent memory, autonomous coding loops, and multi-AI orchestration to make Claude remember context and learn from every interaction.
+
+**Q: How does the persistent memory work?**
+A: Neural Claude Code uses a three-tier memory system: Hot Memory (current context), Warm Memory (JSON files for facts and events with instant access), and Cold Memory (archives). Use `/remember` to save facts, `/recall` to search, and `/forget` to remove.
+
+**Q: What are Neural Loops?**
+A: Neural Loops enable autonomous coding sessions using the `/loop` command. Modes include interactive (human-in-the-loop), AFK (fully autonomous in Docker sandbox), and single iteration.
+
+**Q: How does multi-AI orchestration work?**
+A: Neural Claude Code routes tasks to the optimal AI: Claude Opus for architecture and accuracy-critical work, GPT Codex for DevOps and long sessions, Gemini for algorithms and math. The `/pv-mesh` command runs parallel verification across all three.
+
+**Q: Is this free?**
+A: Yes, Neural Claude Code is MIT licensed and free to use. You need your own API keys for Claude, Codex, and Gemini.
+
+---
+
+## Getting Started
+
+1. **Install** - Clone and setup hooks (5 minutes)
+2. **Try memory** - Use `/remember` and `/recall`
+3. **Run a loop** - Try `/loop "Fix lint errors" --once`
+4. **Explore skills** - Try `/tdd` or `/debug`
+5. **Go autonomous** - Run `/loop "task" --afk` for hands-free coding
+
+---
+
+## Support
+
+- **Repository:** https://github.com/brolag/neural-claude-code-plugin
+- **Issues:** https://github.com/brolag/neural-claude-code-plugin/issues
+- **Author:** Alfredo Bonilla (@brolag)
+
+---
+
+*Last updated: January 2026 | Version 4.0.0*
