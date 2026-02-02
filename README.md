@@ -10,6 +10,10 @@
   <strong>Claude Code that learns and improves from every interaction.</strong>
 </p>
 
+<p align="center">
+  <code>curl -fsSL https://raw.githubusercontent.com/brolag/neural-claude-code-plugin/main/install.sh | bash</code>
+</p>
+
 ---
 
 ## The Problem
@@ -29,6 +33,21 @@ Neural:      Execute → Learn  → Improve always
 
 ## Quick Start
 
+**One-line installation:**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/brolag/neural-claude-code-plugin/main/install.sh | bash
+```
+
+That's it! The installer will:
+- Clone the repository
+- Configure your shell
+- Set up hooks
+- Offer to install recommended skills
+
+<details>
+<summary>Manual installation (if you prefer)</summary>
+
 ```bash
 # 1. Clone
 git clone https://github.com/brolag/neural-claude-code-plugin ~/Sites/neural-claude-code-plugin
@@ -43,6 +62,8 @@ source ~/.zshrc
 # 4. Install skills (interactive)
 /install-skills
 ```
+
+</details>
 
 **[Full Installation Guide →](docs/tutorials/01-installation.md)**
 
