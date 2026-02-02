@@ -106,6 +106,16 @@ fi
 
 echo ""
 
+# Register commands
+echo -e "${BLUE}→${RESET} Registering commands..."
+mkdir -p "$HOME/.claude/commands"
+for cmd_file in "$INSTALL_DIR"/commands/*.md; do
+    if [ -f "$cmd_file" ]; then
+        cp "$cmd_file" "$HOME/.claude/commands/"
+    fi
+done
+success "Commands registered"
+
 # Run setup hooks
 if [ -f "$INSTALL_DIR/scripts/setup-hooks.sh" ]; then
     echo -e "${BLUE}→${RESET} Setting up hooks..."
