@@ -74,14 +74,27 @@ Select [1-3]: _
 
 ## Installation Options
 
-### Option 1: Interactive (Recommended)
-- Browse skills by category
-- Multi-select which ones you want
-- Choose installation scope (project/global/both)
-- See dependencies automatically added
+The installer will automatically detect your bash version and show appropriate options:
 
-### Option 2: Auto-Install Bundle
-Installs these essential skills to `~/.claude/skills/`:
+### On macOS (bash 3.2):
+```
+  1) Install recommended bundle (auto) ⭐ Recommended
+  2) Skip (install later with /install-skills)
+
+  ℹ Interactive mode requires bash 4+. Install with: brew install bash
+```
+
+### On bash 4+ systems:
+```
+  1) Yes, install now (interactive)
+  2) Install recommended bundle (auto) ⭐ Recommended
+  3) Skip (install later with /install-skills)
+```
+
+### Option Details
+
+**Auto-Install Bundle** (Recommended)
+Installs these 6 essential skills to `~/.claude/skills/`:
 - `debugging` - Systematic root cause analysis
 - `tdd` - Test-driven development
 - `deep-research` - Multi-phase research
@@ -89,8 +102,14 @@ Installs these essential skills to `~/.claude/skills/`:
 - `slop-fix` - Auto-fix safe issues
 - `overseer` - Review PRs before merge
 
-### Option 3: Skip
-Install skills later with `/install-skills` command
+**Interactive Mode** (Requires bash 4+)
+- Browse skills by category
+- Multi-select which ones you want
+- Choose installation scope (project/global/both)
+- See dependencies automatically added
+
+**Skip**
+Install skills later with `/install-skills` command in Claude Code
 
 ## After Installation
 
