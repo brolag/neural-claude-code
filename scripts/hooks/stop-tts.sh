@@ -11,6 +11,15 @@ fi
 PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code-plugin}"
 DEBUG_LOG="/tmp/stop-tts-debug.log"
 TTS_CACHE_DIR="/tmp/tts-cache"
+TTS_CONFIG="$HOME/.claude/tts-config.json"
+
+# Check if audio is enabled (default: true for backwards compatibility)
+if [ -f "$TTS_CONFIG" ]; then
+  AUDIO_ENABLED=$(jq -r '.audio_enabled // true' "$TTS_CONFIG" 2>/dev/null)
+  if [ "$AUDIO_ENABLED" = "false" ]; then
+    exit 0
+  fi
+fi
 
 log_debug() {
   echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$DEBUG_LOG"
