@@ -723,20 +723,23 @@
                 <span class="terminal-dot red"></span>
                 <span class="terminal-dot yellow"></span>
                 <span class="terminal-dot green"></span>
-                <span class="terminal-title">neural_claude_code v4.0.0 — click to interact</span>
+                <span class="terminal-title">neural_claude_code v1.5.0 — click to interact</span>
             </div>
             <div class="terminal-body" id="terminal-output">
                 <div class="terminal-line">
                     <span class="prompt">$</span> <span class="command">claude</span>
                 </div>
                 <div class="terminal-line">
-                    <span class="output">[INIT] Neural Claude Code v4.0.0</span>
+                    <span class="prompt">$</span> <span class="command">curl -fsSL https://raw.githubusercontent.com/brolag/neural-claude-code-plugin/main/install.sh | bash</span>
                 </div>
                 <div class="terminal-line">
-                    <span class="success">[OK]</span> <span class="output">Expertise loaded: 7 agents, 19 skills</span>
+                    <span class="output">[INIT] Neural Claude Code v1.5.0</span>
                 </div>
                 <div class="terminal-line">
-                    <span class="success">[OK]</span> <span class="output">Memory active: 47 facts, 156 events</span>
+                    <span class="success">[OK]</span> <span class="output">Plugin installed: 10+ agents, 20+ skills</span>
+                </div>
+                <div class="terminal-line">
+                    <span class="success">[OK]</span> <span class="output">Commands registered: 30+ slash commands</span>
                 </div>
                 <div class="terminal-line">
                     <span class="success">[OK]</span> <span class="output">Multi-AI ready: Claude + Codex + Gemini</span>
@@ -745,7 +748,7 @@
                     <span class="dim">---</span>
                 </div>
                 <div class="terminal-line">
-                    <span class="output">Type </span><span class="success">help</span><span class="output"> for commands_</span>
+                    <span class="output">Run </span><span class="success">/onboard</span><span class="output"> to start the guided tour_</span>
                 </div>
             </div>
             <div class="terminal-input-line">
@@ -763,8 +766,8 @@
 
         <div class="features-grid">
             <div class="feature-card">
-                <h3>SELF_LEARNING</h3>
-                <p>Claude loads domain knowledge at session start and learns from every interaction. No more repeating context.</p>
+                <h3>SKILLS_MANAGER</h3>
+                <p>Install, enable, disable, and update skills on demand. Interactive installer with categories and dependency resolution.</p>
             </div>
 
             <div class="feature-card">
@@ -773,8 +776,8 @@
             </div>
 
             <div class="feature-card">
-                <h3>NEURAL_LOOPS</h3>
-                <p>Autonomous coding sessions with /loop command. Run tasks for hours unattended with proper safety harnesses.</p>
+                <h3>CODE_QUALITY</h3>
+                <p>Detect technical debt with /slop-scan, auto-fix safe issues with /slop-fix, and review PRs with /overseer.</p>
             </div>
 
             <div class="feature-card">
@@ -783,13 +786,13 @@
             </div>
 
             <div class="feature-card">
-                <h3>PATTERN_DETECTION</h3>
-                <p>Automatically analyzes workflows to detect patterns. Get recommendations for skills to create.</p>
+                <h3>NEURAL_LOOPS</h3>
+                <p>Autonomous coding sessions with /loop command. AFK mode, plan-first loops, and typed workflows.</p>
             </div>
 
             <div class="feature-card">
-                <h3>SELF_EVOLUTION</h3>
-                <p>Run /evolve to analyze patterns, clean bloat, and improve the system. Claude gets better over time.</p>
+                <h3>TTS_CONTROL</h3>
+                <p>Voice and text summaries with granular control. Toggle audio, text, or both independently with /tts.</p>
             </div>
         </div>
     </section>
@@ -802,28 +805,36 @@
 
         <div class="commands-grid">
             <div class="command-card">
-                <code>/loop "task"</code>
-                <p>Autonomous coding loop</p>
+                <code>/onboard</code>
+                <p>Interactive guided tour</p>
             </div>
             <div class="command-card">
-                <code>/learn &lt;url&gt;</code>
-                <p>Learn from any source</p>
+                <code>/install-skills</code>
+                <p>Add new skills</p>
+            </div>
+            <div class="command-card">
+                <code>/manage-skills</code>
+                <p>Enable/disable skills</p>
+            </div>
+            <div class="command-card">
+                <code>/slop-scan</code>
+                <p>Detect technical debt</p>
+            </div>
+            <div class="command-card">
+                <code>/overseer</code>
+                <p>Review PR quality</p>
+            </div>
+            <div class="command-card">
+                <code>/loop "task"</code>
+                <p>Autonomous coding loop</p>
             </div>
             <div class="command-card">
                 <code>/remember</code>
                 <p>Save to memory</p>
             </div>
             <div class="command-card">
-                <code>/recall</code>
-                <p>Search knowledge</p>
-            </div>
-            <div class="command-card">
-                <code>/evolve</code>
-                <p>Self-improvement cycle</p>
-            </div>
-            <div class="command-card">
-                <code>/pv-mesh</code>
-                <p>Multi-AI verification</p>
+                <code>/tts on|off</code>
+                <p>Toggle voice/text</p>
             </div>
         </div>
     </section>
@@ -835,31 +846,25 @@
         </div>
 
         <div class="install-box">
-            <h3>QUICK_START</h3>
+            <h3>ONE_COMMAND_INSTALL</h3>
 
             <div class="code-block">
                 <div class="code-header">
-                    <span>1. Clone</span>
+                    <span>1. Install everything</span>
                     <button class="copy-btn" onclick="copyCode(this)">COPY</button>
                 </div>
-                <pre><code><span class="prompt">$</span> git clone https://github.com/brolag/neural-claude-code-plugin ~/Sites/neural-claude-code-plugin</code></pre>
+                <pre><code><span class="prompt">$</span> curl -fsSL https://raw.githubusercontent.com/brolag/neural-claude-code-plugin/main/install.sh | bash</code></pre>
             </div>
 
             <div class="code-block">
                 <div class="code-header">
-                    <span>2. Setup hooks</span>
+                    <span>2. Run the guided tour</span>
                     <button class="copy-btn" onclick="copyCode(this)">COPY</button>
                 </div>
-                <pre><code><span class="prompt">$</span> cd ~/Sites/neural-claude-code-plugin && ./scripts/setup-hooks.sh</code></pre>
+                <pre><code><span class="prompt">></span> /onboard</code></pre>
             </div>
 
-            <div class="code-block">
-                <div class="code-header">
-                    <span>3. Add to shell (~/.zshrc)</span>
-                    <button class="copy-btn" onclick="copyCode(this)">COPY</button>
-                </div>
-                <pre><code>export CLAUDE_PLUGIN_ROOT="$HOME/Sites/neural-claude-code-plugin"</code></pre>
-            </div>
+            <p style="color: var(--text-dim); font-size: 0.8rem; margin-top: 1rem;">The installer clones the repo, configures your shell, registers all commands, sets up hooks, and offers skill installation.</p>
         </div>
     </section>
 
@@ -883,7 +888,7 @@
         </p>
     </footer>
 
-    <div class="version-badge">v4.0.0</div>
+    <div class="version-badge">v1.5.0</div>
 
     <script>
         // Matrix rain animation
@@ -1010,6 +1015,7 @@
                 addLine('Available commands:', 'success');
                 addLine('  help     - Show this menu');
                 addLine('  about    - About Neural Claude Code');
+                addLine('  install  - Show install command');
                 addLine('  skills   - List available skills');
                 addLine('  agents   - List available agents');
                 addLine('  matrix   - Toggle matrix intensity');
@@ -1031,15 +1037,23 @@
                 addLine('> github.com/brolag/neural-claude-code-plugin');
             },
 
+            install: () => {
+                addLine('[ONE COMMAND INSTALL]', 'success');
+                addLine('');
+                addLine('curl -fsSL https://raw.githubusercontent.com/brolag/neural-claude-code-plugin/main/install.sh | bash', 'command');
+                addLine('');
+                addLine('Then run: /onboard', 'output');
+            },
+
             skills: () => {
-                addLine('[SKILLS: 19 loaded]', 'success');
-                const skills = ['memory-system', 'deep-research', 'tdd', 'debugging', 'parallel-verification', 'content-creation', 'pattern-detector', 'worktree-manager', '...'];
+                addLine('[SKILLS: 20+ loaded]', 'success');
+                const skills = ['debugging', 'tdd', 'slop-scan', 'slop-fix', 'overseer', 'deep-research', 'react-best-practices', 'memory-system', 'knowledge-management', '...'];
                 skills.forEach(s => addLine(`  > ${s}`));
             },
 
             agents: () => {
-                addLine('[AGENTS: 7 active]', 'success');
-                const agents = ['codex', 'gemini', 'multi-ai', 'dispatcher', 'cognitive-amplifier', 'optimizer', 'code-reviewer'];
+                addLine('[AGENTS: 10+ active]', 'success');
+                const agents = ['codex', 'gemini', 'multi-ai', 'dispatcher', 'cognitive-amplifier', 'optimizer', 'code-reviewer', 'meta-agent', 'insight-synthesizer', '...'];
                 agents.forEach(a => addLine(`  > ${a}`));
             },
 
