@@ -1,6 +1,6 @@
 # Reference: Skills
 
-Built-in reusable skills.
+Reusable skills that extend Claude Code capabilities. Install with `/install-skills`, manage with `/manage-skills`.
 
 ---
 
@@ -14,25 +14,46 @@ Built-in reusable skills.
 
 ---
 
-## Learning Skills
-
-| Skill | Trigger | Description |
-|-------|---------|-------------|
-| `youtube-learner` | `/yt-learn <url>` | Extract from YouTube videos |
-| `deep-research` | Research queries | Multi-source investigation |
-| `content-creation` | Content requests | Create from knowledge |
-| `knowledge-management` | Knowledge queries | Capture and connect notes |
-| `newsletter-launch` | `/newsletter` | Full content pack from research |
-
----
-
 ## Development Skills
 
 | Skill | Trigger | Description |
 |-------|---------|-------------|
-| `tdd` | `/tdd` | RED-GREEN-REFACTOR cycle |
-| `debugging` | `/debug` | 4-phase root cause analysis |
+| `debugging` | `/debug` | Systematic 4-phase root cause analysis |
+| `tdd` | `/tdd` | RED-GREEN-REFACTOR cycle enforcement |
+| `react-best-practices` | React code | 40+ optimization rules from Vercel Engineering |
 | `parallel-verification` | `/pv` | AlphaGo-style verification |
+
+---
+
+## Code Quality Skills
+
+| Skill | Trigger | Description |
+|-------|---------|-------------|
+| `slop-scan` | `/slop-scan` | Detect technical debt and code smells |
+| `slop-fix` | `/slop-fix` | Auto-fix safe issues (needs slop-scan) |
+| `overseer` | `/overseer` | Review PRs/diffs before merge |
+| `stop-slop` | Text editing | Remove AI writing patterns from prose |
+
+---
+
+## Research & Learning Skills
+
+| Skill | Trigger | Description |
+|-------|---------|-------------|
+| `deep-research` | `/research` | Multi-phase orchestrated research |
+| `youtube-learner` | `/yt-learn <url>` | Extract from YouTube videos |
+| `content-creation` | Content requests | Create from knowledge |
+| `newsletter-launch` | `/newsletter` | Full content pack from research |
+
+---
+
+## Knowledge & Planning Skills
+
+| Skill | Trigger | Description |
+|-------|---------|-------------|
+| `knowledge-management` | `/capture`, `/connect` | PARA-based second brain |
+| `planning` | Planning requests | GTD/PARA methodologies |
+| `energy-system` | Energy mentions | Track energy levels |
 
 ---
 
@@ -55,42 +76,27 @@ Built-in reusable skills.
 
 ---
 
-## Prompt Engineering Skills
+## Installing Skills
 
-| Skill | Trigger | Description |
-|-------|---------|-------------|
-| `prompt-engineering` | `/prompt-*` | CRISP-E framework |
-| `browser-usage-prompt-guide` | Browser automation | Guide for browser prompts |
+```bash
+# Interactive installer
+/install-skills
 
----
-
-## Writing Quality Skills
-
-| Skill | Trigger | Description |
-|-------|---------|-------------|
-| `stop-slop` | Text editing | Remove AI writing patterns |
-
----
-
-## Productivity Skills
-
-| Skill | Trigger | Description |
-|-------|---------|-------------|
-| `energy-system` | Energy mentions | Track energy levels |
-| `planning` | Planning requests | GTD/PARA methodologies |
-
----
-
-## Skill Properties
-
-Each skill has:
-
-```yaml
-name: skill-name
-description: What it does
-trigger: /command or "phrase"
-allowed-tools: Tool1, Tool2
+# Or via CLI
+bash $CLAUDE_PLUGIN_ROOT/scripts/install-skills.sh
 ```
+
+## Managing Skills
+
+```bash
+# Enable/disable without uninstalling
+/manage-skills
+
+# Or via CLI
+bash $CLAUDE_PLUGIN_ROOT/scripts/manage-skills.sh
+```
+
+Disabled skills are moved to `.claude/skills/.disabled/` and can be re-enabled anytime.
 
 ---
 

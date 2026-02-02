@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.5.0] - 2026-02-02
+
+### Added
+- **One-line installer**: `curl -fsSL https://raw.githubusercontent.com/brolag/neural-claude-code-plugin/main/install.sh | bash`
+- `/onboard` command - Interactive guided tour for new users: system check, feature discovery, skills setup, TTS configuration
+- `/install-skills` command - Interactive installer with category browsing, multi-select, dependency resolution
+- `/manage-skills` command - Enable/disable/update/uninstall skills without losing configuration
+- `/tts` command - Toggle TTS audio and text summaries independently (`/tts off`, `/tts audio off`, `/tts summary off`)
+- `scripts/install-skills.sh` - Full interactive installer script with bash 3.2 compatibility
+- `scripts/manage-skills.sh` - Skills lifecycle manager
+- `scripts/tts-toggle.sh` - TTS configuration toggle
+- `.claude/skills-registry.json` - Skills metadata database with categories and dependencies
+
+### Changed
+- `install.sh` now auto-registers all commands to `~/.claude/commands/` during installation
+- `stop-tts.sh` hook now respects `~/.claude/tts-config.json` for audio toggle
+- Updated README with one-liner installation front and center
+- Updated all documentation (tutorials, reference, skills catalog)
+
+### Fixed
+- New commands not available after plugin update (auto-copy to global commands dir)
+- Bash 3.2 compatibility for macOS users (interactive installer gracefully degrades)
+
+---
+
 ## [1.4.0] - 2026-02-01
 
 ### Added

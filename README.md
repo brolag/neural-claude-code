@@ -3,7 +3,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Claude%20Code-Plugin-6366f1?style=for-the-badge&logo=anthropic" alt="Claude Code Plugin">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License">
-  <img src="https://img.shields.io/badge/Version-1.4.0-ec4899?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/Version-1.5.0-ec4899?style=for-the-badge" alt="Version">
 </p>
 
 <p align="center">
@@ -25,28 +25,35 @@ Every Claude Code session starts from zero. You explain your project structure, 
 Neural Claude Code remembers. It learns patterns, accumulates knowledge, and gets smarter over time.
 
 ```
-Traditional: Execute → Forget → Repeat forever
-Neural:      Execute → Learn  → Improve always
+Traditional: Execute -> Forget -> Repeat forever
+Neural:      Execute -> Learn  -> Improve always
 ```
 
 ---
 
 ## Quick Start
 
-**One-line installation:**
+**One command to install:**
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/brolag/neural-claude-code-plugin/main/install.sh | bash
 ```
 
-That's it! The installer will:
+The installer will:
 - Clone the repository
 - Configure your shell
+- Register all commands
 - Set up hooks
 - Offer to install recommended skills
 
+**Then run the guided tour:**
+
+```bash
+/onboard
+```
+
 <details>
-<summary>Manual installation (if you prefer)</summary>
+<summary>Manual installation</summary>
 
 ```bash
 # 1. Clone
@@ -59,25 +66,60 @@ cd ~/Sites/neural-claude-code-plugin && ./scripts/setup-hooks.sh
 echo 'export CLAUDE_PLUGIN_ROOT="$HOME/Sites/neural-claude-code-plugin"' >> ~/.zshrc
 source ~/.zshrc
 
-# 4. Install skills (interactive)
-/install-skills
+# 4. Guided tour
+/onboard
 ```
 
 </details>
 
-**[Full Installation Guide →](docs/tutorials/01-installation.md)**
+**[Full Installation Guide ->](docs/tutorials/01-installation.md)**
 
 ---
 
 ## Key Features
 
-| Feature | What it does |
-|---------|--------------|
-| **Self-Learning** | Expertise files that grow smarter each session |
-| **Persistent Memory** | Facts and patterns that survive restarts |
-| **Neural Loops** | Autonomous coding sessions that iterate until done |
-| **Multi-AI** | Route tasks to Claude, Codex, or Gemini |
-| **Research Swarm** | Parallel agents for comprehensive research |
+| Feature | What it does | Command |
+|---------|--------------|---------|
+| **Skills Manager** | Install, enable/disable skills on demand | `/install-skills`, `/manage-skills` |
+| **Self-Learning** | Expertise files that grow smarter each session | `/remember`, `/recall` |
+| **Persistent Memory** | Facts and patterns that survive restarts | `/remember`, `/forget` |
+| **Code Quality** | Detect and auto-fix technical debt | `/slop-scan`, `/slop-fix`, `/overseer` |
+| **Neural Loops** | Autonomous coding sessions that iterate until done | `/loop` |
+| **Multi-AI** | Route tasks to Claude, Codex, or Gemini | `/pv-mesh`, `/ai-collab` |
+| **TTS Control** | Voice and text summaries, toggle anytime | `/tts on`, `/tts off` |
+| **Onboarding** | Interactive guided setup for new users | `/onboard` |
+
+---
+
+## Quick Commands
+
+```bash
+# First time? Start here
+/onboard                     # Guided tour
+
+# Install and manage skills
+/install-skills              # Add new skills
+/manage-skills               # Enable/disable/update
+/tts off                     # Toggle voice/summaries
+
+# Memory
+/remember The API uses JWT tokens
+/recall database
+
+# Development
+/debug                       # Root cause analysis
+/tdd                         # Test-driven development
+/slop-scan                   # Find technical debt
+/overseer                    # Review PR quality
+
+# Autonomous work
+/loop "Fix all tests" --max 10
+
+# Learning
+/learn https://github.com/user/repo
+```
+
+**[All Commands ->](docs/reference/commands.md)**
 
 ---
 
@@ -93,38 +135,7 @@ source ~/.zshrc
 | **[Reference](docs/reference/)** | **[Explanation](docs/explanation/)** |
 | Commands, agents, config | Architecture, patterns |
 
-**[Full Documentation →](docs/index.md)**
-
----
-
-## Quick Commands
-
-```bash
-# Install and manage skills
-/install-skills              # Install new skills
-/manage-skills               # Enable/disable/update skills
-
-# Remember something
-/remember The API uses JWT tokens
-
-# Run autonomous loop (unified command)
-/loop "Fix all tests" --max 10
-
-# Learn from any source (auto-detects type)
-/learn https://github.com/user/repo
-
-# Detect and fix slop
-/slop-scan
-/slop-fix
-
-# Review PR before merge
-/overseer
-
-# Get multi-AI perspectives
-/pv-mesh Should we use GraphQL?
-```
-
-**[All Commands →](docs/reference/commands.md)**
+**[Full Documentation ->](docs/index.md)**
 
 ---
 

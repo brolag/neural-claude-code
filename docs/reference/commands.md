@@ -4,6 +4,28 @@ Complete list of all slash commands.
 
 ---
 
+## Getting Started
+
+| Command | Description |
+|---------|-------------|
+| `/onboard` | Interactive guided tour for new users |
+| `/help` | List all available commands |
+
+---
+
+## Skills & Configuration
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `/install-skills` | Install skills (interactive) | `/install-skills` |
+| `/manage-skills` | Enable/disable/update skills | `/manage-skills` |
+| `/tts` | Toggle TTS audio and summaries | `/tts off` |
+| `/tts on` | Enable both audio + summary | `/tts on` |
+| `/tts audio off` | Mute voice, keep text | `/tts audio off` |
+| `/tts summary off` | Voice only, no text blocks | `/tts summary off` |
+
+---
+
 ## Core Commands
 
 | Command | Description |
@@ -24,6 +46,18 @@ Complete list of all slash commands.
 
 ---
 
+## Development Commands
+
+| Command | Description |
+|---------|-------------|
+| `/debug` | Systematic 4-phase debugging |
+| `/tdd` | Test-Driven Development workflow |
+| `/slop-scan` | Detect technical debt and code smells |
+| `/slop-fix` | Auto-fix safe slop issues |
+| `/overseer` | Review PR/diff quality before merge |
+
+---
+
 ## Loop Commands
 
 | Command | Description | Example |
@@ -35,7 +69,6 @@ Complete list of all slash commands.
 | `/loop-start "task"` | Start loop (legacy) | `/loop-start "task" --max 20` |
 | `/loop-status` | Check progress | `/loop-status` |
 | `/loop-cancel` | Stop active loop | `/loop-cancel` |
-| `/loop-init` | Initialize loop files | `/loop-init` |
 
 **Loop Options:**
 - `--max <n>` - Maximum iterations (default: 20)
@@ -67,14 +100,13 @@ Complete list of all slash commands.
 
 ---
 
-## Research Commands
+## Research & Learning Commands
 
 | Command | Description | Example |
 |---------|-------------|---------|
-| `/research-swarm <topic>` | Parallel research agents | `/research-swarm "React vs Vue"` |
-| `/yt-learn <url>` | Learn from YouTube | `/yt-learn https://...` |
-| `/pdf-learn <file>` | Learn from PDF | `/pdf-learn ./doc.pdf` |
-| `/gh-learn <url>` | Learn from GitHub repo | `/gh-learn https://github.com/...` |
+| `/learn <url>` | Learn from any source (auto-detect) | `/learn https://...` |
+| `/research <topic>` | Deep multi-source research | `/research "React vs Vue"` |
+| `/research-swarm <topic>` | Parallel research agents | `/research-swarm "AI trends"` |
 
 ---
 
@@ -85,7 +117,6 @@ Complete list of all slash commands.
 | `/teleport` | Switch to cloud Claude |
 | `/teleport-sync export` | Export memory for cloud |
 | `/teleport-sync import` | Import memory from cloud |
-| `/teleport-sync status` | Check sync status |
 
 ---
 
@@ -97,32 +128,6 @@ Complete list of all slash commands.
 | `/meta:skill <name>` | Create skill | `/meta:skill api-testing` |
 | `/meta:prompt <name>` | Create command | `/meta:prompt deploy` |
 | `/meta:improve <name>` | Sync expertise | `/meta:improve project` |
-| `/meta:eval` | Run tests | `/meta:eval` |
-| `/meta:brain` | System dashboard | `/meta:brain` |
-
----
-
-## Output Style Commands
-
-| Command | Description |
-|---------|-------------|
-| `/output-style default` | Standard responses |
-| `/output-style yaml` | Structured YAML |
-| `/output-style table` | Markdown tables |
-| `/output-style concise` | Minimal output |
-| `/output-style tts` | With audio summary |
-| `/output-style html` | Generate HTML |
-| `/output-style genui` | Rich UI |
-
----
-
-## Prompt Engineering Commands
-
-| Command | Description |
-|---------|-------------|
-| `/prompt-review <file>` | Assess quality (CRISP-E) |
-| `/prompt-improve <file>` | Multi-AI improvement |
-| `/prompt-validate <file>` | Verify links/claims |
 
 ---
 
@@ -134,12 +139,3 @@ Complete list of all slash commands.
 | `/wt-list` | List worktrees | `/wt-list` |
 | `/wt-merge <name>` | Merge worktree | `/wt-merge feature-auth` |
 | `/wt-clean <name>` | Remove worktree | `/wt-clean feature-auth` |
-
----
-
-## TDD Commands
-
-| Command | Description |
-|---------|-------------|
-| `/tdd` | Start TDD workflow |
-| `/debug` | Start debugging workflow |
