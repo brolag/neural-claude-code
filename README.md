@@ -100,8 +100,9 @@ source ~/.zshrc
 ## Quick Commands
 
 ```bash
-# Install skills interactively
-/install-skills
+# Install and manage skills
+/install-skills              # Install new skills
+/manage-skills               # Enable/disable/update skills
 
 # Remember something
 /remember The API uses JWT tokens

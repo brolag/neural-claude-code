@@ -121,7 +121,10 @@ source ~/.zshrc  # or ~/.bashrc
 /slop-scan       # Detect technical debt
 /debug           # Systematic debugging
 /tdd             # Test-driven development
+
+# Manage your skills
 /install-skills  # Add more skills
+/manage-skills   # Enable/disable/update skills
 ```
 
 ## Customization
