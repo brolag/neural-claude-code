@@ -1,0 +1,31 @@
+# Jekyll configuration for GitHub Pages
+# Neural Claude Code Plugin
+
+title: Neural Claude Code Plugin
+description: Claude Code that learns and improves from every interaction
+url: "https://brolag.github.io"
+baseurl: "/neural-claude-code-plugin"
+
+# Author
+author:
+  name: Alfredo Bonilla
+  github: brolag
+
+# Build settings
+markdown: kramdown
+
+# Exclude from build (avoid processing non-page files)
+exclude:
+  - README.md
+  - LICENSE
+  - CHANGELOG.md
+  - Gemfile
+  - Gemfile.lock
+  - scripts/
+  - skills/
+  - agents/
+  - commands/
+  - .claude/
+  - .claude-plugin/
+  - install.sh
+  - node_modules/
