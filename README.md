@@ -3,7 +3,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Claude%20Code-Plugin-6366f1?style=for-the-badge&logo=anthropic" alt="Claude Code Plugin">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License">
-  <img src="https://img.shields.io/badge/Version-4.0.0-ec4899?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/Version-1.4.0-ec4899?style=for-the-badge" alt="Version">
 </p>
 
 <p align="center">
@@ -39,6 +39,9 @@ cd ~/Sites/neural-claude-code-plugin && ./scripts/setup-hooks.sh
 # 3. Add to shell
 echo 'export CLAUDE_PLUGIN_ROOT="$HOME/Sites/neural-claude-code-plugin"' >> ~/.zshrc
 source ~/.zshrc
+
+# 4. Install skills (interactive)
+/install-skills
 ```
 
 **[Full Installation Guide →](docs/tutorials/01-installation.md)**
@@ -76,6 +79,9 @@ source ~/.zshrc
 ## Quick Commands
 
 ```bash
+# Install skills interactively
+/install-skills
+
 # Remember something
 /remember The API uses JWT tokens
 
@@ -85,11 +91,15 @@ source ~/.zshrc
 # Learn from any source (auto-detects type)
 /learn https://github.com/user/repo
 
+# Detect and fix slop
+/slop-scan
+/slop-fix
+
+# Review PR before merge
+/overseer
+
 # Get multi-AI perspectives
 /pv-mesh Should we use GraphQL?
-
-# Parallel research
-/research-swarm "React vs Vue vs Svelte"
 ```
 
 **[All Commands →](docs/reference/commands.md)**
