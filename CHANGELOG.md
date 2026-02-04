@@ -7,6 +7,75 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.9.0] - 2026-02-03
+
+### Interactive Agentic Coding Course
+
+Added a comprehensive 13-lesson terminal course for mastering autonomous AI-assisted development.
+
+### Added
+
+#### Agentic Course (`/course`)
+Complete interactive course covering:
+
+**Fundamentals (Lessons 1-3)**
+- The Reality Check (70% Problem)
+- Mental Models (Conductor → Orchestrator)
+- Your First Autonomous Task
+
+**Structured Prompts (Lessons 4-6)**
+- CRAFT Framework
+- 6 Core Areas
+- 3-Tier Boundaries
+
+**Autonomous Operations (Lessons 7-9)**
+- Loop Fundamentals
+- Circuit Breakers
+- State Management
+
+**Advanced Patterns (Lessons 10-12)**
+- Multi-Agent Orchestration (Neural Squad)
+- Context Engineering
+- Compute Advantage
+
+**Mastery (Lesson 13)**
+- Building Your System
+
+Features:
+- Progress tracking across sessions
+- Quick reference cards (`/course ref craft`)
+- Hands-on exercises in each lesson
+- Modular - take any lesson independently
+
+```bash
+/course              # Show menu
+/course lesson 4     # Jump to lesson
+/course ref loops    # Quick reference
+```
+
+---
+
+## [1.8.0] - 2026-02-03
+
+### Neural Squad Multi-Agent System
+
+Added production-ready multi-agent orchestration with anti-slop enforcement.
+
+### Added
+- `/squad-init` - Initialize 3-agent system (Architect, Dev, Critic)
+- `/squad-status` - Dashboard showing agents and tasks
+- `/squad-task` - Create and manage tasks (Kanban flow)
+- `/squad-standup` - Daily standup report
+- `/squad-cron` - Automated heartbeats via macOS launchd
+
+Features:
+- CRAFT integration for specs
+- Two-stage review (spec compliance + code quality)
+- Git worktree isolation per agent
+- File-based communication (no database)
+
+---
+
 ## [1.7.0] - 2026-02-03
 
 ### Agentic Engineering Framework Release

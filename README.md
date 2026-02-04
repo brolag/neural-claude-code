@@ -3,7 +3,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Claude%20Code-Plugin-6366f1?style=for-the-badge&logo=anthropic" alt="Claude Code Plugin">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License">
-  <img src="https://img.shields.io/badge/Version-1.8.0-ec4899?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/Version-1.9.0-ec4899?style=for-the-badge" alt="Version">
 </p>
 
 <p align="center">
@@ -80,6 +80,7 @@ source ~/.zshrc
 
 | Feature | What it does | Command |
 |---------|--------------|---------|
+| **Agentic Course** | Interactive 13-lesson course for mastering agentic coding | `/course` |
 | **Neural Squad** | Multi-agent orchestration with anti-slop enforcement | `/squad-init`, `/squad-status` |
 | **CRAFT Framework** | Structured prompts for autonomous agents | `/craft` |
 | **KPI Tracking** | Measure Plan/Review Velocity, Autonomy, Loop State | `/kpi` |
@@ -99,6 +100,7 @@ source ~/.zshrc
 ```bash
 # First time? Start here
 /onboard                     # Guided tour
+/course                      # 13-lesson agentic coding course
 
 # Install and manage skills
 /install-skills              # Add new skills
