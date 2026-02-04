@@ -168,9 +168,6 @@ Updated plugin to leverage new Claude Code 2.1.30 features for improved autonomo
 
 ### Added
 
-#### ~~Keybindings Configuration~~ (Removed)
-**Note**: Custom keybindings for text insertion (e.g., `Ctrl+L` → `/loop`) are not supported by Claude Code. The keybindings system only supports pre-defined actions like `chat:submit`, `chat:cancel`, etc. The `config/keybindings.json` file has been removed from the plugin.
-
 #### PDF Page Range Support
 Skills now leverage Claude Code's `pages` parameter for large PDFs:
 ```bash
@@ -214,7 +211,6 @@ allowed-tools:
 | Feature | Impact |
 |---------|--------|
 | PDF Page Range | Handle large PDFs in chunks |
-| ~~Keybindings~~ | ~~Custom keyboard shortcuts~~ (not supported for text insertion) |
 | Skill Hot-reload | No restart needed after edits |
 | `context: fork` | Isolated sub-agent execution |
 | Hooks in Frontmatter | Per-skill lifecycle hooks |
