@@ -7,6 +7,91 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.6.0] - 2026-02-03
+
+### Claude Code 2.1.30 Integration Release
+
+Updated plugin to leverage new Claude Code 2.1.30 features for improved autonomous operation and developer experience.
+
+### Added
+
+#### Keybindings Configuration (`~/.claude/keybindings.json`)
+Pre-configured keyboard shortcuts for Neural Claude Code workflows:
+- `Ctrl+L` → `/loop ` (Quick loop start)
+- `Ctrl+R` → `/recall ` (Memory search)
+- `Ctrl+E` → `/evolve` (Self-improvement)
+- `Ctrl+M` → `/remember ` (Quick save)
+
+#### PDF Page Range Support
+Skills now leverage Claude Code's `pages` parameter for large PDFs:
+```bash
+# Read specific pages (new in Claude Code 2.1.30)
+Read(document.pdf, pages: "1-5")
+Read(document.pdf, pages: "10-20")
+```
+
+#### Forked Context Pattern
+Updated skills to use `context: fork` for isolated sub-agent execution:
+- `youtube-learner` - Now runs with fresh context
+- Prevents context pollution between skill invocations
+- Template for future skill updates
+
+#### Wildcard Bash Permissions
+Skills now use wildcard patterns for cleaner permission declarations:
+```yaml
+allowed-tools:
+  - Bash(npm *)
+  - Bash(python3 *)
+  - Bash(git * main)
+```
+
+### Changed
+
+#### youtube-learner Skill
+- Added `context: fork` for isolated execution
+- Added wildcard `allowed-tools` for cleaner permissions
+- Now runs in completely fresh context per invocation
+
+### Documentation
+
+#### New Learning Document
+- `inbox/claude-code-changelog-2.1.30-learnings-2026-02-03.md`
+- Comprehensive feature analysis
+- Implementation patterns
+- Action items for adoption
+
+### Claude Code 2.1.30 Features Documented
+
+| Feature | Impact |
+|---------|--------|
+| PDF Page Range | Handle large PDFs in chunks |
+| Keybindings | Custom keyboard shortcuts |
+| Skill Hot-reload | No restart needed after edits |
+| `context: fork` | Isolated sub-agent execution |
+| Hooks in Frontmatter | Per-skill lifecycle hooks |
+| Wildcard Permissions | Cleaner `Bash(npm *)` syntax |
+| `--from-pr` | Resume PR-linked sessions |
+| Task Dependencies | `addBlockedBy`, `addBlocks` |
+
+### Environment Variables Reference
+
+```bash
+CLAUDE_CODE_ENABLE_TASKS=false              # Disable task system
+CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1      # No background tasks
+CLAUDE_CODE_FILE_READ_MAX_OUTPUT_TOKENS=N   # Override read limit
+IS_DEMO=1                                   # Hide email/org in UI
+FORCE_AUTOUPDATE_PLUGINS=1                  # Auto-update plugins
+```
+
+### Migration Notes
+
+Skills should be updated to include:
+1. `context: fork` in frontmatter for isolation
+2. Wildcard `allowed-tools` patterns
+3. Hooks in frontmatter (if needed per-skill)
+
+---
+
 ## [1.5.0] - 2026-02-02
 
 ### Added
