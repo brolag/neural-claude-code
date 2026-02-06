@@ -10,15 +10,15 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
-            --matrix-green: #00ff41;
-            --matrix-green-dark: #008f11;
-            --matrix-green-glow: #00ff41;
-            --matrix-bg: #0d0208;
+            --matrix-green: #ff8c00;
+            --matrix-green-dark: #8b4500;
+            --matrix-green-glow: #ff8c00;
+            --matrix-bg: #0d0200;
             --matrix-bg-light: #1a1a1a;
-            --terminal-border: #003b00;
-            --text-dim: #00aa00;
-            --text-bright: #00ff41;
-            --scanline: rgba(0, 255, 65, 0.03);
+            --terminal-border: #3b1e00;
+            --text-dim: #aa6600;
+            --text-bright: #ff8c00;
+            --scanline: rgba(255, 140, 0, 0.03);
         }
 
         * {
@@ -560,6 +560,56 @@
             text-decoration: underline;
         }
 
+        /* Footer cross-links */
+        .footer-crosslinks {
+            max-width: 480px;
+            margin: 0 auto 1.5rem;
+            text-align: left;
+            font-size: 0.8rem;
+        }
+
+        .footer-crosslinks-title {
+            color: var(--text-dim);
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .footer-crosslinks-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-crosslinks-list li {
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: baseline;
+            gap: 0;
+        }
+
+        .footer-crosslinks-list .crosslink-prompt {
+            color: var(--text-dim);
+            margin-right: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .footer-crosslinks-list a {
+            color: var(--matrix-green);
+            text-decoration: none;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .footer-crosslinks-list a:hover {
+            text-decoration: none;
+            text-shadow: 0 0 8px var(--matrix-green), 0 0 16px var(--matrix-green-dark);
+        }
+
+        .footer-crosslinks-list .crosslink-desc {
+            color: var(--text-dim);
+            margin-left: 0.75rem;
+            opacity: 0.7;
+        }
+
         /* Version badge */
         .version-badge {
             position: fixed;
@@ -595,7 +645,7 @@
         }
 
         .terminal-input::placeholder {
-            color: #004400;
+            color: #442200;
         }
 
         .terminal-body {
@@ -656,6 +706,8 @@
             h1 { font-size: 1.8rem; }
             .terminal-body { font-size: 0.75rem; }
             .terminal-input { font-size: 0.75rem; }
+            .footer-crosslinks { text-align: center; }
+            .footer-crosslinks-list li { justify-content: center; }
         }
 
         /* Scrollbar */
@@ -880,6 +932,21 @@
     </section>
 
     <footer>
+        <div class="footer-crosslinks">
+            <div class="footer-crosslinks-title">── more from indie mind ──</div>
+            <ul class="footer-crosslinks-list">
+                <li>
+                    <span class="crosslink-prompt">&gt;</span>
+                    <a href="https://brolag.github.io/dendrite/" target="_blank" rel="noopener noreferrer">dendrite</a>
+                    <span class="crosslink-desc">Opinionated TUI stack for agentic coding</span>
+                </li>
+                <li>
+                    <span class="crosslink-prompt">&gt;</span>
+                    <a href="https://indie-mind.com/" target="_blank" rel="noopener noreferrer">indie-mind.com</a>
+                    <span class="crosslink-desc">AI Adoption Consulting</span>
+                </li>
+            </ul>
+        </div>
         <p>
             Built by <a href="https://github.com/brolag">@brolag</a> //
             Powered by <a href="https://claude.com/claude-code">Claude Code</a> //
@@ -908,10 +975,10 @@
         const drops = Array(columns).fill(1);
 
         function drawMatrix() {
-            ctx.fillStyle = 'rgba(13, 2, 8, 0.05)';
+            ctx.fillStyle = 'rgba(13, 2, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            ctx.fillStyle = '#00ff41';
+            ctx.fillStyle = '#ff8c00';
             ctx.font = fontSize + 'px monospace';
 
             for (let i = 0; i < drops.length; i++) {
