@@ -3,7 +3,7 @@
 ## The Command
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/brolag/neural-claude-code-plugin/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/brolag/neural-claude-code/main/install.sh | bash
 ```
 
 ## What It Does
@@ -16,7 +16,7 @@ The installer automatically:
    - Detects your shell (zsh/bash)
 
 2. **Installs Plugin**
-   - Clones repository to `~/Sites/neural-claude-code-plugin`
+   - Clones repository to `~/Sites/neural-claude-code`
    - Or updates if already installed
    - Respects `$CLAUDE_PLUGIN_ROOT` if set
 
@@ -42,7 +42,7 @@ The installer automatically:
 ║  v1.4.0                                                ║
 ╚════════════════════════════════════════════════════════╝
 
-→ Installation directory: ~/Sites/neural-claude-code-plugin
+→ Installation directory: ~/Sites/neural-claude-code
 
 → Checking prerequisites...
 ✓ Prerequisites met
@@ -184,15 +184,15 @@ If you prefer manual control:
 
 ```bash
 # 1. Clone
-git clone https://github.com/brolag/neural-claude-code-plugin \
-  ~/Sites/neural-claude-code-plugin
+git clone https://github.com/brolag/neural-claude-code \
+  ~/Sites/neural-claude-code
 
 # 2. Configure shell
-echo 'export CLAUDE_PLUGIN_ROOT="$HOME/Sites/neural-claude-code-plugin"' >> ~/.zshrc
+echo 'export CLAUDE_PLUGIN_ROOT="$HOME/Sites/neural-claude-code"' >> ~/.zshrc
 source ~/.zshrc
 
 # 3. Setup hooks
-cd ~/Sites/neural-claude-code-plugin
+cd ~/Sites/neural-claude-code
 ./scripts/setup-hooks.sh
 
 # 4. Install skills
@@ -204,7 +204,7 @@ cd ~/Sites/neural-claude-code-plugin
 The installer only modifies:
 
 1. **File System**
-   - Creates `~/Sites/neural-claude-code-plugin/` (or custom path)
+   - Creates `~/Sites/neural-claude-code/` (or custom path)
    - Optionally creates `~/.claude/skills/` for global skills
 
 2. **Shell Config**
@@ -223,7 +223,7 @@ The installer only modifies:
 
 ```bash
 # 1. Remove directory
-rm -rf ~/Sites/neural-claude-code-plugin
+rm -rf ~/Sites/neural-claude-code
 
 # 2. Remove from shell config
 # Edit ~/.zshrc and remove the CLAUDE_PLUGIN_ROOT line
@@ -239,13 +239,13 @@ The install script:
 - No `sudo` required
 - Only modifies files in your home directory
 - Open source - you can inspect it first:
-  https://github.com/brolag/neural-claude-code-plugin/blob/main/install.sh
+  https://github.com/brolag/neural-claude-code/blob/main/install.sh
 
 ## Support
 
-- **Issues**: https://github.com/brolag/neural-claude-code-plugin/issues
-- **Discussions**: https://github.com/brolag/neural-claude-code-plugin/discussions
-- **Documentation**: https://github.com/brolag/neural-claude-code-plugin
+- **Issues**: https://github.com/brolag/neural-claude-code/issues
+- **Discussions**: https://github.com/brolag/neural-claude-code/discussions
+- **Documentation**: https://github.com/brolag/neural-claude-code
 
 ---
 

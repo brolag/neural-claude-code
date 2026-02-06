@@ -29,7 +29,7 @@ When this command is invoked:
 bash "$CLAUDE_PLUGIN_ROOT/scripts/tts-toggle.sh" <args>
 ```
 
-Where `$CLAUDE_PLUGIN_ROOT` defaults to `~/Sites/neural-claude-code-plugin`.
+Where `$CLAUDE_PLUGIN_ROOT` defaults to `~/Sites/neural-claude-code`.
 
 2. Read and display the current config:
 

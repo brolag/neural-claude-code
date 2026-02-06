@@ -9,7 +9,7 @@ All configuration options.
 ### Required
 
 ```bash
-export CLAUDE_PLUGIN_ROOT="$HOME/Sites/neural-claude-code-plugin"
+export CLAUDE_PLUGIN_ROOT="$HOME/Sites/neural-claude-code"
 ```
 
 ### Optional

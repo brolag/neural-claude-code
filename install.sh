@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Neural Claude Code - One-Line Installer
-# Usage: curl -fsSL https://raw.githubusercontent.com/brolag/neural-claude-code-plugin/main/install.sh | bash
+# Usage: curl -fsSL https://raw.githubusercontent.com/brolag/neural-claude-code/main/install.sh | bash
 #
 
 set -e
@@ -21,8 +21,8 @@ echo -e "${BOLD}╚════════════════════�
 echo ""
 
 # Default installation directory
-INSTALL_DIR="${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code-plugin}"
-REPO_URL="https://github.com/brolag/neural-claude-code-plugin.git"
+INSTALL_DIR="${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code}"
+REPO_URL="https://github.com/brolag/neural-claude-code.git"
 
 echo -e "${BLUE}→${RESET} Installation directory: ${BOLD}$INSTALL_DIR${RESET}"
 echo ""
@@ -255,6 +255,6 @@ echo "  /debug                   # Systematic debugging"
 echo "  /tdd                     # Test-driven development"
 echo ""
 echo -e "${BOLD}Documentation:${RESET}"
-echo "  https://github.com/brolag/neural-claude-code-plugin"
+echo "  https://github.com/brolag/neural-claude-code"
 echo ""
 echo -e "${GREEN}Happy coding! 🚀${RESET}"

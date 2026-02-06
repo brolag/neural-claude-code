@@ -8,7 +8,7 @@ if [ -f "$HOME/.zshrc" ]; then
   eval "$(grep -E '^export\s+ELEVENLABS' "$HOME/.zshrc" 2>/dev/null)" 2>/dev/null || true
 fi
 
-PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code-plugin}"
+PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code}"
 DEBUG_LOG="/tmp/stop-tts-debug.log"
 TTS_CACHE_DIR="/tmp/tts-cache"
 TTS_CONFIG="$HOME/.claude/tts-config.json"

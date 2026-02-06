@@ -1,8 +1,8 @@
 #!/bin/bash
 # Status Line v3 - Full: model, last prompt, agent name, trailing prompts, git
-# Usage: Add to .claude/settings.json: "statusLine": "bash ~/Sites/neural-claude-code-plugin/status-lines/v3.sh"
+# Usage: Add to .claude/settings.json: "statusLine": "bash ~/Sites/neural-claude-code/status-lines/v3.sh"
 
-PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code-plugin}"
+PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code}"
 DATA_DIR="$PWD/.claude/data"
 SESSION_FILE="$DATA_DIR/current-session.json"
 

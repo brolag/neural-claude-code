@@ -4,7 +4,7 @@
 title: Neural Claude Code Plugin
 description: A sophisticated, self-improving agentic system for Claude Code implementing the Agent Expert Pattern
 url: "https://brolag.github.io"
-baseurl: "/neural-claude-code-plugin"
+baseurl: "/neural-claude-code"
 
 # Author
 author:
@@ -39,7 +39,7 @@ twitter:
 social:
   name: Neural Claude Code Plugin
   links:
-    - https://github.com/brolag/neural-claude-code-plugin
+    - https://github.com/brolag/neural-claude-code
 
 # Google Analytics (optional - add your tracking ID)
 # google_analytics: UA-XXXXXXXX-X

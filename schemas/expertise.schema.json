@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/brolag/neural-claude-code-plugin/schemas/expertise.schema.json",
+  "$id": "https://github.com/brolag/neural-claude-code/schemas/expertise.schema.json",
   "title": "Agent Expertise File",
   "description": "Schema for Agent Expert pattern expertise files (.yaml)",
   "type": "object",

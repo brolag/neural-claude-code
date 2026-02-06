@@ -33,11 +33,11 @@ Pull the latest changes from the Neural Claude Code plugin repository and option
 
 ```bash
 # Verify plugin exists
-PLUGIN_DIR="${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code-plugin}"
+PLUGIN_DIR="${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code}"
 
 if [ ! -d "$PLUGIN_DIR" ]; then
   echo "Plugin not found at $PLUGIN_DIR"
-  echo "Clone it: git clone https://github.com/brolag/neural-claude-code-plugin $PLUGIN_DIR"
+  echo "Clone it: git clone https://github.com/brolag/neural-claude-code $PLUGIN_DIR"
   exit 1
 fi
 ```
@@ -88,7 +88,7 @@ If `--sync` flag is present:
 ```markdown
 ## Neural Claude Code Update
 
-**Plugin**: ~/Sites/neural-claude-code-plugin
+**Plugin**: ~/Sites/neural-claude-code
 **Before**: {commit_before}
 **After**: {commit_after}
 
@@ -162,7 +162,7 @@ If `--sync` flag is present:
 
 **Fallback**: If git pull fails, show manual instructions:
 ```bash
-cd ~/Sites/neural-claude-code-plugin
+cd ~/Sites/neural-claude-code
 git stash
 git pull origin main
 git stash pop

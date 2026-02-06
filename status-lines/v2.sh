@@ -1,8 +1,8 @@
 #!/bin/bash
 # Status Line v2 - Adds: last prompt with emoji indicator
-# Usage: Add to .claude/settings.json: "statusLine": "bash ~/Sites/neural-claude-code-plugin/status-lines/v2.sh"
+# Usage: Add to .claude/settings.json: "statusLine": "bash ~/Sites/neural-claude-code/status-lines/v2.sh"
 
-PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code-plugin}"
+PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code}"
 DATA_DIR="$PWD/.claude/data"
 SESSION_FILE="$DATA_DIR/current-session.json"
 

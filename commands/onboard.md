@@ -194,7 +194,7 @@ What would you like to do? _
 **Need help?**
 - /help - Full command list
 - /onboard - Run this guide again
-- https://github.com/brolag/neural-claude-code-plugin
+- https://github.com/brolag/neural-claude-code
 ```
 
 ## Error Handling

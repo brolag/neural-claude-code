@@ -75,11 +75,11 @@ How and why things work:
 |----------|-------------|
 | [README](../README.md) | Quick overview and install |
 | [CHANGELOG](CHANGELOG.md) | Version history |
-| [GitHub Issues](https://github.com/brolag/neural-claude-code-plugin/issues) | Report bugs, request features |
+| [GitHub Issues](https://github.com/brolag/neural-claude-code/issues) | Report bugs, request features |
 
 ---
 
 <p align="center">
   <strong>Can't find what you need?</strong><br>
-  <a href="https://github.com/brolag/neural-claude-code-plugin/issues">Open an issue</a> and we'll help!
+  <a href="https://github.com/brolag/neural-claude-code/issues">Open an issue</a> and we'll help!
 </p>

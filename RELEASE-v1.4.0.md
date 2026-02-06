@@ -2,7 +2,7 @@
 
 **Release Date**: 2026-02-01
 **Tag**: v1.4.0
-**GitHub**: https://github.com/brolag/neural-claude-code-plugin/releases/tag/v1.4.0
+**GitHub**: https://github.com/brolag/neural-claude-code/releases/tag/v1.4.0
 
 ---
 
@@ -122,7 +122,7 @@ caca9af docs: update README for v1.4.0 with installer instructions
 
 **Update plugin**:
 ```bash
-cd ~/Sites/neural-claude-code-plugin
+cd ~/Sites/neural-claude-code
 git pull origin main
 ```
 
@@ -201,4 +201,4 @@ Planned for v1.5.0:
 
 ---
 
-**Full Changelog**: https://github.com/brolag/neural-claude-code-plugin/blob/main/CHANGELOG.md
+**Full Changelog**: https://github.com/brolag/neural-claude-code/blob/main/CHANGELOG.md

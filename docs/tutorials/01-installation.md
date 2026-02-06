@@ -13,11 +13,11 @@ Get Neural Claude Code running on your machine.
 ## Option A: One-Line Install (Recommended)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/brolag/neural-claude-code-plugin/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/brolag/neural-claude-code/main/install.sh | bash
 ```
 
 This will:
-1. Clone the repository to `~/Sites/neural-claude-code-plugin`
+1. Clone the repository to `~/Sites/neural-claude-code`
 2. Configure your shell (`~/.zshrc` or `~/.bashrc`)
 3. Register all commands to `~/.claude/commands/`
 4. Set up hooks (TTS, session tracking)
@@ -34,13 +34,13 @@ Then start the guided tour:
 ### Step 1: Clone the Plugin
 
 ```bash
-git clone https://github.com/brolag/neural-claude-code-plugin ~/Sites/neural-claude-code-plugin
+git clone https://github.com/brolag/neural-claude-code ~/Sites/neural-claude-code
 ```
 
 ### Step 2: Run Setup
 
 ```bash
-cd ~/Sites/neural-claude-code-plugin
+cd ~/Sites/neural-claude-code
 chmod +x scripts/setup-hooks.sh
 ./scripts/setup-hooks.sh
 ```
@@ -54,7 +54,7 @@ This configures:
 Add to your shell profile (`~/.zshrc` or `~/.bashrc`):
 
 ```bash
-export CLAUDE_PLUGIN_ROOT="$HOME/Sites/neural-claude-code-plugin"
+export CLAUDE_PLUGIN_ROOT="$HOME/Sites/neural-claude-code"
 ```
 
 Then reload:
@@ -66,7 +66,7 @@ source ~/.zshrc  # or source ~/.bashrc
 ### Step 4: Register Commands
 
 ```bash
-cp ~/Sites/neural-claude-code-plugin/commands/*.md ~/.claude/commands/
+cp ~/Sites/neural-claude-code/commands/*.md ~/.claude/commands/
 ```
 
 ### Step 5: Install Skills
@@ -78,7 +78,7 @@ cp ~/Sites/neural-claude-code-plugin/commands/*.md ~/.claude/commands/
 Or install the recommended bundle:
 
 ```bash
-bash ~/Sites/neural-claude-code-plugin/scripts/install-skills.sh
+bash ~/Sites/neural-claude-code/scripts/install-skills.sh
 ```
 
 ## Post-Install: Onboarding
@@ -134,4 +134,4 @@ After installation, use these commands to manage the plugin:
 | `/onboard` not found | Copy commands: `cp $CLAUDE_PLUGIN_ROOT/commands/*.md ~/.claude/commands/` |
 | Skills not available | Run `/install-skills` to install them |
 
-Need more help? [Open an issue](https://github.com/brolag/neural-claude-code-plugin/issues)
+Need more help? [Open an issue](https://github.com/brolag/neural-claude-code/issues)

@@ -186,7 +186,7 @@ echo ".claude/memory/events/" >> .gitignore
 echo ".claude/logs/" >> .gitignore
 
 # 2. Initialize session
-PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code-plugin}"
+PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code}"
 bash "$PLUGIN_ROOT/scripts/hooks/session-start.sh"
 
 # 3. Run initial expertise scan
@@ -227,7 +227,7 @@ Task: "Scan project and populate expertise file" (subagent: project-expert)
 |-------|-------|------------|
 | Files exist | Previous setup | Use `--force` to overwrite |
 | No write permission | Directory permissions | Check permissions |
-| Plugin not found | Missing neural-claude-code-plugin | Install plugin globally |
+| Plugin not found | Missing neural-claude-code | Install plugin globally |
 | Invalid project type | Unrecognized structure | Defaults to generic setup |
 
 ## Safety Constraints

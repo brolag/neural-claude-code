@@ -63,12 +63,12 @@ jq --version
 ### Step 1: Add the Marketplace
 
 ```bash
-claude plugin marketplace add brolag/neural-claude-code-plugin
+claude plugin marketplace add brolag/neural-claude-code
 ```
 
 Or via slash command in Claude Code:
 ```
-/plugin marketplace add brolag/neural-claude-code-plugin
+/plugin marketplace add brolag/neural-claude-code
 ```
 
 ### Step 2: Install the Plugin
@@ -101,7 +101,7 @@ Run the setup script:
 
 ```bash
 # Set the plugin location (adjust path if different)
-export CLAUDE_PLUGIN_ROOT="$HOME/Sites/neural-claude-code-plugin"
+export CLAUDE_PLUGIN_ROOT="$HOME/Sites/neural-claude-code"
 
 # Run setup
 bash "$CLAUDE_PLUGIN_ROOT/scripts/setup-hooks.sh"
@@ -125,7 +125,7 @@ Edit `~/.claude/settings.json` and add the hooks section:
         "hooks": [
           {
             "type": "command",
-            "command": "bash /path/to/neural-claude-code-plugin/scripts/hooks/stop-tts.sh",
+            "command": "bash /path/to/neural-claude-code/scripts/hooks/stop-tts.sh",
             "timeout": 15000
           }
         ]
@@ -135,7 +135,7 @@ Edit `~/.claude/settings.json` and add the hooks section:
 }
 ```
 
-Replace `/path/to/neural-claude-code-plugin` with your actual plugin path.
+Replace `/path/to/neural-claude-code` with your actual plugin path.
 
 ### Verify Hook Setup
 
@@ -395,7 +395,7 @@ This shows system health and what's configured.
 
 **Fix:** Make sure you added the marketplace first:
 ```bash
-claude plugin marketplace add brolag/neural-claude-code-plugin
+claude plugin marketplace add brolag/neural-claude-code
 ```
 
 ### Invalid Settings / Hook Errors

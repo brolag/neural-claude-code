@@ -1,6 +1,6 @@
 #!/bin/bash
 # Status Line v1 - Simple: model, cwd, git branch
-# Usage: Add to .claude/settings.json: "statusLine": "bash ~/Sites/neural-claude-code-plugin/status-lines/v1.sh"
+# Usage: Add to .claude/settings.json: "statusLine": "bash ~/Sites/neural-claude-code/status-lines/v1.sh"
 
 # Get model from env or default
 MODEL="${CLAUDE_MODEL:-opus}"

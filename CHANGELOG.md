@@ -295,7 +295,7 @@ Skills should be updated to include:
 ## [1.5.0] - 2026-02-02
 
 ### Added
-- **One-line installer**: `curl -fsSL https://raw.githubusercontent.com/brolag/neural-claude-code-plugin/main/install.sh | bash`
+- **One-line installer**: `curl -fsSL https://raw.githubusercontent.com/brolag/neural-claude-code/main/install.sh | bash`
 - `/onboard` command - Interactive guided tour for new users: system check, feature discovery, skills setup, TTS configuration
 - `/install-skills` command - Interactive installer with category browsing, multi-select, dependency resolution
 - `/manage-skills` command - Enable/disable/update/uninstall skills without losing configuration

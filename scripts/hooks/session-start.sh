@@ -5,7 +5,7 @@
 
 set -e
 
-PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code-plugin}"
+PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code}"
 DATA_DIR="$PWD/.claude/data"
 SESSION_FILE="$DATA_DIR/current-session.json"
 CONFIG_FILE="$PWD/.claude/settings.local.json"

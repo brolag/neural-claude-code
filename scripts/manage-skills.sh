@@ -17,7 +17,7 @@ RESET='\033[0m'
 # Paths
 PROJECT_SKILLS="./.claude/skills"
 GLOBAL_SKILLS="$HOME/.claude/skills"
-PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code-plugin}"
+PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code}"
 
 # ============================================================================
 # UTILITY FUNCTIONS

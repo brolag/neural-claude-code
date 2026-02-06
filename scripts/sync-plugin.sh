@@ -4,7 +4,7 @@
 
 set -e
 
-PLUGIN_ROOT="${PLUGIN_ROOT:-$HOME/Sites/neural-claude-code-plugin}"
+PLUGIN_ROOT="${PLUGIN_ROOT:-$HOME/Sites/neural-claude-code}"
 GLOBAL_SETTINGS="$HOME/.claude/settings.json"
 VERSION=$(jq -r '.version' "$PLUGIN_ROOT/.claude-plugin/plugin.json" 2>/dev/null || echo "unknown")
 
