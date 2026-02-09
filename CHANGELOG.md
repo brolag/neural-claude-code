@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.11.0] - 2026-02-09
+
+### Skill & Command Purge
+
+Removed unused, redundant, and dead-weight skills and commands to reduce noise and improve discoverability.
+
+### Removed
+
+#### Skills (7 removed)
+- `browser-usage-prompt-guide` - Reference doc, not executable skill
+- `compute-advantage` - Theoretical metric, never invoked
+- `cost-tracker` - Redundant with `/kpi`
+- `feature` - Generic placeholder, never used
+- `newsletter-launch` - Covered by `content-creation`
+- `parallel-verification` - Redundant with `/pv` command
+- `youtube-learner` - Replaced by unified `/learn` command
+
+#### Commands (5 removed)
+- `feature.md` - Generic placeholder
+- `pv-mesh.md` - Rarely used, expensive (3x AI calls)
+- `secure-api.md` - One-time reference, not a command
+- `status.md` - Redundant with `/dashboard`
+- `teleport-sync.md` - Rarely used cloud sync
+
+### Stats
+- **Skills**: 30 → 23 (-23%)
+- **Commands**: 26 → 21 (-19%)
+- **Remaining skills**: agentic-course, changelog-architect, content-creation, debugging, deep-research, evaluator, knowledge-management, kpi, memory-system, meta-skill, overseer, pattern-detector, plan-execute, project-setup, prompt-engineering, react-best-practices, skill-builder, slop-fix, slop-scan, squad, stop-slop, tdd, worktree-manager
+
+---
+
 ## [1.10.0] - 2026-02-05
 
 ### Claude Opus 4.6 Migration
