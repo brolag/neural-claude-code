@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.12.0] - 2026-02-17
+
+### Added 14 Dev Skills and Commands
+
+#### Skills (4 added)
+- `autonomous-dev` — Scanner-executor architecture for autonomous coding (6 scanners → triage → executor → smoke tests)
+- `parallel-verification` — AlphaGo-style multi-path hypothesis exploration with configurable confidence thresholds
+- `playwright-browser` — Agentic browser automation via Playwright CLI with headless parallel sessions and screenshot trails
+- `super-search` — Triple-engine research orchestrator (Perplexity Sonar Pro + Grok X + Grok YouTube) running in parallel
+
+#### Commands (10 added)
+- `ai-collab` — Route problems to Claude, Codex, and Gemini in parallel; synthesize three AI perspectives
+- `gh-learn` — Analyze GitHub repositories and extract architecture patterns via `gh` CLI
+- `git-save` — Professional Conventional Commits with emoji, intelligent type detection, and SemVer tracking
+- `learn` — Universal learning from YouTube, GitHub, X, PDF, and web with auto source detection
+- `prompt-test` — Prompt quality linting and scoring across 8 dimensions with optional golden tests
+- `pv-mesh` — Parallel multi-AI verification mesh (Claude + Codex + Gemini) with synthesis phase
+- `specs` — Feature specification development with 3-phase workflow (Requirements → Design → Tasks)
+- `ui-review` — Parallel browser QA agents against a URL via Playwright CLI with consolidated report
+- `forget` — Remove stored facts from the memory system by ID
+- `remember` — Save facts to persistent memory with timestamp, category, and confidence metadata
+
+### Stats
+- **Skills**: 23 → 27 (+17%)
+- **Commands**: 21 → 31 (+48%)
+
+---
+
 ## [1.11.0] - 2026-02-09
 
 ### Skill & Command Purge
