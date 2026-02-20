@@ -75,9 +75,62 @@ git log --oneline ${BEFORE_COMMIT}..HEAD
 git diff --stat ${BEFORE_COMMIT}..HEAD
 ```
 
+### Step 4b: Sync Global Skills (ALWAYS — runs automatically after pull)
+
+After every successful pull, sync new and updated skills to the user's global `~/.claude/skills/` directory. This makes new workflow skills available across ALL projects immediately, without manual copying.
+
+```bash
+GLOBAL_SKILLS_DIR="$HOME/.claude/skills"
+PLUGIN_SKILLS_DIR="$PLUGIN_DIR/skills"
+SYNCED=()
+SKIPPED=()
+
+# 1. Sync SKILLS_MAP.md to ~/.claude/SKILLS_MAP.md
+if [ -f "$PLUGIN_SKILLS_DIR/SKILLS_MAP.md" ]; then
+  cp "$PLUGIN_SKILLS_DIR/SKILLS_MAP.md" "$HOME/.claude/SKILLS_MAP.md"
+  SYNCED+=("SKILLS_MAP.md → ~/.claude/SKILLS_MAP.md")
+fi
+
+# 2. For each skill directory in plugin, copy if new or updated
+for skill_dir in "$PLUGIN_SKILLS_DIR"/*/; do
+  skill_name=$(basename "$skill_dir")
+  target_dir="$GLOBAL_SKILLS_DIR/$skill_name"
+
+  if [ ! -d "$target_dir" ]; then
+    # NEW skill — always copy
+    cp -r "$skill_dir" "$target_dir"
+    SYNCED+=("$skill_name (NEW)")
+  else
+    # EXISTING skill — copy only if plugin version is newer
+    plugin_skill="$skill_dir/skill.md"
+    local_skill="$target_dir/skill.md"
+    if [ -f "$plugin_skill" ] && [ "$plugin_skill" -nt "$local_skill" ]; then
+      cp -r "$skill_dir"/* "$target_dir/"
+      SYNCED+=("$skill_name (UPDATED)")
+    else
+      SKIPPED+=("$skill_name")
+    fi
+  fi
+done
+
+# Report
+echo "### Global Skills Synced"
+for item in "${SYNCED[@]}"; do echo "  ✓ $item"; done
+if [ ${#SKIPPED[@]} -gt 0 ]; then
+  echo "  (${#SKIPPED[@]} skills already up to date — skipped)"
+fi
+```
+
+**What gets synced globally:**
+- `~/.claude/SKILLS_MAP.md` — Lightweight skill routing index
+- `~/.claude/skills/<name>/` — All skill directories (new only, or updated by timestamp)
+
+**What does NOT get overwritten:**
+- Skills with local modifications newer than the plugin version (timestamp check protects local customizations)
+
 ### Step 5: Sync to Project (if --sync)
 
-If `--sync` flag is present:
+If `--sync` flag is present, also copy to the current project:
 - Copy new/updated commands to `.claude/commands/`
 - Copy new/updated skills to `.claude/skills/`
 - Copy new/updated agents to `.claude/agents/`
@@ -108,13 +161,20 @@ If `--sync` flag is present:
 - skills/{name}/skill.md - UPDATED
 - agents/{name}.md - UPDATED
 
-### Sync Status
-{if --sync}: Synced to current project
-{else}: Run `/update --sync` to sync to this project
+### Global Skills Synced (automatic)
+- ✓ SKILLS_MAP.md → ~/.claude/SKILLS_MAP.md
+- ✓ workflow-engineering (NEW)
+- ✓ workflow-research (NEW)
+- ✓ workflow-frontend-design (NEW)
+- (N skills already up to date — skipped)
+
+### Project Sync
+{if --sync}: Synced to current project (.claude/skills/, .claude/commands/, .claude/agents/)
+{else}: Run `/update --sync` to also sync to this project
 
 ### Next Steps
 1. Review new features in CHANGELOG.md
-2. Run `/sync project` if needed
+2. New skills are live in ~/.claude/skills/ — use them immediately
 3. Restart Claude Code if hooks changed
 ```
 
@@ -136,7 +196,7 @@ If `--sync` flag is present:
 
 ## What Gets Updated
 
-### From GitHub
+### From GitHub (always)
 - `commands/` - New slash commands
 - `skills/` - New and updated skills
 - `agents/` - Agent definitions
@@ -144,6 +204,10 @@ If `--sync` flag is present:
 - `hooks/` - Hook configurations
 - `output-styles/` - Output formatting
 - `docs/` - Documentation
+
+### Synced Globally (automatic — no flag needed)
+- `~/.claude/SKILLS_MAP.md` - Lightweight skill routing index (always overwritten)
+- `~/.claude/skills/<name>/` - New skills only; existing skills updated only if plugin version is newer (timestamp check)
 
 ### Synced to Project (with --sync)
 - `.claude/commands/` - Commands
