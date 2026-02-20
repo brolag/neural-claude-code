@@ -3,7 +3,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Claude%20Code-Plugin-6366f1?style=for-the-badge&logo=anthropic" alt="Claude Code Plugin">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License">
-  <img src="https://img.shields.io/badge/Version-1.12.0-ec4899?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/Version-1.13.0-ec4899?style=for-the-badge" alt="Version">
 </p>
 
 <p align="center">
@@ -72,6 +72,12 @@ source ~/.zshrc
 
 </details>
 
+**Already installed? Update to v1.13.0:**
+
+```bash
+/update
+```
+
 **[Full Installation Guide ->](docs/tutorials/01-installation.md)**
 
 ---
@@ -80,12 +86,12 @@ source ~/.zshrc
 
 | Feature | What it does | Command |
 |---------|--------------|---------|
+| **Workflow Orchestration** | Pre-built chains for frontend, engineering, research, content — with smart skip logic | `workflow-frontend-design`, `workflow-engineering` |
+| **Skills Map** | Lightweight 2KB index — Claude picks the right skill without loading 35 full files | `SKILLS_MAP.md` |
 | **Agentic Course** | Interactive 13-lesson course for mastering agentic coding | `/course` |
 | **Neural Squad** | Multi-agent orchestration with anti-slop enforcement | `/squad-init`, `/squad-status` |
 | **CRAFT Framework** | Structured prompts for autonomous agents | `/craft` |
 | **KPI Tracking** | Measure Plan/Review Velocity, Autonomy, Loop State | `/kpi` |
-| **Compute Advantage** | Calculate your agentic leverage ratio | `/ca` |
-| **Cost Tracking** | Real-time API cost monitoring | `/cost` |
 | **Skills Manager** | Install, enable/disable skills on demand | `/install-skills`, `/manage-skills` |
 | **Self-Learning** | Expertise files that grow smarter each session | `/remember`, `/recall` |
 | **Persistent Memory** | Facts and patterns that survive restarts | `/remember`, `/forget` |
@@ -102,24 +108,32 @@ source ~/.zshrc
 /onboard                     # Guided tour
 /course                      # 13-lesson agentic coding course
 
+# Workflows (new in v1.13.0)
+workflow-frontend-design     # New component, page, or redesign
+workflow-frontend-maintenance # CSS fix, copy edit, minor tweak
+workflow-engineering         # Feature / bugfix / hotfix
+workflow-research            # Research any topic
+workflow-content             # Social post, newsletter, blog
+
 # Install and manage skills
 /install-skills              # Add new skills
 /manage-skills               # Enable/disable/update
-/tts off                     # Toggle voice/summaries
+/update                      # Update plugin to latest version
 
 # Memory
 /remember The API uses JWT tokens
 /recall database
 
 # Development
-/debug                       # Root cause analysis
+/debugging                   # Root cause analysis
 /tdd                         # Test-driven development
 /slop-scan                   # Find technical debt
 /overseer                    # Review PR quality
+/git-save                    # Commit with Conventional Commits
 
 # Autonomous work
 /loop "Fix all tests" --max 10
-/loop "Build feature" --craft   # With CRAFT prompt
+/todo-new "Build feature"    # Plan first, then loop
 
 # Multi-agent squad
 /squad-init                      # Initialize 3-agent system
@@ -129,12 +143,11 @@ source ~/.zshrc
 
 # Agentic metrics
 /kpi                             # Performance dashboard
-/ca                              # Compute Advantage score
-/cost                            # API cost tracking
 /craft "Build auth system"       # Generate structured prompt
 
 # Learning
 /learn https://github.com/user/repo
+/super-search "topic"            # Triple-engine research
 ```
 
 **[All Commands ->](docs/reference/commands.md)**
