@@ -7,6 +7,53 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.13.1] - 2026-02-20
+
+### Enhanced `/update` — Auto-Sync Global Skills
+
+The `/update` command now automatically syncs new skills to `~/.claude/skills/` after every `git pull`, with no flags required.
+
+#### What's new
+- **Step 4b: Sync Global Skills** — runs automatically post-pull
+- Copies `SKILLS_MAP.md` to `~/.claude/SKILLS_MAP.md` (always — it's an index, not customizable)
+- Copies new skill directories to `~/.claude/skills/<name>/` (NEW skills always; existing skills only if plugin version is newer)
+- Timestamp check protects locally-customized skills from being overwritten
+- Output shows per-skill sync status: ✓ NEW / ✓ UPDATED / N skipped
+
+**Impact**: Existing users on any version get the 8 new workflow skills and SKILLS_MAP with a single `/update` — no manual copying needed.
+
+---
+
+## [1.13.0] - 2026-02-20
+
+### Skill Orchestration System — Workflows + SKILLS_MAP
+
+Complete skill orchestration layer: a lightweight routing index, 5 workflow chains, and 3 agent-invocable command wrappers.
+
+#### Skills Added (8)
+
+**Workflow Orchestrators**
+- `workflow-frontend-design` — Full design chain: `discover-standards → craft? → frontend-design → react-best-practices? → stop-slop? → playwright-browser? → visual-compare? → overseer`. Trigger: new component, page build, redesign, mockup implementation.
+- `workflow-frontend-maintenance` — Lightweight chain for minor UI changes: `discover-standards → stop-slop? → playwright-browser? → overseer?`. Trigger: CSS fix, spacing, copy edit.
+- `workflow-engineering` — Three modes (feature / bugfix / hotfix) with explicit skip gates. Feature chain: `spec? → discover-standards → craft? → tdd → slop-scan? → overseer → git-save?`
+- `workflow-research` — Memory-first research chain: `recall → super-search? → knowledge-management? → memory-system`. Skips web search if memory is fresh.
+- `workflow-content` — Public content chain: `craft? → content-creation → stop-slop`. `stop-slop` never skipped on public content.
+
+**Command Wrappers** (agent-invocable wrappers for commands)
+- `git-save` — Wraps the git-save command for use inside workflow chains
+- `spec` — Wraps the spec command; creates CRAFT-structured spec at `specs/{project}-{task-slug}.md`
+- `todo-new` — Wraps todo-new; creates structured `todo.md` with phases for loop execution
+
+#### SKILLS_MAP
+- `SKILLS_MAP.md` — Lightweight ~2KB routing index covering all 35+ skills in 7 categories
+- Replaces loading 324KB of full skill files; Claude reads the map, picks the skill, loads the file only on invocation
+- Includes Workflow Router table (task type → workflow name) and Global Skip Rules with measurable conditions (`loc_delta <= 25`, `has_mockup = false`)
+
+### Stats
+- **Skills**: 27 → 35 (+30%)
+
+---
+
 ## [1.12.0] - 2026-02-17
 
 ### Added 14 Dev Skills and Commands

@@ -3,7 +3,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Claude%20Code-Plugin-6366f1?style=for-the-badge&logo=anthropic" alt="Claude Code Plugin">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License">
-  <img src="https://img.shields.io/badge/Version-1.13.0-ec4899?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/Version-1.13.1-ec4899?style=for-the-badge" alt="Version">
 </p>
 
 <p align="center">
@@ -72,7 +72,7 @@ source ~/.zshrc
 
 </details>
 
-**Already installed? Update to v1.13.0:**
+**Already installed? Update to v1.13.1:**
 
 ```bash
 /update
@@ -108,7 +108,7 @@ source ~/.zshrc
 /onboard                     # Guided tour
 /course                      # 13-lesson agentic coding course
 
-# Workflows (new in v1.13.0)
+# Workflows (new in v1.13.1)
 workflow-frontend-design     # New component, page, or redesign
 workflow-frontend-maintenance # CSS fix, copy edit, minor tweak
 workflow-engineering         # Feature / bugfix / hotfix
