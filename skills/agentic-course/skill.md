@@ -13,11 +13,14 @@ Interactive terminal course for mastering autonomous AI-assisted development.
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│           AGENTIC CODING MASTERY COURSE                        │
+│           AGENTIC CODING MASTERY COURSE v2.2                   │
 │           Neural Claude Code Interactive Learning              │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
-│  FUNDAMENTALS (Start Here)                                      │
+│  FOUNDATIONS (Start Here)                                       │
+│  └── Lesson 0: How Agents Work (15 min)             ★ NEW      │
+│                                                                 │
+│  FUNDAMENTALS                                                   │
 │  ├── Lesson 1: The Reality Check (10 min)                      │
 │  ├── Lesson 2: Mental Models (15 min)                          │
 │  └── Lesson 3: Your First Autonomous Task (20 min)             │
@@ -32,13 +35,18 @@ Interactive terminal course for mastering autonomous AI-assisted development.
 │  ├── Lesson 8: Circuit Breakers (15 min)                       │
 │  └── Lesson 9: State Management (20 min)                       │
 │                                                                 │
-│  ADVANCED PATTERNS                                              │
+│  ORCHESTRATION                                                  │
 │  ├── Lesson 10: Multi-Agent Orchestration (25 min)             │
-│  ├── Lesson 11: Context Engineering (20 min)                   │
-│  └── Lesson 12: Compute Advantage (15 min)                     │
+│  └── Lesson 11: Pre-Design Workflow (20 min)                   │
+│                                                                 │
+│  ADVANCED PATTERNS                                              │
+│  ├── Lesson 12: Context Engineering (20 min)                   │
+│  └── Lesson 13: Compute Advantage (15 min)                     │
 │                                                                 │
 │  MASTERY                                                        │
-│  └── Lesson 13: Building Your System (30 min)                  │
+│  ├── Lesson 14: Building Your System (30 min)                  │
+│  ├── Lesson 15: Monitoring & Analytics (20 min)     ★ NEW      │
+│  └── Lesson 16: Continuous Improvement (20 min)     ★ NEW      │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -87,7 +95,10 @@ When user runs `/course`, show:
 ║              Interactive Terminal Course                          ║
 ╠═══════════════════════════════════════════════════════════════════╣
 ║                                                                   ║
-║  Your Progress: [████░░░░░░░░░░░░░░░░] 3/13 lessons (23%)        ║
+║  Your Progress: [████░░░░░░░░░░░░░░░░] 3/17 lessons (18%)        ║
+║                                                                   ║
+║  FOUNDATIONS                                                      ║
+║  ✅ 0. How Agents Work                               ★ NEW       ║
 ║                                                                   ║
 ║  FUNDAMENTALS                                                     ║
 ║  ✅ 1. The Reality Check                                         ║
@@ -104,13 +115,18 @@ When user runs `/course`, show:
 ║  ○ 8. Circuit Breakers                                           ║
 ║  ○ 9. State Management                                           ║
 ║                                                                   ║
-║  ADVANCED PATTERNS                                                ║
+║  ORCHESTRATION                                                    ║
 ║  🔒 10. Multi-Agent Orchestration                                ║
-║  🔒 11. Context Engineering                                      ║
-║  🔒 12. Compute Advantage                                        ║
+║  🔒 11. Pre-Design Workflow                                      ║
+║                                                                   ║
+║  ADVANCED PATTERNS                                                ║
+║  🔒 12. Context Engineering                                      ║
+║  🔒 13. Compute Advantage                                        ║
 ║                                                                   ║
 ║  MASTERY                                                          ║
-║  🔒 13. Building Your System                                     ║
+║  🔒 14. Building Your System                                     ║
+║  🔒 15. Monitoring & Analytics               ★ NEW               ║
+║  🔒 16. Continuous Improvement               ★ NEW               ║
 ║                                                                   ║
 ╠═══════════════════════════════════════════════════════════════════╣
 ║  Commands:                                                        ║
@@ -188,7 +204,7 @@ Quick reference for any topic:
 
 | Error | Cause | Resolution |
 |-------|-------|------------|
-| Lesson not found | Invalid lesson number | Show valid range (1-13) |
+| Lesson not found | Invalid lesson number | Show valid range (1-14) |
 | Prerequisites missing | Advanced lesson without basics | Suggest completing prerequisites first |
 | Progress file missing | First time user | Create fresh progress file |
 
