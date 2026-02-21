@@ -114,7 +114,7 @@ for cmd_file in "$INSTALL_DIR"/commands/*.md; do
         cp "$cmd_file" "$HOME/.claude/commands/"
     fi
 done
-success "Commands registered"
+echo -e "${GREEN}✓${RESET} Commands registered"
 
 # Run setup hooks
 if [ -f "$INSTALL_DIR/scripts/setup-hooks.sh" ]; then
