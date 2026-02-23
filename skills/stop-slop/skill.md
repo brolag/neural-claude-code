@@ -2,7 +2,7 @@
 name: stop-slop
 description: Remove AI writing patterns from prose. Use when drafting, editing, or reviewing text to eliminate predictable AI tells.
 trigger: Writing prose, editing drafts, reviewing content for AI patterns, after content generation
-author: Based on Hardik Pandya (hvpandya.com), adapted for Neural Claude Code
+author: Based on hvpandya.com, adapted for Neural Claude Code
 version: 1.0.0
 ---
 
@@ -130,7 +130,7 @@ This skill integrates with:
 
 ## License
 
-Based on MIT-licensed work by Hardik Pandya.
+Based on MIT-licensed work from hvpandya.com.
 
 ## Usage
 

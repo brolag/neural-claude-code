@@ -192,7 +192,7 @@ Planned for v1.5.0:
 
 **Skills Sources**:
 - `react-best-practices`: Vercel Engineering
-- `stop-slop`: Hardik Pandya
+- `stop-slop`: hvpandya.com
 - Anti-slop trilogy: Generated from agent templates
 
 **Contributors**:

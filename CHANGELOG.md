@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.14.0] - 2026-02-22
+
+### Removed Gemini CLI Integration
+
+Gemini CLI removed due to third-party access restrictions. All Gemini CLI references removed from multi-AI routing.
+
+#### Changed
+- `/ai-collab` — Now Dual-AI (Claude + Codex) instead of Triple-AI
+- `/plan-execute` — Executor changed from Gemini to Codex (GPT-5.2)
+- `/route` — Removed Gemini tier; routing now Qwen (free) → Codex → Opus
+- `index.html` — Updated feature descriptions and agent list
+- `README.md` — Updated Multi-AI feature description
+
+#### Notes
+- Cost savings adjusted: ~50-60% (was ~60-70% with Gemini's cheaper rates)
+
+---
+
 ## [1.13.1] - 2026-02-20
 
 ### Enhanced `/update` — Auto-Sync Global Skills

@@ -11,7 +11,7 @@ Analyze tasks and recommend the optimal AI model for cost/quality optimization.
 
 ```bash
 /route <task description>        # Get routing recommendation
-/route implement sorting algo    # Example: routes to Gemini
+/route implement sorting algo    # Example: routes to Codex
 /route review auth security      # Example: stays in Opus
 ```
 
@@ -40,35 +40,24 @@ Analyze the following task and recommend the optimal AI routing:
 
 ---
 
-### Route to GEMINI - 89% savings
-
-**Keywords**: algorithm, implement, execute, prototype, parse, transform
-**Characteristics**:
-- Clear, well-defined task
-- Algorithmic problem (1501 Elo strength)
-- Part of /plan-execute workflow
-- Data transformation or parsing
-- Repetitive multi-step tasks
-
-**Command**: `gemini -y "<task>"`
-
-**Savings**: 89% input, 88% output (vs Opus)
-
----
-
 ### Route to CODEX - 65% savings
 
-**Keywords**: deploy, CI/CD, terminal, script, devops, bash, shell
+**Keywords**: algorithm, implement, execute, prototype, parse, transform, deploy, CI/CD, terminal, script, devops, bash, shell
 **Characteristics**:
+- Clear, well-defined implementation task
+- Algorithmic problems
 - Requires Bash/terminal operations
 - DevOps automation
 - Long-running task (>30 min)
 - CLI tool creation
-- Code review (fewer false positives)
+- Code review
+- Data transformation or parsing
+- Repetitive multi-step tasks
+- Part of /plan-execute workflow
 
 **Command**: `codex exec "<task>"`
 
-**Savings**: 75% input, 60% output (vs Opus)
+**Savings**: 65-75% (vs Opus)
 
 ---
 
@@ -96,7 +85,7 @@ Analyze the following task and recommend the optimal AI routing:
 
 **Task**: [Analyzed task]
 
-**Recommended**: [Qwen | Gemini | Codex | Opus]
+**Recommended**: [Qwen | Codex | Opus]
 
 **Reasoning**: [Why this is optimal]
 
@@ -124,10 +113,10 @@ For complex multi-step tasks, recommend the full pattern:
 
 ```
 1. OPUS plans (5-10% of tokens)
-2. GEMINI executes (70-80% of tokens)
+2. CODEX executes (70-80% of tokens)
 3. OPUS reviews (10-20% of tokens)
 
-Total savings: 60-70%
+Total savings: 50-60%
 ```
 
 **Trigger**: Task has 3+ distinct steps, well-defined goal
@@ -146,18 +135,18 @@ Total savings: 60-70%
 
 **Task**: Implement binary search in Python
 
-**Recommended**: Gemini
+**Recommended**: Codex
 
-**Reasoning**: Clear algorithm implementation, well-defined output,
-Gemini has 1501 Elo on competitive programming.
+**Reasoning**: Clear algorithm implementation, well-defined output.
+Codex (GPT-5.2) excels at implementation tasks.
 
 **Cost Comparison**:
 - Opus: ~$0.15
-- Gemini: ~$0.02
-- **Savings**: 87%
+- Codex: ~$0.05
+- **Savings**: 67%
 
 **Command to Run**:
-gemini -y "Implement binary search in Python with edge case handling"
+codex exec "Implement binary search in Python with edge case handling"
 
 **Confidence**: High
 ```
@@ -197,7 +186,7 @@ Opus 4.6 achieves 80.8% SWE-bench - accuracy matters for security code.
 **Recommended**: Codex
 
 **Reasoning**: Terminal-heavy, DevOps automation, likely requires
-multiple bash commands. Codex is Terminal-Bench #1.
+multiple bash commands. Codex is Terminal-Bench leader.
 
 **Cost Comparison**:
 - Opus: ~$0.80
@@ -217,11 +206,12 @@ codex exec "Set up GitHub Actions CI/CD pipeline with test, build, and deploy st
 | Task Type | Route | Savings |
 |-----------|-------|---------|
 | Boilerplate/examples | Qwen | 100% |
-| Algorithms | Gemini | 89% |
-| Data parsing | Gemini | 89% |
+| Algorithms | Codex | 65% |
+| Data parsing | Codex | 65% |
 | DevOps/terminal | Codex | 65% |
 | Code review | Codex | 65% |
 | Long sessions | Codex | 65% |
+| Implementation | Codex | 65% |
 | Architecture | Opus | 0% |
 | Security | Opus | 0% |
 | Multi-file complex | Opus | 0% |
@@ -234,10 +224,10 @@ After routing, log the decision:
 
 ```json
 {
-  "timestamp": "2025-12-29T10:00:00Z",
+  "timestamp": "2026-02-22T10:00:00Z",
   "task": "implement binary search",
-  "routed_to": "gemini",
-  "estimated_savings": 0.13,
+  "routed_to": "codex",
+  "estimated_savings": 0.10,
   "confidence": "high"
 }
 ```
@@ -248,7 +238,7 @@ Append to: `.claude/memory/costs.json`
 
 | Error | Cause | Resolution |
 |-------|-------|------------|
-| CLI not found | Gemini/Codex not installed | Install CLI or stay in Opus |
+| CLI not found | Codex not installed | Install CLI or stay in Opus |
 | Task unclear | Ambiguous description | Rephrase with specific action verbs |
 | API unavailable | External service down | Fall back to Opus |
 | Low confidence | Edge case task | Default to Opus for safety |

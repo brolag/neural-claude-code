@@ -3,7 +3,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Claude%20Code-Plugin-6366f1?style=for-the-badge&logo=anthropic" alt="Claude Code Plugin">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License">
-  <img src="https://img.shields.io/badge/Version-1.13.1-ec4899?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/Version-1.14.0-ec4899?style=for-the-badge" alt="Version">
 </p>
 
 <p align="center">
@@ -72,7 +72,7 @@ source ~/.zshrc
 
 </details>
 
-**Already installed? Update to v1.13.1:**
+**Already installed? Update to v1.14.0:**
 
 ```bash
 /update
@@ -97,7 +97,7 @@ source ~/.zshrc
 | **Persistent Memory** | Facts and patterns that survive restarts | `/remember`, `/forget` |
 | **Code Quality** | Detect and auto-fix technical debt | `/slop-scan`, `/slop-fix`, `/overseer` |
 | **Neural Loops** | Autonomous coding sessions that iterate until done | `/loop` |
-| **Multi-AI** | Route tasks to Claude, Codex, or Gemini | `/pv-mesh`, `/ai-collab` |
+| **Multi-AI** | Route tasks to Claude or Codex | `/pv-mesh`, `/ai-collab` |
 
 ---
 
@@ -108,7 +108,7 @@ source ~/.zshrc
 /onboard                     # Guided tour
 /course                      # 13-lesson agentic coding course
 
-# Workflows (new in v1.13.1)
+# Workflows (new in v1.14.0)
 workflow-frontend-design     # New component, page, or redesign
 workflow-frontend-maintenance # CSS fix, copy edit, minor tweak
 workflow-engineering         # Feature / bugfix / hotfix
