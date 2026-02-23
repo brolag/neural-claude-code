@@ -7,7 +7,7 @@ allowed-tools: Bash
 
 # PR Review
 
-Runs dual-AI automated review on a GitHub PR using Codex (logic/edge cases) + Claude (security/architecture), then posts the combined review as a PR comment.
+Runs dual-AI automated review on a GitHub PR using Codex (logic/edge cases) + Claude (security/architecture/slop), then posts the combined review as a PR comment.
 
 ## Usage
 
@@ -16,10 +16,10 @@ Runs dual-AI automated review on a GitHub PR using Codex (logic/edge cases) + Cl
 /pr-review 42
 
 # Specify repo explicitly
-/pr-review 42 indie-mind/mission-control
+/pr-review 42 owner/my-repo
 
 # From a project directory
-cd /Users/brolag/Sites/mission-control && /pr-review 15
+cd /path/to/project && /pr-review 15
 ```
 
 ## What it reviews
@@ -28,6 +28,7 @@ cd /Users/brolag/Sites/mission-control && /pr-review 15
 |----------|-------|
 | **Codex** | Logic errors, edge cases, race conditions, null handling, off-by-one |
 | **Claude Sonnet** | Security vulnerabilities, architectural anti-patterns, breaking changes |
+| **Claude Sonnet** | AI slop patterns, over-engineering, YAGNI violations |
 
 ## Output Format
 
@@ -45,6 +46,13 @@ Posts a comment directly on the PR:
 ### Claude Sonnet (Security & Architecture)
 [HIGH] SQL input not sanitized before query — api/search.ts:67
 No critical issues found in architecture.
+
+---
+
+### Claude Sonnet (AI Slop & Over-Engineering)
+[SLOP] HIGH Generic error message 'Something went wrong' — lib/api.ts:88
+[OVERENG] MED Factory pattern for single-use object — utils/factory.ts:12
+No critical issues found.
 
 ---
 *Auto-review by `pr-review.sh` — Codex v0.98.0 + Claude Sonnet 4.6*
@@ -72,7 +80,7 @@ codex review --base main  # from the PR branch worktree
 PLUGIN_DIR="$(find ~/.claude/plugins/cache -name 'pr-review.sh' -path '*/neural-claude-code*' 2>/dev/null | head -1)"
 if [ -z "$PLUGIN_DIR" ]; then
   # Fallback: direct path
-  PLUGIN_DIR="$HOME/Sites/neural-claude-code-plugin/scripts/pr-review.sh"
+  PLUGIN_DIR="$HOME/.claude/plugins/neural-claude-code-plugin/scripts/pr-review.sh"
 fi
 bash "$PLUGIN_DIR" "$1" "${2:-}"
 ```

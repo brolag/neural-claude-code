@@ -8,7 +8,7 @@ set -e
 PR_NUMBER="$1"
 if [ -z "$PR_NUMBER" ]; then
   echo "Usage: $0 <PR_NUMBER> [REPO]"
-  echo "Example: $0 42 indie-mind/mission-control"
+  echo "Example: $0 42 owner/my-repo"
   exit 1
 fi
 
@@ -25,6 +25,7 @@ mkdir -p "$LOG_DIR"
 LOG_FILE="$LOG_DIR/pr-review-${PR_NUMBER}-$(date +%Y-%m-%d-%H%M).log"
 CODEX_OUTPUT="/tmp/pr-review-codex-$PR_NUMBER.txt"
 CLAUDE_OUTPUT="/tmp/pr-review-claude-$PR_NUMBER.txt"
+SLOP_OUTPUT="/tmp/pr-review-slop-$PR_NUMBER.txt"
 
 log() { echo "$1" | tee -a "$LOG_FILE"; }
 
@@ -95,6 +96,53 @@ claude --print \
 CLAUDE_REVIEW=$(cat "$CLAUDE_OUTPUT" 2>/dev/null || echo "[Claude review unavailable]")
 log "Claude review complete ($(echo "$CLAUDE_REVIEW" | wc -l) lines)"
 
+# --- Slop & Over-Engineering Review ---
+log "Running slop & over-engineering review..."
+SLOP_PROMPT="You are a senior code quality reviewer with zero tolerance for AI slop and over-engineering.
+
+Review this PR diff for TWO categories:
+
+## 1. AI SLOP
+Patterns that signal AI-generated or low-quality code:
+- Comments/docstrings explaining obvious code ('# increment counter by 1')
+- Redundant backwards-compatibility shims for unused code
+- Generic placeholder names (data, result, temp, helper, util, manager)
+- Unused _var renames instead of actual deletion
+- Verbose boilerplate that adds zero value
+- Catch-all error messages ('An error occurred', 'Something went wrong')
+- Re-exporting types or values that nothing imports
+- '// removed' or '// TODO: remove' comments left in
+
+## 2. OVER-ENGINEERING
+YAGNI/premature abstraction violations:
+- Interface/abstract class with only one implementation
+- Factory/builder pattern for simple object creation
+- Feature flags or config for things that are always-on
+- Helper function used exactly once
+- Generics/type parameters that don't add type safety
+- Abstraction layers with pass-through methods
+- Observer/event pattern where a direct call suffices
+- Backwards-compatibility shims for code with no consumers
+- 'Designed for future extensibility' when no extension is planned
+
+FORMAT: List issues as [SLOP|OVERENG] severity(HIGH/MED/LOW) Description — file.ext:line
+Be ruthless but precise. Skip issues already covered by logic/security review.
+If clean, say 'No slop or over-engineering detected.'
+
+PR: $PR_TITLE
+
+Diff:
+$DIFF_SNIPPET"
+
+unset CLAUDECODE
+claude --print \
+  --dangerously-skip-permissions \
+  --model "claude-sonnet-4-6" \
+  -p "$SLOP_PROMPT" > "$SLOP_OUTPUT" 2>>"$LOG_FILE" || true
+
+SLOP_REVIEW=$(cat "$SLOP_OUTPUT" 2>/dev/null || echo "[Slop review unavailable]")
+log "Slop review complete ($(echo "$SLOP_REVIEW" | wc -l) lines)"
+
 # --- Post combined comment ---
 TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
 COMMENT="## Automated Review — $TIMESTAMP
@@ -108,6 +156,11 @@ $CODEX_REVIEW
 $CLAUDE_REVIEW
 
 ---
+
+### Claude Sonnet (AI Slop & Over-Engineering)
+$SLOP_REVIEW
+
+---
 *Auto-review by \`pr-review.sh\` — Codex v0.98.0 + Claude Sonnet 4.6*"
 
 log ""
@@ -119,4 +172,4 @@ log "=== Done ==="
 log "Log: $LOG_FILE"
 
 # Cleanup temp files
-rm -f "$CODEX_OUTPUT" "$CLAUDE_OUTPUT"
+rm -f "$CODEX_OUTPUT" "$CLAUDE_OUTPUT" "$SLOP_OUTPUT"
