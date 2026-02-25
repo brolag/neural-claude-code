@@ -1,0 +1,33 @@
+# Environment & Secrets
+.env
+.env.*
+.env.local
+.env.*.local
+
+# API credentials & config
+.telegram-config
+.elevenlabs.key
+.api-keys
+*.secret
+
+# Private keys
+*.key
+*.pem
+*.pfx
+*.p12
+
+# Claude Code session/memory data
+.claude/data/
+.claude/memory/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules/
+
+# Temporary files
+tmp/
+*.tmp
+*.log
