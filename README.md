@@ -3,7 +3,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Claude%20Code-Plugin-6366f1?style=for-the-badge&logo=anthropic" alt="Claude Code Plugin">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License">
-  <img src="https://img.shields.io/badge/Version-1.14.0-ec4899?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/Version-1.15.0-ec4899?style=for-the-badge" alt="Version">
 </p>
 
 <p align="center">
@@ -72,7 +72,7 @@ source ~/.zshrc
 
 </details>
 
-**Already installed? Update to v1.14.0:**
+**Already installed? Update to v1.15.0:**
 
 ```bash
 /update
@@ -86,6 +86,8 @@ source ~/.zshrc
 
 | Feature | What it does | Command |
 |---------|--------------|---------|
+| **Skill Auto-Routing** | Skills fire automatically based on context — no manual `/command` needed | `rules/skill-auto-routing.md` |
+| **Pipeline Sequences** | 6 pre-built skill chains: Feature, Bugfix, Hotfix, Refactor, Content, New Codebase | `SKILLS_MAP.md` |
 | **Workflow Orchestration** | Pre-built chains for frontend, engineering, research, content — with smart skip logic | `workflow-frontend-design`, `workflow-engineering` |
 | **Skills Map** | Lightweight 2KB index — Claude picks the right skill without loading 35 full files | `SKILLS_MAP.md` |
 | **Agentic Course** | Interactive 13-lesson course for mastering agentic coding | `/course` |
@@ -108,7 +110,7 @@ source ~/.zshrc
 /onboard                     # Guided tour
 /course                      # 13-lesson agentic coding course
 
-# Workflows (new in v1.14.0)
+# Workflows (auto-routing in v1.15.0)
 workflow-frontend-design     # New component, page, or redesign
 workflow-frontend-maintenance # CSS fix, copy edit, minor tweak
 workflow-engineering         # Feature / bugfix / hotfix

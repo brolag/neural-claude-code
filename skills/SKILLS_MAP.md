@@ -83,17 +83,6 @@ Pick the workflow first. It handles skill sequencing and skip logic.
 | `plan-execute` | complex multi-step, cost matters | simple or interactive |
 | `squad` | true multi-agent with worktrees | single-agent is enough |
 
-### Media Generation
-| skill | use when |
-|---|---|
-| `image-gen` | generate image via ComfyUI |
-| `face-gen` | face-consistent images (IP-Adapter) |
-| `nano-banana` | Gemini Pro image with reference |
-| `video-gen` | image-to-video via Wan 2.2 |
-| `music-gen` | music via ACE-Step 1.5 |
-| `tts-gen` | speech audio via Qwen3-TTS |
-| `zimage-lora` | train custom image LoRA |
-
 ### Project & System
 | skill | use when |
 |---|---|
@@ -101,13 +90,27 @@ Pick the workflow first. It handles skill sequencing and skip logic.
 | `evaluator` | run golden task evaluations |
 | `pattern-detector` | find automation opportunities in logs |
 | `kpi` | track agentic coding metrics |
-| `planning` | weekly review, project status session |
-| `morning-orchestrator` | start-of-day context prep |
 | `project-setup` | initialize Claude Code in a new project |
 | `meta-skill` | create a new skill from a pattern |
 | `skill-builder` | build skill from user request |
-| `frontier-scan` | scan AI agent landscape |
 | `agentic-course` | interactive learning mode |
+
+---
+
+## Pipeline Sequences
+
+Skills chain into pipelines. Use the full sequence for complex tasks, skip steps per Global Skip Rules.
+
+```
+Feature:      /recall → /craft → /todo-new → /loop --tdd → /slop-scan → /slop-fix → /pr-review → /eval
+Bugfix:       /recall → /debugging → /tdd → /overseer → git-save
+Hotfix:       /debugging → minimal fix → /overseer (reduced) → git-save
+Refactor:     /slop-scan → /parallel-verification → implement → /slop-scan (verify) → /pr-review
+Content:      draft → /stop-slop → review
+New Codebase: /discover-standards → /recall → proceed
+```
+
+**Auto-routing**: See `rules/skill-auto-routing.md` for proactive trigger rules — skills fire automatically based on context signals instead of waiting for manual invocation.
 
 ---
 

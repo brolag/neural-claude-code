@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.15.0] - 2026-02-26
+
+### Skill Auto-Routing — Proactive Skill Triggers
+
+Skills are underused when routing is passive ("use when X"). This release makes routing **proactive** — when context signals match, skills fire automatically without manual `/command` invocations.
+
+#### Added
+- `rules/skill-auto-routing.md` — Proactive trigger rules for all development skills
+  - **Safety guards**: Loop prevention (15min cooldown, max 3 iterations), override protocol ("stop"/"cancel"/"just do it"), negative triggers (DON'T trigger on trivial tasks)
+  - **8 development triggers**: Feature start, new codebase, writing code (TDD), post-implementation (slop-scan), pre-merge (pr-review), bugfix, hotfix, autonomous loops
+  - **Knowledge triggers**: `/recall` before complex work, `/remember` after insights
+  - **Quality gate triggers**: Rapid feature additions, refactor sprints, complex refactors (parallel-verification), prose writing (stop-slop)
+  - **Trivial task definition**: Concrete criteria (single file + ≤15 lines + no new functions + no architectural impact + no security implications)
+
+#### Changed
+- `SKILLS_MAP.md` — Added Pipeline Sequences section with 6 pre-built chains:
+  - Feature: `/recall → /craft → /todo-new → /loop --tdd → /slop-scan → /slop-fix → /pr-review → /eval`
+  - Bugfix: `/recall → /debugging → /tdd → /overseer → git-save`
+  - Hotfix: `/debugging → minimal fix → /overseer (reduced) → git-save`
+  - Refactor: `/slop-scan → /parallel-verification → implement → /slop-scan (verify) → /pr-review`
+  - Content: `draft → /stop-slop → review`
+  - New Codebase: `/discover-standards → /recall → proceed`
+- `SKILLS_MAP.md` — Removed personal/hardware-specific skills from Project & System section (media generation fleet)
+
+#### Notes
+- Auto-routing complements the existing Workflow Router — workflows handle sequencing, auto-routing handles **when** to start
+- Safety guards prevent over-triggering and infinite loops
+- Override protocol respects user intent — "just do it" skips all ceremony
+
+---
+
 ## [1.14.0] - 2026-02-22
 
 ### Removed Gemini CLI Integration
