@@ -34,7 +34,7 @@ Get up and running with Neural Claude Code:
 Recipes for common tasks:
 
 - **[Memory System](how-to/memory.md)** - Remember, recall, and forget facts
-- **[Multi-AI Collaboration](how-to/multi-ai.md)** - Route tasks to Claude, Codex, or Gemini
+- **[Multi-AI Collaboration](how-to/multi-ai.md)** - Route tasks between Claude and Codex
 - **[Neural Loops](how-to/neural-loops.md)** - Run autonomous coding sessions
 - **[Research](how-to/research.md)** - Parallel research with swarms
 - **[Output Styles](how-to/output-styles.md)** - Change response formats
@@ -64,7 +64,7 @@ How and why things work:
 
 - **[Architecture](explanation/architecture.md)** - System overview
 - **[Agent Expert Pattern](explanation/agent-expert.md)** - The learning loop
-- **[Multi-AI Strategy](explanation/multi-ai.md)** - Why 3 AIs work together
+- **[Multi-AI Strategy](explanation/multi-ai.md)** - Why 2 AIs work together
 - **[Advanced Patterns](explanation/patterns.md)** - v3.1 hidden patterns
 
 ---

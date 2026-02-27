@@ -72,7 +72,7 @@ Reusable skills that extend Claude Code capabilities. Install with `/install-ski
 
 | Skill | Trigger | Description |
 |-------|---------|-------------|
-| `plan-execute` | `/plan-execute` | Opus + Gemini orchestration |
+| `plan-execute` | `/plan-execute` | Opus + Codex orchestration |
 
 ---
 

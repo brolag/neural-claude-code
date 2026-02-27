@@ -439,11 +439,6 @@ h2 {
     color: var(--accent);
 }
 
-.ai-badge.gemini {
-    background: rgba(59, 130, 246, 0.2);
-    color: #60a5fa;
-}
-
 /* AI Comparison Table */
 .ai-comparison {
     background: var(--bg-card);
@@ -493,11 +488,6 @@ th {
 .model-badge.codex {
     background: rgba(34, 197, 94, 0.2);
     color: var(--accent);
-}
-
-.model-badge.gemini {
-    background: rgba(59, 130, 246, 0.2);
-    color: #60a5fa;
 }
 
 /* Installation */

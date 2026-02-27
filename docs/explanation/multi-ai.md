@@ -1,6 +1,6 @@
 # Explanation: Multi-AI Strategy
 
-Why using Claude, Codex, and Gemini together produces better results.
+Why using Claude and Codex together produces better results.
 
 ---
 
@@ -12,7 +12,6 @@ Different AIs excel at different tasks:
 |----|-----------|----------|
 | **Claude** | 80.8% SWE-bench (Opus 4.6) | Accuracy, edge cases, architecture |
 | **Codex** | #1 Terminal-Bench | DevOps, long sessions, practical |
-| **Gemini** | 1501 Elo (algorithms) | Performance, math, free tier |
 
 No single AI is best at everything.
 
@@ -39,11 +38,11 @@ When AIs disagree: Investigate further
 |------|---------|-----|
 | Security review | Claude | Thorough analysis |
 | CI/CD setup | Codex | Terminal mastery |
-| Algorithm design | Gemini | Mathematical reasoning |
+| Code review | Claude | Accuracy critical |
 
 ---
 
-## Three Collaboration Modes
+## Two Collaboration Modes
 
 ### 1. Direct Routing
 
@@ -52,8 +51,6 @@ Route a task to the best AI:
 ```
 Ask Codex to set up Docker
 
-Ask Gemini to optimize this algorithm
-
 Ask Claude to review security
 ```
 
@@ -61,31 +58,16 @@ Ask Claude to review security
 
 ### 2. Sequential Collaboration
 
-Get all perspectives in sequence:
+Get both perspectives in sequence:
 
 ```
 /ai-collab Should we use microservices?
 ```
 
-Claude → Codex → Gemini → Synthesis
+Claude → Codex → Synthesis
 
 **When:** Important decisions needing multiple viewpoints.
 **Time:** 45-60 seconds
-
-### 3. Parallel Collaboration
-
-Get all perspectives simultaneously:
-
-```
-/pv-mesh What's our caching strategy?
-```
-
-Claude ─┐
-Codex  ─┼─▶ Synthesis
-Gemini ─┘
-
-**When:** Need speed + diversity.
-**Time:** 15-20 seconds
 
 ---
 
@@ -93,20 +75,16 @@ Gemini ─┘
 
 For multi-step tasks, combine strengths optimally:
 
-```
-┌────────────────┐     ┌────────────────┐     ┌────────────────┐
-│  OPUS 4.6      │     │  GEMINI FLASH  │     │  OPUS 4.6      │
-│  (Planning)    │ ──▶ │  (Execution)   │ ──▶ │  (Review)      │
-│  5-10% tokens  │     │  70-80% tokens │     │  10-20% tokens │
-└────────────────┘     └────────────────┘     └────────────────┘
-```
+1. **Planning** — Opus 4.6 (5-10% tokens, accurate reasoning)
+2. **Execution** — Codex GPT-5.2 (70-80% tokens, fast action)
+3. **Review** — Opus 4.6 (10-20% tokens, accurate verification)
 
 **Why it works:**
 - Planning needs accuracy → Opus (expensive, best)
-- Execution is often simple → Gemini (cheap, fast)
+- Execution is often simple → Codex (fast, action-oriented)
 - Review needs accuracy → Opus (expensive, best)
 
-**Result:** 60-70% cost savings vs Opus-only
+**Result:** 50-60% cost savings vs Opus-only
 
 ---
 
@@ -116,7 +94,6 @@ For multi-step tasks, combine strengths optimally:
 |----------|------|---------|
 | Opus only | $$$$  | Highest |
 | Plan-Execute | $$ | High |
-| Gemini only | $ | Good for algorithms |
 | Local (Qwen) | Free | Good for boilerplate |
 
 ---
@@ -127,15 +104,12 @@ For multi-step tasks, combine strengths optimally:
 Is it a terminal/DevOps task?
 ├─ Yes → Codex
 └─ No
-   Is it algorithmic/mathematical?
-   ├─ Yes → Gemini
+   Is it complex/architectural?
+   ├─ Yes → Claude
    └─ No
-      Is it complex/architectural?
-      ├─ Yes → Claude
-      └─ No
-         Is it multi-step?
-         ├─ Yes → Plan-Execute
-         └─ No → Claude (default)
+      Is it multi-step?
+      ├─ Yes → Plan-Execute
+      └─ No → Claude (default)
 ```
 
 ---
@@ -149,7 +123,7 @@ Is it a terminal/DevOps task?
 ```
 
 - Opus plans: File structure, routes, middleware
-- Gemini executes: Simple implementations
+- Codex executes: Simple implementations
 - Opus reviews: Security verification
 
 ### Example 2: CI/CD Pipeline
@@ -160,21 +134,13 @@ Ask Codex to set up GitHub Actions with Docker
 
 Codex excels at terminal commands and DevOps patterns.
 
-### Example 3: Algorithm Optimization
+### Example 3: Critical Decision
 
 ```
-Ask Gemini to improve the time complexity of this search
+/ai-collab Should we migrate to microservices?
 ```
 
-Gemini has highest competitive programming Elo.
-
-### Example 4: Critical Decision
-
-```
-/pv-mesh Should we migrate to microservices?
-```
-
-All three AIs analyze independently, then synthesize.
+Both AIs analyze independently, then synthesize.
 
 ---
 
@@ -183,7 +149,6 @@ All three AIs analyze independently, then synthesize.
 Multi-AI requires installing additional CLIs:
 
 - **Codex:** `codex` CLI (OpenAI)
-- **Gemini:** `gemini` CLI (Google)
 - **Claude:** Already using it!
 
 ---

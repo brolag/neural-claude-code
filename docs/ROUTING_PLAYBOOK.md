@@ -7,7 +7,6 @@ Quick reference for optimal AI routing. Use `/route <task>` for detailed analysi
 ```
 Is it...
 ├── Boilerplate/syntax/example? → Qwen (FREE)
-├── Algorithm/data transform?   → Gemini (89% savings)
 ├── DevOps/terminal/scripts?    → Codex (65% savings)
 ├── Security/architecture?      → Opus (stay here)
 └── Multi-step complex task?    → Plan-Execute pattern
@@ -18,9 +17,8 @@ Is it...
 | Task Type | Command | Savings |
 |-----------|---------|---------|
 | Simple code | `ollama run qwen2.5-coder:7b "..."` | 100% |
-| Algorithm | `gemini -y "..."` | 89% |
 | DevOps | `codex exec "..."` | 65% |
-| Complex | `/plan-execute <task>` | 60-70% |
+| Complex | `/plan-execute <task>` | 50-60% |
 | Research | `/research <topic>` | Uses best per phase |
 
 ## When NOT to Route Away from Opus
@@ -37,23 +35,19 @@ Is it...
 
 For complex tasks with clear goals:
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│ OPUS PLANS  │ ──▶ │GEMINI EXECS │ ──▶ │OPUS REVIEWS │
-│   (5-10%)   │     │  (70-80%)   │     │  (10-20%)   │
-└─────────────┘     └─────────────┘     └─────────────┘
-```
+1. **Opus plans** (5-10% tokens)
+2. **Codex executes** (70-80% tokens)
+3. **Opus reviews** (10-20% tokens)
 
 **Invoke**: `/plan-execute <task>`
 
-**Savings**: 60-70% on multi-step implementations
+**Savings**: 50-60% on multi-step implementations
 
 ## Model Strengths
 
 | Model | Best At | SWE-bench | Cost |
 |-------|---------|-----------|------|
 | **Opus 4.6** | Accuracy, planning, security | 80.8% | $$ |
-| **Gemini 3** | Algorithms, speed | 1501 Elo | $ |
 | **Codex** | Terminal, long sessions | #1 Terminal | $$ |
 | **Qwen** | Boilerplate, explanations | Local | FREE |
 
@@ -64,13 +58,12 @@ For complex tasks with clear goals:
 - Route boilerplate generation to Qwen
 
 ### During Work
-- Algorithm tasks → Gemini
 - DevOps automation → Codex
 - Stay in Opus for architecture discussions
 
 ### End of Day
 - Code review → Codex (fresh perspective)
-- Documentation → Gemini (fast, good enough)
+- Documentation → Claude (accurate, thorough)
 
 ## Cost Tracking
 
@@ -78,12 +71,12 @@ Estimated monthly savings with proper routing:
 
 | Spend Level | Without Routing | With Routing | Savings |
 |-------------|-----------------|--------------|---------|
-| Light ($20/mo) | $20 | $8 | $12 |
-| Medium ($50/mo) | $50 | $18 | $32 |
-| Heavy ($100/mo) | $100 | $35 | $65 |
+| Light ($20/mo) | $20 | $10 | $10 |
+| Medium ($50/mo) | $50 | $22 | $28 |
+| Heavy ($100/mo) | $100 | $42 | $58 |
 
 ## Remember
 
 > "Pay architects to think, juniors to code, seniors to review."
 
-Same principle: Pay Opus to plan, Gemini to execute, Codex to verify.
+Same principle: Pay Opus to plan, Codex to execute, Opus to review.

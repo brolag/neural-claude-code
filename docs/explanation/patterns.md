@@ -13,7 +13,7 @@ These patterns leverage Claude Code v2.1.x features:
 | Research Swarm | `context: fork` | Parallel isolated research |
 | Self-Improving Mesh | Skill hot-reload | Live expertise updates |
 | Teleport Memory | `/teleport` | Local ↔ cloud sync |
-| PV-Mesh | Fork + Multi-AI | 3x faster consensus |
+| PV-Mesh | Fork + Multi-AI | 2x faster consensus |
 | Deep Research Hook | 10-min timeout | Full article scraping |
 | Wildcard Bash | Permission patterns | Autonomous loops |
 
@@ -76,13 +76,12 @@ Local (filesystem) ──export──▶ Cloud (web access) ──import──�
 
 ```
 Problem ─┬─▶ Claude (fork)  ─┐
-         ├─▶ Codex (fork)   ─┼─▶ Synthesis
-         └─▶ Gemini (fork)  ─┘
+         └─▶ Codex (fork)   ─┘─▶ Synthesis
 ```
 
-**Time:** 15-20 seconds (3x faster)
+**Time:** 15-20 seconds (2x faster)
 
-**Why it works:** `context: fork` ensures each AI works independently. Single message launches all three.
+**Why it works:** `context: fork` ensures each AI works independently. Single message launches both.
 
 ---
 
