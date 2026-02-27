@@ -306,7 +306,7 @@ ollama run llama3.2:1b "Say hello"
 
 ## Optional: Multi-AI Setup
 
-Enable collaboration between Claude, Codex, and Gemini.
+Enable collaboration between Claude and Codex.
 
 ### Codex (OpenAI)
 
@@ -318,16 +318,6 @@ npm install -g @openai/codex
 export OPENAI_API_KEY="your-openai-key"
 ```
 
-### Gemini (Google)
-
-```bash
-# Install Gemini CLI
-npm install -g @google/gemini-cli
-
-# Set API key
-export GOOGLE_API_KEY="your-google-key"
-```
-
 ### Using Multi-AI
 
 In Claude Code:
@@ -335,7 +325,7 @@ In Claude Code:
 /ai-collab How should I structure the authentication system?
 ```
 
-This queries all three AIs and synthesizes their responses.
+This queries both AIs and synthesizes their responses.
 
 ---
 

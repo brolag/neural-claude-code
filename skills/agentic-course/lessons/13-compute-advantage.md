@@ -1,4 +1,4 @@
-# Lesson 12: Compute Advantage
+# Lesson 13: Compute Advantage
 
 ## Objective
 
@@ -155,10 +155,10 @@ Confirm you understand:
 
 ## Next
 
-**Lesson 13: Building Your System** - Create your personalized agentic workflow.
+**Lesson 14: Building Your System** - Create your personalized agentic workflow.
 
 ```bash
-/course lesson 13
+/course lesson 14
 ```
 
 ---

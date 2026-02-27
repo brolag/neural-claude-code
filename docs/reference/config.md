@@ -18,8 +18,8 @@ export CLAUDE_PLUGIN_ROOT="$HOME/Sites/neural-claude-code"
 # Text-to-Speech
 export ELEVENLABS_API_KEY="your-key"
 
-# Multi-AI (CLIs must be installed separately)
-# codex and gemini CLIs
+# Multi-AI (CLI must be installed separately)
+# codex CLI
 ```
 
 ---

@@ -46,7 +46,7 @@ Test cases stored in `.claude/eval/golden-tasks.json`:
         "prompt": "/ai-collab Optimize this sorting function"
       },
       "expected": {
-        "contains": ["Claude", "Codex", "Gemini", "Consensus"],
+        "contains": ["Claude", "Codex", "Consensus"],
         "format": "comparison table"
       },
       "tags": ["multi-ai", "collaboration"],

@@ -11,14 +11,12 @@ Route directly to a specific AI:
 ```bash
 Ask Codex to set up the CI/CD pipeline
 
-Ask Gemini to optimize this sorting algorithm
-
 Ask Claude to review this architecture decision
 ```
 
 ---
 
-## Get All Perspectives
+## Get Both Perspectives
 
 Use `/ai-collab` for important decisions:
 
@@ -29,19 +27,18 @@ Use `/ai-collab` for important decisions:
 Each AI analyzes from their strength:
 - **Claude**: Accuracy, edge cases, maintainability
 - **Codex**: Practical implementation, DevOps concerns
-- **Gemini**: Performance, algorithmic efficiency
 
 ---
 
 ## Parallel Multi-AI (Fastest)
 
-Use `/pv-mesh` for 3x faster consensus:
+Use `/pv-mesh` for 2x faster consensus:
 
 ```bash
 /pv-mesh What's the best caching strategy for this API?
 ```
 
-Runs all three AIs simultaneously in isolated contexts.
+Runs both AIs simultaneously in isolated contexts.
 
 | Method | Time | Use When |
 |--------|------|----------|
@@ -52,7 +49,7 @@ Runs all three AIs simultaneously in isolated contexts.
 
 ## Plan-Execute Pattern (Cheapest)
 
-For multi-step tasks, use Opus to plan and Gemini to execute:
+For multi-step tasks, use Opus to plan and Codex to execute:
 
 ```bash
 /plan-execute Add user authentication with JWT tokens
@@ -60,10 +57,10 @@ For multi-step tasks, use Opus to plan and Gemini to execute:
 
 **How it works:**
 1. Opus 4.6 creates detailed plan (accurate, best reasoning)
-2. Gemini executes simple steps (cheap, fast)
-3. Opus reviews results (expensive, accurate)
+2. Codex executes simple steps (fast, action-oriented)
+3. Opus reviews results (accurate verification)
 
-**Savings:** ~60-70% vs Opus-only
+**Savings:** ~50-60% vs Opus-only
 
 ---
 
@@ -72,11 +69,11 @@ For multi-step tasks, use Opus to plan and Gemini to execute:
 | Task Type | Best AI | Why |
 |-----------|---------|-----|
 | Architecture decisions | Claude | 80.8% SWE-bench accuracy |
-| Algorithm optimization | Gemini | Highest competitive coding Elo |
 | DevOps / CI/CD | Codex | Terminal-Bench leader |
 | Long autonomous sessions | Codex | 7+ hour context |
-| Quick implementations | Gemini | Fast + free tier |
 | Security review | Claude | Thorough edge case analysis |
+| Code review | Claude | Accuracy critical |
+| Performance optimization | Codex | Action-oriented approach |
 
 ---
 
@@ -85,9 +82,6 @@ For multi-step tasks, use Opus to plan and Gemini to execute:
 Use `/route` to get a recommendation:
 
 ```bash
-/route implement binary search in Python
-# → Recommends: Gemini (algorithmic task)
-
 /route set up Docker deployment
 # → Recommends: Codex (DevOps task)
 
@@ -101,7 +95,6 @@ Use `/route` to get a recommendation:
 
 Multi-AI requires:
 - **Codex**: `codex` CLI installed
-- **Gemini**: `gemini` CLI installed
 - **Claude**: Already using it!
 
 ---

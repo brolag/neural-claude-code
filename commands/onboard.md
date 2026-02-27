@@ -70,7 +70,7 @@ Neural Claude Code has 6 feature areas. Which interest you?
   1. Memory System - Remember facts across sessions
   2. Skills - Specialized capabilities (debugging, TDD, research...)
   3. Autonomous Loops - Run tasks unattended for hours
-  4. Multi-AI Collaboration - Route to Claude, Codex, or Gemini
+  4. Dual-AI Collaboration - Route between Claude and Codex
   5. Text-to-Speech - Voice summaries after each response
   6. Code Quality - Detect and fix slop/technical debt
 

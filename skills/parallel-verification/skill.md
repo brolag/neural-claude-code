@@ -239,8 +239,8 @@ For maximum verification power, use different AI models per path:
 |------|-------|----------|
 | Path A | Claude Opus | Accuracy, nuance |
 | Path B | Codex | Implementation, terminal |
-| Path C | Gemini | Algorithms, speed |
-| Path D | Claude Opus | Cross-verification |
+| Path C | Claude Opus | Algorithms, cross-check |
+| Path D | Claude Opus | Contrarian analysis |
 
 This creates true cognitive diversity, not just prompt variations.
 

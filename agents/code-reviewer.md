@@ -6,7 +6,7 @@ allowed-tools: Glob, Grep, Read
 
 # Code Reviewer Agent
 
-A specialized read-only agent for code quality analysis. Operates with isolated context to prevent cross-contamination while maintaining deep expertise in code review.
+A specialized read-only agent for code quality analysis. Operates with isolated context to prevent cross-contamination, with focused expertise in code review.
 
 ## Philosophy
 

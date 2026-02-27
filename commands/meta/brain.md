@@ -39,7 +39,6 @@ View the health and status of your neural second brain system.
 │ framework-architect    ● Active         │
 │ strategic-advisor      ○ Needs improve  │
 │ codex                  ● Active         │
-│ gemini                 ● Active         │
 │ multi-ai               ● Active         │
 └─────────────────────────────────────────┘
 

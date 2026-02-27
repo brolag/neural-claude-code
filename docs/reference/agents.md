@@ -9,8 +9,7 @@ Built-in specialized agents.
 | Agent | Purpose | Best For |
 |-------|---------|----------|
 | `codex` | OpenAI Codex routing | DevOps, long sessions, terminal |
-| `gemini` | Google Gemini routing | Algorithms, math, free tier |
-| `multi-ai` | Orchestrate all AIs | Critical decisions |
+| `multi-ai` | Orchestrate both AIs | Critical decisions |
 | `dispatcher` | Smart task routing | Optimal AI selection |
 
 ---

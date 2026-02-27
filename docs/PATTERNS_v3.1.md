@@ -245,24 +245,23 @@ Neural Loops can run unattended without constant permission prompts for safe ope
 
 **Command:** `/pv-mesh <problem>`
 
-Run Claude, Codex, and Gemini simultaneously in parallel forks.
+Run Claude and Codex simultaneously in parallel forks.
 
 ### Speed Comparison
 
 | Approach | Time | Method |
 |----------|------|--------|
 | Sequential `/ai-collab` | 45-60s | One AI at a time |
-| **Parallel `/pv-mesh`** | **15-20s** | All 3 simultaneous |
+| **Parallel `/pv-mesh`** | **15-20s** | Both simultaneous |
 
 ### AI Strengths
 
 - **Codex**: Terminal operations, DevOps, practical implementation
-- **Gemini**: Algorithms, performance optimization, elegance
 - **Claude**: Accuracy, architecture, edge case handling
 
 ### Key Benefit
 
-3x faster than sequential while maintaining true cognitive diversity (not just prompt variations).
+2x faster than sequential while maintaining true cognitive diversity (not just prompt variations).
 
 ---
 

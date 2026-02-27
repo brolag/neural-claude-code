@@ -128,16 +128,13 @@ For critical decisions, get input from multiple AIs:
 > - Mobile app planned for future
 ```
 
-The `multi-ai` agent queries Claude, Codex, and Gemini, then synthesizes:
+The `multi-ai` agent queries Claude and Codex, then synthesizes:
 
 ```
 ## Consensus Analysis
 
 ### Claude (Architecture Focus):
 REST with WebSocket for real-time. Simpler for team, clear resource boundaries.
-
-### Gemini (Algorithm Focus):
-GraphQL reduces over-fetching for mobile. Consider complexity trade-off.
 
 ### Codex (Implementation Focus):
 REST easier to implement. Add Socket.io for real-time. Mobile can use same endpoints.

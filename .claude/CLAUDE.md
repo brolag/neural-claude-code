@@ -7,7 +7,7 @@ The master Claude Code framework - a self-improving plugin system with autonomou
 - Role: Creator and maintainer
 - Collaborators: Open source (MIT license)
 - GitHub: github.com/brolag/neural-claude-code
-- Version: 1.10.0
+- Version: 1.15.0
 
 ## Tech Stack
 - **Languages**: Bash/Shell, Markdown, Python, JavaScript
@@ -31,7 +31,6 @@ bash scripts/install-skills.sh
 bash scripts/manage-skills.sh
 
 # Autonomous loops
-bash scripts/neural-loop/loop-v3.sh
 bash scripts/loop-v3.sh
 
 # Squad management
@@ -79,7 +78,7 @@ neural-claude-code-plugin/
 
 ### Key Systems
 - **Neural Loop**: Autonomous coding sessions with stop-hook test feedback
-- **Neural Squad**: Multi-agent orchestration (3-agent system with standup, tasks)
+- **Neural Squad**: Multi-agent orchestration (2-agent system with standup, tasks)
 - **CRAFT Framework**: Structured prompts for autonomous agents
 - **Memory System**: Hot (context) / Warm (JSON files) / Cold (archives)
 - **Skills Manager**: Install, enable/disable skills on demand
@@ -87,6 +86,6 @@ neural-claude-code-plugin/
 - **Slop Detection**: Anti-pattern scanning and auto-fix
 
 ## Current Status
-Active development and maintenance - version 1.10.0.
+Active development and maintenance - version 1.15.0.
 Open source framework used across multiple projects.
 Sister projects: neural-codex (Codex CLI) and neural-open-code-plugin (OpenCode CLI).

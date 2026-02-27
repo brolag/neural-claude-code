@@ -204,7 +204,7 @@ Quick reference for any topic:
 
 | Error | Cause | Resolution |
 |-------|-------|------------|
-| Lesson not found | Invalid lesson number | Show valid range (1-14) |
+| Lesson not found | Invalid lesson number | Show valid range (0-16) |
 | Prerequisites missing | Advanced lesson without basics | Suggest completing prerequisites first |
 | Progress file missing | First time user | Create fresh progress file |
 

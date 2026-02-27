@@ -94,7 +94,7 @@ Complete list of all slash commands.
 |---------|-------------|
 | `/ai-collab <problem>` | Get all AI perspectives |
 | `/pv-mesh <problem>` | Parallel Multi-AI (3x faster) |
-| `/plan-execute <task>` | Opus plans + Gemini executes |
+| `/plan-execute <task>` | Opus plans + Codex executes |
 | `/route <task>` | Get routing recommendation |
 | `/pv <problem>` | Parallel verification (single AI) |
 
