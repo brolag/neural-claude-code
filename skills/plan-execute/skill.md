@@ -35,6 +35,7 @@ Orchestrates complex tasks using Opus for planning and Codex for execution.
          "id": 1,
          "action": "Description of what to do",
          "tool": "Bash|Edit|Write|etc",
+         "inputs": {"file": "path", "details": "specifics"},
          "depends_on": [],
          "complexity": "low|medium|high"
        }

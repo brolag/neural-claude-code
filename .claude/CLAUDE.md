@@ -31,7 +31,6 @@ bash scripts/install-skills.sh
 bash scripts/manage-skills.sh
 
 # Autonomous loops
-bash scripts/neural-loop/loop-v3.sh
 bash scripts/loop-v3.sh
 
 # Squad management
