@@ -1,4 +1,4 @@
-# Lesson 11: Context Engineering
+# Lesson 12: Context Engineering
 
 ## Objective
 
@@ -159,10 +159,10 @@ Confirm you understand:
 
 ## Next
 
-**Lesson 12: Compute Advantage** - Measure your agentic leverage.
+**Lesson 13: Compute Advantage** - Measure your agentic leverage.
 
 ```bash
-/course lesson 12
+/course lesson 13
 ```
 
 ---
