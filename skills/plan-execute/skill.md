@@ -18,50 +18,15 @@ Orchestrates complex tasks using Opus for planning and Codex for execution.
 
 - Complex multi-step tasks that benefit from strategic planning
 - Tasks requiring both high-quality reasoning AND fast execution
-- When you want Opus-level planning with Codex-level speed for implementation
 - Large refactors, feature implementations, research + action tasks
 
-## How It Works
-
-```
-┌─────────────────────────────────────────────────────────┐
-│                    User Task                             │
-└───────────────────────┬─────────────────────────────────┘
-                        ▼
-┌─────────────────────────────────────────────────────────┐
-│              OPUS 4.6 (Planner)                          │
-│  - Analyzes task complexity                              │
-│  - Creates detailed execution plan                       │
-│  - Identifies dependencies                               │
-│  - Defines success criteria                              │
-└───────────────────────┬─────────────────────────────────┘
-                        ▼
-┌─────────────────────────────────────────────────────────┐
-│            CODEX GPT-5.2 (Executor)                      │
-│  - Receives structured plan                              │
-│  - Executes each step rapidly                            │
-│  - Reports results back                                  │
-│  - Handles errors with retry                             │
-└───────────────────────┬─────────────────────────────────┘
-                        ▼
-┌─────────────────────────────────────────────────────────┐
-│              OPUS 4.6 (Reviewer)                         │
-│  - Validates execution results                           │
-│  - Suggests corrections if needed                        │
-│  - Synthesizes final output                              │
-└─────────────────────────────────────────────────────────┘
-```
-
+<instructions>
 ## Process
 
 ### Phase 1: Planning (Opus)
 
-1. **Analyze Task**
-   - Break down into atomic steps
-   - Identify required tools and files
-   - Estimate complexity per step
-
-2. **Create Execution Plan**
+1. **Analyze Task** — break into atomic steps, identify tools and files, estimate complexity
+2. **Create Execution Plan:**
    ```json
    {
      "task": "Original task description",
@@ -69,70 +34,37 @@ Orchestrates complex tasks using Opus for planning and Codex for execution.
        {
          "id": 1,
          "action": "Description of what to do",
-         "tool": "Tool to use (Bash, Edit, etc.)",
-         "inputs": {},
+         "tool": "Bash|Edit|Write|etc",
          "depends_on": [],
          "complexity": "low|medium|high"
        }
      ],
-     "success_criteria": ["Criteria 1", "Criteria 2"],
-     "estimated_tokens": 5000
+     "success_criteria": ["Criteria 1", "Criteria 2"]
    }
    ```
-
-3. **Route Decision**
-   - Simple steps → Codex
-   - Complex reasoning → Keep in Opus
-   - Parallel steps → Batch to Codex
+3. **Route Decision** — simple steps → Codex, complex reasoning → keep in Opus, parallel steps → batch to Codex
 
 ### Phase 2: Execution (Codex)
 
-Execute via dispatcher:
+Write the plan to `.claude/loop/plan.json`, then execute:
+
 ```bash
-codex exec "Execute this plan step by step: <plan JSON>"
+codex exec "Read .claude/loop/plan.json and execute each step in order. Report results per step."
 ```
 
-Codex handles:
-- File operations
-- Code changes
-- Running commands
-- Basic validation
+Codex handles: file operations, code changes, running commands, basic validation.
 
 ### Phase 3: Review (Opus)
 
-1. Verify execution results
-2. Check success criteria
-3. Fix issues if found
-4. Generate summary
+Verify execution results against success criteria. Fix issues if found. Generate summary.
+</instructions>
 
-## Example Usage
+## Example
 
 ```bash
-# Complex feature implementation
 /plan-execute "Add user authentication with JWT tokens, including login/logout endpoints, middleware, and tests"
-
-# Large refactor
 /plan-execute "Migrate all class components to functional components with hooks"
-
-# Research + Action
-/plan-execute "Research best practices for error handling in this codebase and implement them"
-
-# With explicit executor
 /plan-execute "task" --executor opus  # Skip Codex, all Opus
-```
-
-## Configuration
-
-Create `.claude/plan-execute.json` for customization:
-
-```json
-{
-  "default_executor": "codex",
-  "opus_threshold": "high",
-  "parallel_execution": true,
-  "max_steps_per_batch": 5,
-  "auto_review": true
-}
 ```
 
 ## Cost Optimization
@@ -143,28 +75,9 @@ Create `.claude/plan-execute.json` for customization:
 | Code refactor | ~100,000 | ~40,000 | 60% |
 | Feature build | ~80,000 | ~35,000 | 56% |
 
-## Output
+## Output Format
 
-```markdown
-## Plan-Execute Results
-
-### Task
-{original task}
-
-### Plan (Opus)
-{number} steps identified
-
-### Execution (Codex)
-- Step 1: ✅ Completed
-- Step 2: ✅ Completed
-- Step 3: ⚠️ Warning (handled)
-
-### Review (Opus)
-All success criteria met.
-
-### Summary
-{concise summary of what was accomplished}
-```
+Structure results as: Task → Plan (N steps) → Execution log (per step with status) → Review (criteria met?) → Summary.
 
 ## Error Handling
 
@@ -177,14 +90,7 @@ All success criteria met.
 
 **Fallback**: If orchestration fails, complete entire task in Opus mode.
 
-## Limitations
-
-- Requires `codex` CLI installed
-- Network latency between models
-- Some tasks are faster Opus-only (single-shot answers)
-
 ## Related
 
 - `/ai-collab` - Get perspectives from both AIs
 - `dispatcher` agent - General-purpose routing
-- `Plan` agent - Planning-only mode

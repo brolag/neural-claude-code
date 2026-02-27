@@ -1,59 +1,13 @@
 ---
-description: Parallel Dual-AI Verification Mesh - AlphaGo-style reasoning with cognitive diversity across Claude and Codex
+description: Parallel Dual-AI Verification Mesh - parallel reasoning with cognitive diversity across Claude and Codex
 allowed-tools: Task, Bash, Read, Write
 ---
 
 # Parallel Dual-AI Verification Mesh
 
-Combines AlphaGo-style parallel hypothesis exploration with cognitive diversity by running Claude and Codex simultaneously in forked contexts.
+Run Claude and Codex simultaneously in isolated forked contexts, then synthesize a verified solution from both perspectives.
 
-## Architecture
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                  PARALLEL DUAL-AI VERIFICATION MESH              │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                  │
-│  Problem: $ARGUMENTS                                             │
-│                                                                  │
-│  ┌─────────────────────────────────────────────────────────┐    │
-│  │              ONE MESSAGE - TWO PARALLEL FORKS            │    │
-│  │                                                          │    │
-│  │  ┌──────────────────┐       ┌──────────────────┐         │    │
-│  │  │   CODEX FORK     │       │   CLAUDE FORK    │         │    │
-│  │  │   context:fork   │       │   context:fork   │         │    │
-│  │  │                  │       │                  │         │    │
-│  │  │   Strength:      │       │   Strength:      │         │    │
-│  │  │   Terminal       │       │   Accuracy       │         │    │
-│  │  │   DevOps         │       │   Architecture   │         │    │
-│  │  │   Action         │       │   Edge cases     │         │    │
-│  │  └────────┬─────────┘       └────────┬─────────┘         │    │
-│  │           │                          │                   │    │
-│  │           ▼                          ▼                   │    │
-│  │    [Implementation]          [Thorough Analysis]         │    │
-│  └─────────────────────────────────────────────────────────┘    │
-│                              │                                   │
-│                              ▼                                   │
-│  ┌─────────────────────────────────────────────────────────┐    │
-│  │                    SYNTHESIS PHASE                        │    │
-│  │                                                          │    │
-│  │  • Compare approaches from 2 genuinely different AIs     │    │
-│  │  • Identify consensus (HIGH CONFIDENCE)                  │    │
-│  │  • Extract specialty insights from each                  │    │
-│  │  • Resolve contradictions with evidence                  │    │
-│  │  • Build composite solution                              │    │
-│  └─────────────────────────────────────────────────────────┘    │
-│                              │                                   │
-│                              ▼                                   │
-│  ┌─────────────────────────────────────────────────────────┐    │
-│  │                   VERIFIED SOLUTION                       │    │
-│  │  Dual-AI consensus with cognitive diversity              │    │
-│  └─────────────────────────────────────────────────────────┘    │
-│                                                                  │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-## Why This Is Powerful
+## Why Parallel Beats Sequential
 
 | Sequential `/ai-collab` | Parallel `/pv-mesh` |
 |------------------------|---------------------|
@@ -62,11 +16,10 @@ Combines AlphaGo-style parallel hypothesis exploration with cognitive diversity 
 | Same framing for all | AI-specific prompts |
 | Prompt variations only | True cognitive diversity |
 
+<instructions>
 ## Execution Protocol
 
-When invoked with a problem:
-
-### Step 1: Launch Parallel Forks (ONE MESSAGE)
+### Step 1: Launch Parallel Forks
 
 Launch both agents in a single message with multiple Task tool calls:
 
@@ -88,7 +41,7 @@ Task(
   1. Your approach (2-3 sentences)
   2. Key implementation insight
   3. Code or commands
-  4. Confidence (1-10)
+  4. Confidence: High (would bet on this) / Medium (reasonable) / Low (speculative) — with brief justification
   5. What the other AI might miss"
 )
 ```
@@ -111,44 +64,37 @@ Task(
   1. Your approach (2-3 sentences)
   2. Key insight others might miss
   3. Solution with edge case handling
-  4. Confidence (1-10)
+  4. Confidence: High (would bet on this) / Medium (reasonable) / Low (speculative) — with brief justification
   5. What Codex might miss"
 )
 ```
 
-### Step 2: Collect and Synthesize
+### Step 2: Synthesize
 
-After both return, provide Dual-AI Mesh Verification output with Parallel Perspectives, Consensus Analysis, and Synthesized Solution.
+After both return, structure your output as:
+
+1. **Parallel Perspectives** — each AI's approach and key insight
+2. **Consensus Analysis** — where both agree (high confidence) vs disagree (trade-offs)
+3. **Synthesized Solution** — combined best approach using each AI's specialty contributions
+</instructions>
 
 ## Usage
 
 ```bash
-# Architecture decision
 /pv-mesh Should we use GraphQL or REST for this real-time dashboard?
-
-# Algorithm optimization
 /pv-mesh What's the optimal way to implement a rate limiter?
-
-# Debugging complex issues
 /pv-mesh Why does our API return 500 errors intermittently under load?
-
-# Code review
 /pv-mesh Is this authentication implementation secure?
-
-# Strategic technical decision
-/pv-mesh Microservices or monolith for our 3-person startup?
 ```
 
 ## Error Handling
 
 | Error | Cause | Resolution |
 |-------|-------|------------|
-| Codex agent unavailable | CLI not installed or API issue | Run two Claude forks with different personas instead |
-| Task timeout | Complex problem taking too long | Retry with simpler problem framing |
-| Both agents agree completely | Either obvious answer or groupthink | Ask "what would a contrarian argue?" |
-| Both agents disagree | Problem is genuinely ambiguous | Present both options to user for decision |
-
-**Fallback**: If Codex fails, run two Claude forks with different personas (Implementer, Critic) to maintain diversity.
+| Codex agent unavailable | CLI not installed or API issue | Run two Claude forks with different personas (Implementer, Critic) |
+| Task timeout | Complex problem | Retry with simpler problem framing |
+| Both agree completely | Obvious answer or groupthink | Ask "what would a contrarian argue?" |
+| Both disagree | Genuinely ambiguous | Present both options to user for decision |
 
 ## Compared to Other Commands
 
@@ -157,5 +103,3 @@ After both return, provide Dual-AI Mesh Verification output with Parallel Perspe
 | `/pv` | Single-AI parallel hypotheses | Medium | Prompt variations |
 | `/ai-collab` | Sequential dual-AI | Slow | True, but serial |
 | `/pv-mesh` | Parallel dual-AI | **Fast** | **True + parallel** |
-
-Use `/pv-mesh` when you need both speed AND cognitive diversity.

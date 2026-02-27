@@ -10,21 +10,18 @@ Collaborate with Codex (OpenAI GPT-5.2) to solve problems using two complementar
 ## Problem
 $ARGUMENTS
 
-## AI Capabilities (Updated February 2026)
+<context>
+## AI Capabilities (February 2026)
 
 | Model | SWE-bench | Special Strength | Best For |
 |-------|-----------|------------------|----------|
 | **Claude Opus 4.6** | **80.8%** | 65.4% Terminal-Bench, 1606 Elo GDPval | Architecture, accuracy, planning |
 | **Codex (GPT-5.2)** | 80.0% | 64.7% Terminal-Bench | Long sessions, DevOps, implementation |
 
-## Quick Reference: When to Lead with Each AI
+**Routing**: Accuracy/architecture → Claude leads. Terminal/DevOps/long sessions → Codex leads. High-stakes → both.
+</context>
 
-- **Need highest accuracy?** → Lead with Claude (80.8% SWE-bench)
-- **Terminal/DevOps task?** → Lead with Codex (Terminal-Bench leader)
-- **Long autonomous task?** → Use Codex (7+ hour sessions)
-- **Architecture/security?** → Lead with Claude
-- **Implementation/refactor?** → Lead with Codex
-
+<instructions>
 ## Collaboration Protocol
 
 ### Step 1: Analyze the Problem
@@ -32,102 +29,45 @@ Identify which AI strengths are most relevant to this specific problem.
 
 ### Step 2: Query Both AIs
 
-**Codex (OpenAI) - Action-oriented, terminal master:**
+**Codex** — action-oriented, terminal master:
 ```bash
 codex exec "Problem: <description>. Provide a concise, implementable solution with code."
 ```
 
-**Claude (Anthropic) - Accuracy leader:**
+**Claude** — accuracy leader:
 Provide your own thorough analysis with focus on architecture and edge cases.
 
-### Step 3: Compare Using Strengths
+### Step 3: Synthesize
 
-| Aspect | Codex (Implementation) | Claude (Architecture) |
-|--------|------------------------|----------------------|
-| Approach | | |
-| Key Insight | | |
-| Unique Value | | |
-
-### Step 4: Synthesize Best Solution
-
-- **Consensus points** = High confidence (both agree)
+- **Consensus** = high confidence (both agree)
 - **Use specialties**: CLI/implementation from Codex, architecture/accuracy from Claude
-- **Flag disagreements** - they reveal important trade-offs
+- **Disagreements** reveal important trade-offs — present them
 
-## Output Format
+### Output Structure
 
-```markdown
-# Dual-AI Analysis: [Problem Title]
-
-## Task Analysis
-- **Problem type**: [algorithmic/architecture/DevOps/etc.]
-- **Expected leader**: [AI name based on strengths]
-
----
-
-## AI Perspectives
-
-### Codex (OpenAI GPT-5.2)
-**Strengths applied**: Terminal mastery, action-oriented implementation
-[Codex's response]
-
-### Claude (Anthropic Opus 4.6)
-**Strengths applied**: Highest accuracy, thorough analysis
-[Your analysis]
-
----
-
-## Comparison Matrix
-| Aspect | Codex | Claude |
-|--------|-------|--------|
-| Approach | | |
-| Strengths shown | | |
-| Unique insight | | |
-
----
-
-## Consensus (High Confidence)
-[Points where both AIs agree]
-
-## Specialty Contributions
-- **From Codex (Implementation/DevOps):** ...
-- **From Claude (Architecture/Security):** ...
-
----
-
-## Synthesized Solution
-[Combined best approach leveraging each AI's strengths]
-
-## Implementation
-[Final code/solution]
-```
+1. **Task Analysis** — problem type and expected leader
+2. **Codex Perspective** — strengths applied + response
+3. **Claude Perspective** — strengths applied + your analysis
+4. **Consensus** — where both agree
+5. **Specialty Contributions** — unique insights from each
+6. **Synthesized Solution** — combined best approach with implementation
+</instructions>
 
 ## Usage
 
 ```bash
-# Basic dual-AI collaboration
 /ai-collab How should I structure my microservices architecture?
-
-# Algorithm optimization problem
 /ai-collab What's the most efficient way to implement a rate limiter?
-
-# DevOps and infrastructure question
 /ai-collab How should I set up CI/CD for a monorepo with multiple services?
-
-# Code review with multiple perspectives
 /ai-collab Review this authentication implementation for security issues
-
-# Architecture decision
-/ai-collab Should I use GraphQL or REST for this real-time dashboard?
 ```
 
 ## Error Handling
 
 | Error | Cause | Resolution |
 |-------|-------|------------|
-| `codex: command not found` | Codex CLI not installed | Install with `npm install -g @openai/codex` or skip Codex perspective |
-| API rate limit exceeded | Too many requests to external AI | Wait and retry, or use cached responses |
-| Network timeout | Slow/unavailable API connection | Check internet connection, retry individual AI queries |
-| Empty response from AI | API returned no content | Retry the specific AI query or proceed with available responses |
+| `codex: command not found` | CLI not installed | Install with `npm install -g @openai/codex` or skip Codex |
+| API rate limit / timeout | Too many requests or slow connection | Wait and retry |
+| Empty response | API returned no content | Retry or proceed with available responses |
 
-**Fallback**: If Codex is unavailable, Claude will provide its own comprehensive analysis.
+**Fallback**: If Codex is unavailable, provide comprehensive single-AI analysis.
