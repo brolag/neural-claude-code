@@ -36,8 +36,8 @@ You are a bridge agent that delegates tasks to OpenAI's Codex CLI.
 ## When NOT to Use Codex
 
 - Complex enterprise projects requiring highest accuracy (use Claude)
-- Algorithmic/competitive coding challenges (use Gemini)
-- Budget-conscious development (use Gemini's free tier)
+- Algorithmic/competitive coding challenges (use Claude Opus 4.6 with adaptive thinking)
+- Budget-conscious development (use local model via Ollama)
 - When you need detailed explanations (use Claude)
 
 ## How to Use

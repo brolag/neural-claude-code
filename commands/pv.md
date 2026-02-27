@@ -57,7 +57,7 @@ Present these hypotheses to the user, then proceed to Phase 2.
 
 Launch 4 agents in parallel using the Task tool. Each agent explores ONE hypothesis deeply.
 
-**CRITICAL**: Use a single message with 4 Task tool calls to run in parallel.
+Use a single message with 4 Task tool calls to run them in parallel.
 
 For each agent, use this prompt:
 """
@@ -124,8 +124,8 @@ Synthesize the final answer:
 For maximum verification, suggest using different models:
 - Path 1: Claude Opus (accuracy)
 - Path 2: Codex (implementation)
-- Path 3: Gemini (algorithms)
-- Path 4: Claude Opus (cross-check)
+- Path 3: Claude Opus (cross-check)
+- Path 4: Claude Opus (contrarian)
 
 Use `/ai-collab` integration if the user wants multi-model verification.
 

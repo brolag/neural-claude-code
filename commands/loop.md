@@ -138,7 +138,7 @@ fi
 
 ```bash
 # Build the command
-bash ~/.claude/scripts/neural-loop/loop-v3.sh \
+bash ~/.claude/scripts/loop-v3.sh \
     "$TASK" \
     "$MAX" \
     "$PROMISE" \

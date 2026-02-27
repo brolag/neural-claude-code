@@ -40,7 +40,7 @@ Pick the workflow first. It handles skill sequencing and skip logic.
 |---|---|---|
 | `workflow-engineering` | any code task | frontend-only visual change |
 | `craft` | complex task, ambiguous scope | loc_delta ≤ 25, clear spec |
-| `spec` | delegating to async agent (Codex/Gemini) | executing directly right now |
+| `spec` | delegating to async agent (Codex) | executing directly right now |
 | `tdd` | any logic change | config/copy-only fix |
 | `debugging` | unknown root cause | cause is already known |
 | `slop-scan` | post-feature quality check | hotfix, loc_delta ≤ 50 |
@@ -49,7 +49,7 @@ Pick the workflow first. It handles skill sequencing and skip logic.
 | `git-save` | changes ready to commit | tests failing, WIP |
 | `todo-new` | multi-step task with 3+ phases | single-step or hotfix |
 | `loop` | autonomous iteration until done | interactive task |
-| `plan-execute` | Opus plans + Gemini executes (cost savings) | simple task |
+| `plan-execute` | Opus plans + Codex executes (cost savings) | simple task |
 | `worktree-manager` | parallel feature development | single branch is fine |
 
 ### Research & Knowledge

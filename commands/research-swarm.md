@@ -60,7 +60,7 @@ Launch multiple research agents in parallel, each in a forked context, to resear
 
 ## Execution
 
-When this command is invoked with topics, you MUST:
+When this command is invoked with topics, do the following:
 
 1. **Parse topics** from the arguments
 2. **Create output directory**: `inbox/research-swarm-{YYYY-MM-DD-HHMM}/`

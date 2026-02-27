@@ -51,7 +51,7 @@ Provide your own thorough analysis with focus on architecture and edge cases.
 ### Step 4: Synthesize Best Solution
 
 - **Consensus points** = High confidence (both agree)
-- **Leverage specialties**: CLI/implementation from Codex, architecture/accuracy from Claude
+- **Use specialties**: CLI/implementation from Codex, architecture/accuracy from Claude
 - **Flag disagreements** - they reveal important trade-offs
 
 ## Output Format

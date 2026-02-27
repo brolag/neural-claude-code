@@ -13,7 +13,7 @@ Tools for reviewing, improving, and validating AI prompts.
 | Command | Description |
 |---------|-------------|
 | `/prompt-review <file>` | Assess prompt quality using CRISP-E framework |
-| `/prompt-improve <file>` | Improve prompt using multi-AI review (Gemini + Codex) |
+| `/prompt-improve <file>` | Improve prompt using multi-AI review (Codex + Claude) |
 | `/prompt-validate <file>` | Verify research results and links |
 
 ## Quick Start
@@ -128,7 +128,7 @@ Six dimensions for evaluating prompts:
 | File not found | Invalid path | Check file path |
 | Not a prompt file | Wrong file type | Provide .md prompt file |
 | Parse error | Malformed prompt | Fix YAML frontmatter |
-| External AI unavailable | Gemini/Codex offline | Continue with single-AI review |
+| External AI unavailable | Codex offline | Continue with single-AI review |
 
 **Fallback**: If multi-AI review fails, use single-model CRISP-E assessment.
 

@@ -126,7 +126,7 @@ tasks:
 # Task types:
 # - web_search: Use WebSearch tool
 # - source_fetch: Use WebFetch on specific URL
-# - ai_consult: Get perspective from Gemini/Codex
+# - ai_consult: Get perspective from Codex
 # - analyze: Synthesize gathered data
 ```
 
@@ -157,7 +157,7 @@ Run tasks respecting dependencies:
 |-----------|----------------|
 | web_search | WebSearch |
 | source_fetch | WebFetch |
-| ai_consult | Task (gemini/codex agent) |
+| ai_consult | Task (codex agent) |
 | analyze | Read gathered data, synthesize |
 
 ## Phase 4: Synthesize
@@ -219,7 +219,6 @@ For complex topics, plan includes `ai_consult` tasks:
 | AI | Strength | Use For |
 |----|----------|---------|
 | Claude | Nuanced analysis | Synthesis, edge cases |
-| Gemini | Fast, algorithmic | Quick facts, alternatives |
 | Codex | Implementation | Technical details, code |
 
 ## Examples

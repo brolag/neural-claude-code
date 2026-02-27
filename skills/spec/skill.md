@@ -1,6 +1,6 @@
 ---
 name: spec
-description: Write a task specification for async agent delegation. Use when: task is complex and will be delegated to Codex/Gemini/async agent, before firing Tier 2+ tasks via /route, task requires autonomous execution without back-and-forth. Don't use when: task is simple enough for direct execution, interactive conversational work, quick fixes under 25 LOC.
+description: Write a task specification for async agent delegation. Use when: task is complex and will be delegated to Codex/async agent, before firing Tier 2+ tasks via /route, task requires autonomous execution without back-and-forth. Don't use when: task is simple enough for direct execution, interactive conversational work, quick fixes under 25 LOC.
 trigger: write a spec, spec this out, delegate this task, /spec
 allowed-tools: Write, Read
 ---
@@ -17,7 +17,7 @@ Creates a spec file at `specs/{project}-{task-slug}.md`:
 # Spec: [Task Title]
 
 **Project**: [project name]
-**Delegated to**: [Codex | Gemini | async agent]
+**Delegated to**: [Codex | async agent]
 **Priority**: [high | medium | low]
 **Date**: [today]
 

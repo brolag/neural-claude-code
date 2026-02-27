@@ -239,9 +239,9 @@ Create actionable implementation plan with coding tasks only.
 
 <execution_rules>
 1. **Approval Requirements**
-   - MUST use `userInput` tool for each phase review
-   - MUST receive explicit approval ("yes", "approved", "looks good") before proceeding
-   - MUST NOT skip phases or assume approval
+   - Use `userInput` tool for each phase review
+   - Wait for explicit approval ("yes", "approved", "looks good") before proceeding
+   - Do not skip phases or assume approval
 
 2. **File Management**
    - Create files at: `project-specs/{feature_name}/[requirements|design|tasks].md`

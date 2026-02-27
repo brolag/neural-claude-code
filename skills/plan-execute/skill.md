@@ -1,12 +1,12 @@
 ---
 name: plan-execute
-description: Opus plans + Gemini executes for cost-optimized task orchestration
+description: Opus plans + Codex executes for cost-optimized task orchestration
 trigger: /plan-execute
 ---
 
 # Plan-Execute Skill
 
-Orchestrates complex tasks using Opus for planning and Gemini for execution.
+Orchestrates complex tasks using Opus for planning and Codex for execution.
 
 ## Trigger
 
@@ -18,38 +18,38 @@ Orchestrates complex tasks using Opus for planning and Gemini for execution.
 
 - Complex multi-step tasks that benefit from strategic planning
 - Tasks requiring both high-quality reasoning AND fast execution
-- When you want Opus-level planning with Gemini-level speed for implementation
+- When you want Opus-level planning with Codex-level speed for implementation
 - Large refactors, feature implementations, research + action tasks
 
 ## How It Works
 
 ```
-┌─────────────────────────────────────────────────────┐
-│                    User Task                         │
-└───────────────────────┬─────────────────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│                    User Task                             │
+└───────────────────────┬─────────────────────────────────┘
                         ▼
-┌─────────────────────────────────────────────────────┐
-│              OPUS 4.6 (Planner)                      │
-│  - Analyzes task complexity                          │
-│  - Creates detailed execution plan                   │
-│  - Identifies dependencies                           │
-│  - Defines success criteria                          │
-└───────────────────────┬─────────────────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│              OPUS 4.6 (Planner)                          │
+│  - Analyzes task complexity                              │
+│  - Creates detailed execution plan                       │
+│  - Identifies dependencies                               │
+│  - Defines success criteria                              │
+└───────────────────────┬─────────────────────────────────┘
                         ▼
-┌─────────────────────────────────────────────────────┐
-│            GEMINI 3 FLASH (Executor)                 │
-│  - Receives structured plan                          │
-│  - Executes each step rapidly                        │
-│  - Reports results back                              │
-│  - Handles errors with retry                         │
-└───────────────────────┬─────────────────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│            CODEX GPT-5.2 (Executor)                      │
+│  - Receives structured plan                              │
+│  - Executes each step rapidly                            │
+│  - Reports results back                                  │
+│  - Handles errors with retry                             │
+└───────────────────────┬─────────────────────────────────┘
                         ▼
-┌─────────────────────────────────────────────────────┐
-│              OPUS 4.6 (Reviewer)                     │
-│  - Validates execution results                       │
-│  - Suggests corrections if needed                    │
-│  - Synthesizes final output                          │
-└─────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│              OPUS 4.6 (Reviewer)                         │
+│  - Validates execution results                           │
+│  - Suggests corrections if needed                        │
+│  - Synthesizes final output                              │
+└─────────────────────────────────────────────────────────┘
 ```
 
 ## Process
@@ -70,7 +70,7 @@ Orchestrates complex tasks using Opus for planning and Gemini for execution.
          "id": 1,
          "action": "Description of what to do",
          "tool": "Tool to use (Bash, Edit, etc.)",
-         "inputs": {...},
+         "inputs": {},
          "depends_on": [],
          "complexity": "low|medium|high"
        }
@@ -81,18 +81,18 @@ Orchestrates complex tasks using Opus for planning and Gemini for execution.
    ```
 
 3. **Route Decision**
-   - Simple steps → Gemini Flash
+   - Simple steps → Codex
    - Complex reasoning → Keep in Opus
-   - Parallel steps → Batch to Gemini
+   - Parallel steps → Batch to Codex
 
-### Phase 2: Execution (Gemini)
+### Phase 2: Execution (Codex)
 
 Execute via dispatcher:
 ```bash
-gemini -y "Execute this plan step by step: <plan JSON>"
+codex exec "Execute this plan step by step: <plan JSON>"
 ```
 
-Gemini handles:
+Codex handles:
 - File operations
 - Code changes
 - Running commands
@@ -116,6 +116,9 @@ Gemini handles:
 
 # Research + Action
 /plan-execute "Research best practices for error handling in this codebase and implement them"
+
+# With explicit executor
+/plan-execute "task" --executor opus  # Skip Codex, all Opus
 ```
 
 ## Configuration
@@ -124,7 +127,7 @@ Create `.claude/plan-execute.json` for customization:
 
 ```json
 {
-  "default_executor": "gemini",
+  "default_executor": "codex",
   "opus_threshold": "high",
   "parallel_execution": true,
   "max_steps_per_batch": 5,
@@ -136,9 +139,9 @@ Create `.claude/plan-execute.json` for customization:
 
 | Task Type | Tokens (Opus Only) | Tokens (Orchestrated) | Savings |
 |-----------|-------------------|----------------------|---------|
-| 10-step task | ~50,000 | ~15,000 | 70% |
-| Code refactor | ~100,000 | ~35,000 | 65% |
-| Feature build | ~80,000 | ~30,000 | 62% |
+| 10-step task | ~50,000 | ~20,000 | 60% |
+| Code refactor | ~100,000 | ~40,000 | 60% |
+| Feature build | ~80,000 | ~35,000 | 56% |
 
 ## Output
 
@@ -151,7 +154,7 @@ Create `.claude/plan-execute.json` for customization:
 ### Plan (Opus)
 {number} steps identified
 
-### Execution (Gemini)
+### Execution (Codex)
 - Step 1: ✅ Completed
 - Step 2: ✅ Completed
 - Step 3: ⚠️ Warning (handled)
@@ -165,45 +168,23 @@ All success criteria met.
 
 ## Error Handling
 
-- **Step fails**: Gemini retries once, then escalates to Opus
-- **Plan insufficient**: Opus revises plan mid-execution
-- **Gemini unavailable**: Falls back to Opus-only mode
-
-## Limitations
-
-- Requires `gemini` CLI installed
-- Network latency between models
-- Some tasks are faster Opus-only (single-shot answers)
-
-## Usage
-
-```bash
-# Complex feature implementation
-/plan-execute "Add user authentication with JWT tokens, including login/logout endpoints, middleware, and tests"
-
-# Large refactor
-/plan-execute "Migrate all class components to functional components with hooks"
-
-# Research + Action
-/plan-execute "Research best practices for error handling in this codebase and implement them"
-
-# With explicit executor
-/plan-execute "task" --executor opus  # Skip Gemini, all Opus
-```
-
-## Error Handling
-
 | Error | Cause | Resolution |
 |-------|-------|------------|
-| Gemini unavailable | CLI not installed or network issue | Fall back to Opus-only mode |
-| Step execution fails | Gemini error on step | Retry once, then escalate to Opus |
+| Codex unavailable | CLI not installed or network issue | Fall back to Opus-only mode |
+| Step execution fails | Codex error on step | Retry once, then escalate to Opus |
 | Plan too complex | Too many steps or dependencies | Break into sub-plans |
 | Success criteria not met | Execution incomplete | Opus revises plan, re-executes |
 
 **Fallback**: If orchestration fails, complete entire task in Opus mode.
 
+## Limitations
+
+- Requires `codex` CLI installed
+- Network latency between models
+- Some tasks are faster Opus-only (single-shot answers)
+
 ## Related
 
-- `/ai-collab` - Get perspectives from all three AIs
+- `/ai-collab` - Get perspectives from both AIs
 - `dispatcher` agent - General-purpose routing
 - `Plan` agent - Planning-only mode
