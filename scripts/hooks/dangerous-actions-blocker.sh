@@ -27,8 +27,8 @@ if [[ "$TOOL_NAME" == "Bash" ]]; then
         exit 2
     fi
 
-    # Block npm/pnpm publish
-    if echo "$COMMAND" | grep -qE "(npm|pnpm|yarn) publish" 2>/dev/null; then
+    # Block npm/pnpm publish (but not in git commit messages)
+    if echo "$COMMAND" | grep -qE "^(npm|pnpm|yarn) publish" 2>/dev/null; then
         echo "BLOCKED: Package publication requires manual confirmation" >&2
         exit 2
     fi

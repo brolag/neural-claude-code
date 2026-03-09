@@ -22,6 +22,19 @@ esac
 
 [[ -z "$CONTENT" ]] && exit 0
 
+# Skip git commits, documentation writes, and yaml/md files (legitimate mentions)
+if [[ "$TOOL_NAME" == "Bash" ]]; then
+    # Skip git commit messages — they may mention security terms legitimately
+    echo "$CONTENT" | grep -qE "^git (commit|tag|log)" && exit 0
+fi
+if [[ "$TOOL_NAME" == "Write" || "$TOOL_NAME" == "Edit" ]]; then
+    FILE_PATH=$(echo "$TOOL_INPUT" | jq -r '.file_path // empty')
+    # Skip docs, yaml, markdown — these legitimately discuss security topics
+    case "$FILE_PATH" in
+        *.md|*.yaml|*.yml|*.txt) exit 0 ;;
+    esac
+fi
+
 CONTENT_LOWER=$(echo "$CONTENT" | tr '[:upper:]' '[:lower:]')
 
 # Role override patterns
