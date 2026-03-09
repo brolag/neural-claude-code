@@ -1,5 +1,5 @@
 {
-  "description": "Neural Claude Code hooks for output styles, status lines, and TTS",
+  "description": "Neural Claude Code hooks for output styles, status lines, TTS, and security",
   "hooks": {
     "SessionStart": [
       {
@@ -9,6 +9,40 @@
             "type": "command",
             "command": "bash ${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code}/scripts/hooks/session-start.sh",
             "timeout": 10000
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code}/scripts/hooks/prompt-injection-detector.sh",
+            "timeout": 3000
+          }
+        ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code}/scripts/hooks/dangerous-actions-blocker.sh",
+            "timeout": 3000
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code}/scripts/hooks/output-scanner.sh",
+            "timeout": 3000
           }
         ]
       }

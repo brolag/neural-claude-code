@@ -1,0 +1,147 @@
+# AI Agent & MCP Server Threat Database
+# Maintained locally — adapted from FlorianBruniaux/claude-code-ultimate-guide
+# Last updated: 2026-03-09
+
+version: "1.0.0"
+updated: "2026-03-09"
+
+# CVEs relevant to our setup
+cves:
+  - id: CVE-2026-24052
+    severity: High
+    target: Claude Code WebFetch
+    impact: SSRF via domain validation bypass
+    mitigation: Update to v1.0.111+
+    status: patched
+    affects_us: true
+
+  - id: CVE-2025-66032
+    severity: High
+    target: Claude Code Bash
+    impact: 8 command execution bypasses via blocklist flaws
+    mitigation: Update to v1.0.93+
+    status: patched
+    affects_us: true
+
+  - id: ADVISORY-CC-2026-001
+    severity: High
+    target: Claude Code sandbox
+    impact: Commands excluded from sandboxing bypass Bash permissions
+    mitigation: Update to v2.1.34+
+    status: patched
+    affects_us: true
+
+  - id: CVE-2026-25725
+    severity: High
+    target: Claude Code sandbox
+    impact: Malicious code creates missing .claude/settings.json with SessionStart hooks that execute with host privileges
+    mitigation: Update to v2.1.34+
+    status: patched
+    affects_us: true
+
+  - id: CVE-2026-0755
+    severity: Critical (9.8)
+    target: gemini-mcp-tool
+    impact: RCE — LLM-generated args passed to shell without validation
+    mitigation: NO FIX — do not use in production
+    status: unpatched
+    affects_us: false
+    note: We removed Gemini CLI
+
+  - id: CVE-2026-25253
+    severity: High (8.8)
+    target: OpenClaw/clawdbot
+    impact: 1-click RCE via WebSocket token exfiltration
+    mitigation: Update to >= 2026.1.29
+    status: patched
+    affects_us: false
+    note: We don't use OpenClaw
+
+  - id: CVE-2025-15061
+    severity: Critical (9.8)
+    target: Framelink Figma MCP Server
+    impact: Unauthenticated RCE via shell metacharacters
+    mitigation: Update to latest patched version
+    status: patched
+    affects_us: false
+    note: We don't use Figma MCP
+
+  - id: CVE-2025-53109
+    severity: High
+    target: Filesystem MCP
+    impact: Sandbox escape via prefix bypass + symlinks
+    mitigation: Update to >= 0.6.3
+    status: patched
+    affects_us: false
+
+# Attack patterns to be aware of
+attack_patterns:
+  - name: MCP Rug Pull
+    description: Benign MCP gains trust, then pushes malicious update (no re-approval needed)
+    mitigation: Version pinning + hash verification
+
+  - name: Tool Poisoning
+    description: Malicious instructions in tool metadata influence LLM before execution
+    mitigation: Schema diff monitoring
+
+  - name: Confused Deputy
+    description: Attacker registers tool with trusted name on untrusted server
+    mitigation: Namespace verification
+
+  - name: Hallucinated npx Commands
+    description: Skills reference npx packages that don't exist; attacker registers them
+    mitigation: Verify npx packages exist before running
+
+# MCP servers we use — safety assessment
+our_mcps:
+  - name: codex-mcp
+    status: safe
+    note: Our own MCP, local execution
+
+  - name: opencode-mcp
+    status: safe
+    note: Our own MCP, local execution
+
+  - name: engram
+    status: safe
+    note: Local SQLite, no network
+
+  - name: context7
+    status: safe
+    note: Read-only documentation lookup
+
+  - name: google-workspace (gws)
+    status: moderate
+    note: OAuth2 scoped, encrypted credentials
+
+  - name: chrome-devtools
+    status: moderate
+    note: Local browser control, can navigate to malicious sites
+
+  - name: claude-in-chrome
+    status: moderate
+    note: Browser automation, same risks as chrome-devtools
+
+# Supply chain stats (Snyk ToxicSkills, Feb 2026)
+supply_chain:
+  total_skills_scanned: 3984
+  with_security_flaws: 1467
+  flaw_rate: "36.82%"
+  critical_risk: 534
+  malicious_payloads: 76
+  hardcoded_secrets_clawhub: "10.9%"
+  source: https://snyk.io/blog/toxicskills-malicious-ai-agent-skills-clawhub/
+
+# Our defenses
+defenses:
+  hooks:
+    - prompt-injection-detector.sh
+    - dangerous-actions-blocker.sh
+    - output-scanner.sh
+    - rtk-rewrite.sh
+  rules:
+    - safety-defaults.md
+    - verify-before-assume.md
+  settings:
+    - permissions.deny for .env files
+    - sandbox mode default
