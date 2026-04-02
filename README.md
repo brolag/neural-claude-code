@@ -1,6 +1,10 @@
 # Neural Claude Code
 
 <p align="center">
+  <img src="assets/banner.png" alt="Neural Claude Code Banner" width="100%">
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/Claude%20Code-Harness-6366f1?style=for-the-badge&logo=anthropic" alt="Claude Code Harness">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License">
   <img src="https://img.shields.io/badge/Version-2.0.0-ec4899?style=for-the-badge" alt="Version">
