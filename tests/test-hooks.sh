@@ -111,7 +111,8 @@ echo ""
 echo "## pre-compact.sh"
 
 TMPDIR=$(mktemp -d)
-(cd "$TMPDIR" && git init --quiet && echo '{}' | bash "$(cd - >/dev/null && pwd)/$HOOKS_DIR/pre-compact.sh" >/dev/null 2>&1)
+HOOK_ABS="$(cd "$(dirname "$HOOKS_DIR/pre-compact.sh")" && pwd)/pre-compact.sh"
+(cd "$TMPDIR" && git init --quiet && echo '{}' | bash "$HOOK_ABS" >/dev/null 2>&1)
 assert_exit "Pre-compact runs in git repo" 0 $?
 rm -rf "$TMPDIR"
 
