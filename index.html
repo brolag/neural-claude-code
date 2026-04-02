@@ -421,6 +421,11 @@
             border-color: var(--matrix-green);
         }
 
+        a.command-card {
+            text-decoration: none;
+            color: inherit;
+        }
+
         .command-card code {
             display: block;
             font-size: 1rem;
@@ -824,12 +829,12 @@
             <p>> On-demand tools. Zero tokens when idle. Load only when invoked._</p>
         </div>
         <div class="commands-grid">
-            <div class="command-card"><code>/forge</code><p>scan, plan, execute, review, ship</p></div>
-            <div class="command-card"><code>/forge --full</code><p>3-agent deliberation + 4-layer review</p></div>
-            <div class="command-card"><code>/init</code><p>Auto-generate project CLAUDE.md</p></div>
-            <div class="command-card"><code>/git-save</code><p>Conventional commits + safety</p></div>
-            <div class="command-card"><code>/overseer</code><p>Security + quality code review</p></div>
-            <div class="command-card"><code>/slop-scan</code><p>Detect AI slop and tech debt</p></div>
+            <a href="https://github.com/brolag/neural-claude-code/blob/main/skills/forge/SKILL.md" class="command-card" target="_blank" rel="noopener noreferrer"><code>/forge</code><p>scan, plan, execute, review, ship</p></a>
+            <a href="https://github.com/brolag/neural-claude-code/blob/main/skills/forge/SKILL.md" class="command-card" target="_blank" rel="noopener noreferrer"><code>/forge --full</code><p>3-agent deliberation + 4-layer review</p></a>
+            <a href="https://github.com/brolag/neural-claude-code/blob/main/skills/init/SKILL.md" class="command-card" target="_blank" rel="noopener noreferrer"><code>/init</code><p>Auto-generate project CLAUDE.md</p></a>
+            <a href="https://github.com/brolag/neural-claude-code/blob/main/skills/git-save/SKILL.md" class="command-card" target="_blank" rel="noopener noreferrer"><code>/git-save</code><p>Conventional commits + safety</p></a>
+            <a href="https://github.com/brolag/neural-claude-code/blob/main/skills/overseer/skill.md" class="command-card" target="_blank" rel="noopener noreferrer"><code>/overseer</code><p>Security + quality code review</p></a>
+            <a href="https://github.com/brolag/neural-claude-code/blob/main/skills/slop-scan/SKILL.md" class="command-card" target="_blank" rel="noopener noreferrer"><code>/slop-scan</code><p>Detect AI slop and tech debt</p></a>
         </div>
     </section>
 
