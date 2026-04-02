@@ -1,0 +1,24 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+credentials*.json
+serviceAccountKey*.json
+secrets.*
+
+# Claude Code artifacts
+.claude/memory/
+.claude/data/
+.claude/compact-context.md
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules/
+__pycache__/
+.venv/
+vendor/

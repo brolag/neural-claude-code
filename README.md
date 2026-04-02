@@ -1,13 +1,14 @@
 # Neural Claude Code
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Claude%20Code-Plugin-6366f1?style=for-the-badge&logo=anthropic" alt="Claude Code Plugin">
+  <img src="https://img.shields.io/badge/Claude%20Code-Harness-6366f1?style=for-the-badge&logo=anthropic" alt="Claude Code Harness">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License">
-  <img src="https://img.shields.io/badge/Version-1.15.0-ec4899?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/Version-2.0.0-ec4899?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/Tokens-~635/msg-10b981?style=for-the-badge" alt="Token Budget">
 </p>
 
 <p align="center">
-  <strong>Claude Code that learns and improves from every interaction.</strong>
+  <strong>Lightweight harness for Claude Code. Security hooks, dev pipeline, smart defaults.</strong>
 </p>
 
 <p align="center">
@@ -18,173 +19,200 @@
 
 ## The Problem
 
-Every Claude Code session starts from zero. You explain your project structure, conventions, and preferences... again and again.
+Every Claude Code session runs without guardrails. No security hooks. No structured workflow. No token optimization. Your CLAUDE.md is either too long (burning tokens) or too short (missing conventions).
 
 ## The Solution
 
-Neural Claude Code remembers. It learns patterns, accumulates knowledge, and gets smarter over time.
+A 21-file starter kit that gives you production-grade guardrails in one command:
 
 ```
-Traditional: Execute -> Forget -> Repeat forever
-Neural:      Execute -> Learn  -> Improve always
+v1 (150+ files, ~4300 tokens/msg):  Commands, TTS, squads, custom memory...
+v2 (21 files, ~635 tokens/msg):     Hooks + skills + rules. That's it.
 ```
+
+---
+
+## What's Inside
+
+### Security Hooks (zero token cost)
+
+Hooks run as bash scripts outside the context window. They enforce behavior without burning a single token.
+
+| Hook | What it does |
+|------|-------------|
+| `dangerous-actions-blocker` | Blocks `rm -rf /`, force push to main, `DROP TABLE`, package publish |
+| `prompt-injection-detector` | Blocks "ignore previous instructions", jailbreak attempts |
+| `output-scanner` | Warns when API keys, tokens, or private keys appear in output |
+| `sensitive-file-guard` | Blocks read/write access to `.env`, credentials, SSH keys |
+| `pre-compact` | Saves git state and active plans before context compaction |
+
+### Skills (on-demand, zero tokens when idle)
+
+Skills only load into context when you invoke them. No overhead otherwise.
+
+| Skill | What it does |
+|-------|-------------|
+| `/forge` | Dev pipeline: scan, plan, execute, review, ship |
+| `/forge --full` | Full pipeline: adds deliberation (3 agents) + parallel execution + 4-layer review |
+| `/init` | Scans your project and generates a customized CLAUDE.md |
+| `/git-save` | Conventional commits workflow with safety checks |
+| `/overseer` | Code review for security, quality, and consistency |
+| `/slop-scan` | Detects AI slop, tech debt, dead code, and anti-patterns |
+
+### Compact Rules (~135 tokens total)
+
+Each rule is 1-2 lines. Maximum signal, minimum tokens.
+
+| Rule | What it enforces |
+|------|-----------------|
+| `verify-first` | Check before assuming. Local files, then docs, then act. |
+| `scope-lock` | Do exactly what was asked. Don't expand scope. |
+| `test-then-ship` | Tests pass, types clean, lint clean before commit. |
+| `no-slop` | No dead code, no over-abstraction, no vague TODOs. |
+| `git-discipline` | Feature branches, conventional commits, never force-push main. |
+
+---
+
+## Token Budget
+
+```
+Per-message overhead:      ~635 tokens
+  CLAUDE.md template:      ~300 tokens (30 lines)
+  5 compact rules:         ~135 tokens (3 lines each)
+  Auto-memory index:       ~200 tokens
+
+Compare: typical unoptimized setup = 3000-5000 tokens/message
+```
+
+### Design Principle: Hooks Enforce, Rules Guide
+
+If behavior can be enforced with a hook (0 tokens), don't write a rule for it.
+Rules are for guidance that requires judgment. Hooks are for hard constraints.
 
 ---
 
 ## Quick Start
 
-**One command to install:**
-
 ```bash
+# 1. Install (one command)
 curl -fsSL https://raw.githubusercontent.com/brolag/neural-claude-code/main/install.sh | bash
+
+# 2. Open Claude Code in your project
+cd your-project
+
+# 3. Generate a project-specific CLAUDE.md
+/init
+
+# 4. Build something with the full pipeline
+/forge "add user authentication"
 ```
 
-The installer will:
-- Clone the repository
-- Configure your shell
-- Register all commands
-- Set up hooks
-- Offer to install recommended skills
+### What the Installer Does
 
-**Then run the guided tour:**
-
-```bash
-/onboard
-```
-
-<details>
-<summary>Manual installation</summary>
-
-```bash
-# 1. Clone
-git clone https://github.com/brolag/neural-claude-code ~/Sites/neural-claude-code
-
-# 2. Setup
-cd ~/Sites/neural-claude-code && ./scripts/setup-hooks.sh
-
-# 3. Add to shell
-echo 'export CLAUDE_PLUGIN_ROOT="$HOME/Sites/neural-claude-code"' >> ~/.zshrc
-source ~/.zshrc
-
-# 4. Guided tour
-/onboard
-```
-
-</details>
-
-**Already installed? Update to v1.15.0:**
-
-```bash
-/update
-```
-
-**[Full Installation Guide ->](docs/tutorials/01-installation.md)**
+1. Clones the repo to `~/Sites/neural-claude-code`
+2. Copies hooks to `~/.claude/hooks/neural/`
+3. Copies skills to `~/.claude/skills/`
+4. Copies rules to `~/.claude/rules/neural/`
+5. Merges hooks into your `settings.json` (doesn't overwrite existing config)
+6. Sets `outputStyle: concise` for token savings
 
 ---
 
-## Key Features
+## Forge Pipeline
 
-| Feature | What it does | Command |
-|---------|--------------|---------|
-| **Skill Auto-Routing** | Skills fire automatically based on context — no manual `/command` needed | `rules/skill-auto-routing.md` |
-| **Pipeline Sequences** | 6 pre-built skill chains: Feature, Bugfix, Hotfix, Refactor, Content, New Codebase | `SKILLS_MAP.md` |
-| **Workflow Orchestration** | Pre-built chains for frontend, engineering, research, content — with smart skip logic | `workflow-frontend-design`, `workflow-engineering` |
-| **Skills Map** | Lightweight 2KB index — Claude picks the right skill without loading 35 full files | `SKILLS_MAP.md` |
-| **Agentic Course** | Interactive 13-lesson course for mastering agentic coding | `/course` |
-| **Neural Squad** | Multi-agent orchestration with anti-slop enforcement | `/squad-init`, `/squad-status` |
-| **CRAFT Framework** | Structured prompts for autonomous agents | `/craft` |
-| **KPI Tracking** | Measure Plan/Review Velocity, Autonomy, Loop State | `/kpi` |
-| **Skills Manager** | Install, enable/disable skills on demand | `/install-skills`, `/manage-skills` |
-| **Self-Learning** | Expertise files that grow smarter each session | `/remember`, `/recall` |
-| **Persistent Memory** | Facts and patterns that survive restarts | `/remember`, `/forget` |
-| **Code Quality** | Detect and auto-fix technical debt | `/slop-scan`, `/slop-fix`, `/overseer` |
-| **Neural Loops** | Autonomous coding sessions that iterate until done | `/loop` |
-| **Multi-AI** | Route tasks to Claude or Codex | `/pv-mesh`, `/ai-collab` |
+### Simple Mode (default)
 
----
+For most tasks. Fast and focused.
 
-## Quick Commands
+```
+/forge "add pagination to API"
 
-```bash
-# First time? Start here
-/onboard                     # Guided tour
-/course                      # 13-lesson agentic coding course
-
-# Workflows (auto-routing in v1.15.0)
-workflow-frontend-design     # New component, page, or redesign
-workflow-frontend-maintenance # CSS fix, copy edit, minor tweak
-workflow-engineering         # Feature / bugfix / hotfix
-workflow-research            # Research any topic
-workflow-content             # Social post, newsletter, blog
-
-# Install and manage skills
-/install-skills              # Add new skills
-/manage-skills               # Enable/disable/update
-/update                      # Update plugin to latest version
-
-# Memory
-/remember The API uses JWT tokens
-/recall database
-
-# Development
-/debugging                   # Root cause analysis
-/tdd                         # Test-driven development
-/slop-scan                   # Find technical debt
-/overseer                    # Review PR quality
-/git-save                    # Commit with Conventional Commits
-
-# Autonomous work
-/loop "Fix all tests" --max 10
-/todo-new "Build feature"    # Plan first, then loop
-
-# Multi-agent squad
-/squad-init                      # Initialize 3-agent system
-/squad-status                    # Check agents and tasks
-/squad-task create "Feature"     # Create task for squad
-/squad-standup                   # Daily standup report
-
-# Agentic metrics
-/kpi                             # Performance dashboard
-/craft "Build auth system"       # Generate structured prompt
-
-# Learning
-/learn https://github.com/user/repo
-/super-search "topic"            # Triple-engine research
+  SCAN     Read CLAUDE.md, git log, find related files
+  PLAN     Requirements + acceptance criteria + subtasks
+  EXECUTE  Implement with tests, max 3 fix attempts
+  REVIEW   Security + quality review (fresh agent context)
+  SHIP     Report + wait for human confirmation
 ```
 
-**[All Commands ->](docs/reference/commands.md)**
+### Full Mode
+
+For complex tasks: 3+ files, auth, payments, architecture changes.
+
+```
+/forge --full "redesign auth system"
+
+  SCAN        Read project context
+  CLARIFY     Max 3 questions (skip if clear)
+  DELIBERATE  3 agents debate: simplicity vs scalability vs security
+  PLAN        Spec + design + task breakdown
+  EXECUTE     Parallel agents with worktree isolation
+  REVIEW      4-layer: OWASP + quality + slop + overseer
+  SHIP        Report + wait for human confirmation
+```
 
 ---
 
-## Learn More
+## Memory
 
-| New here? | Know what you want? |
-|-----------|---------------------|
-| **[Tutorials](docs/tutorials/)** | **[How-to Guides](docs/how-to/)** |
-| Step-by-step learning | Task-focused recipes |
+**Default**: Claude Code's native auto-memory. Zero config, works out of the box.
 
-| Need to look something up? | Want to understand? |
-|---------------------------|---------------------|
-| **[Reference](docs/reference/)** | **[Explanation](docs/explanation/)** |
-| Commands, agents, config | Architecture, patterns |
+**Pre-compact hook**: Saves git state and active plans before context compaction, so Claude can recover context after compression.
 
-**[Full Documentation ->](docs/index.md)**
+**Optional upgrade**: [Engram](docs/memory-upgrade.md) for cross-session persistent memory with full-text search.
+
+---
+
+## Customization
+
+- **Add hooks**: Create scripts in `~/.claude/hooks/`, add to `settings.json`
+- **Add skills**: Create dirs in `~/.claude/skills/` with a `SKILL.md`
+- **Add rules**: Create `.md` files in `~/.claude/rules/` (keep them short)
+- **Modify defaults**: Edit files in `~/.claude/hooks/neural/`, `~/.claude/rules/neural/`
+
+See [Customization Guide](docs/customization.md) for details.
+
+---
+
+## Uninstall
+
+```bash
+bash ~/Sites/neural-claude-code/uninstall.sh
+```
+
+Removes hooks, skills, and rules. Does not modify `settings.json` (manual cleanup needed for hook entries).
+
+---
+
+## Requirements
+
+- Claude Code CLI
+- `jq` (install with `brew install jq`)
+- `git`
+
+No other dependencies. No npm packages. No Go binaries. No Python.
+
+---
+
+## Docs
+
+| Doc | Content |
+|-----|---------|
+| [Philosophy](docs/philosophy.md) | Design principles, token optimization strategy |
+| [Customization](docs/customization.md) | Add your own hooks, skills, and rules |
+| [Memory Upgrade](docs/memory-upgrade.md) | Optional Engram for cross-session memory |
 
 ---
 
 ## Contributing
 
-Contributions welcome! [Open an issue](https://github.com/brolag/neural-claude-code/issues) or submit a PR.
+PRs welcome. Keep it lightweight:
+- New hooks must have tests in `tests/test-hooks.sh`
+- New rules must be 1-3 lines
+- New skills must have `allowed-tools` restricted to what they need
+- No external dependencies
 
 ---
 
 ## License
 
-MIT - see [LICENSE](LICENSE)
-
----
-
-<p align="center">
-  <strong>Built with Claude Code</strong><br>
-  <sub>Self-improving AI that learns from you</sub>
-</p>
+MIT
