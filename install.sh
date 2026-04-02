@@ -1,12 +1,10 @@
 #!/bin/bash
 #
-# Neural Claude Code - One-Line Installer
+# Neural Claude Code v2 — Installer
 # Usage: curl -fsSL https://raw.githubusercontent.com/brolag/neural-claude-code/main/install.sh | bash
 #
-
 set -e
 
-# Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -14,247 +12,118 @@ BLUE='\033[0;34m'
 BOLD='\033[1m'
 RESET='\033[0m'
 
-echo -e "${BOLD}╔════════════════════════════════════════════════════════╗${RESET}"
-echo -e "${BOLD}║  Neural Claude Code - One-Line Installer              ║${RESET}"
-echo -e "${BOLD}║  v1.4.0                                                ║${RESET}"
-echo -e "${BOLD}╚════════════════════════════════════════════════════════╝${RESET}"
-echo ""
-
-# Default installation directory
-INSTALL_DIR="${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code}"
+INSTALL_DIR="${NEURAL_INSTALL_DIR:-$HOME/Sites/neural-claude-code}"
 REPO_URL="https://github.com/brolag/neural-claude-code.git"
+CLAUDE_DIR="$HOME/.claude"
+HOOKS_DIR="$CLAUDE_DIR/hooks/neural"
+SKILLS_DIR="$CLAUDE_DIR/skills"
+RULES_DIR="$CLAUDE_DIR/rules/neural"
+SETTINGS_FILE="$CLAUDE_DIR/settings.json"
 
-echo -e "${BLUE}→${RESET} Installation directory: ${BOLD}$INSTALL_DIR${RESET}"
+echo -e "${BOLD}Neural Claude Code v2${RESET}"
+echo -e "Lightweight harness: security hooks + forge pipeline + smart defaults"
 echo ""
 
-# Check prerequisites
-echo -e "${BLUE}→${RESET} Checking prerequisites..."
-
-missing=()
-
-if ! command -v git &> /dev/null; then
-    missing+=("git")
-fi
-
-if ! command -v jq &> /dev/null; then
-    echo -e "${YELLOW}⚠${RESET} jq not found (required for interactive installer)"
-    missing+=("jq")
-fi
-
-if [ ${#missing[@]} -gt 0 ]; then
-    echo -e "${RED}✗${RESET} Missing: ${missing[*]}"
-    echo -e "${BLUE}ℹ${RESET} Install with: ${BOLD}brew install ${missing[*]}${RESET}"
+# --- Prerequisites ---
+if ! command -v jq &>/dev/null; then
+    echo -e "${RED}Error:${RESET} jq is required. Install with: brew install jq"
     exit 1
 fi
 
-echo -e "${GREEN}✓${RESET} Prerequisites met"
-echo ""
+if ! command -v git &>/dev/null; then
+    echo -e "${RED}Error:${RESET} git is required."
+    exit 1
+fi
 
-# Clone or update repository
+echo -e "${GREEN}ok${RESET} Prerequisites met (git, jq)"
+
+# --- Clone or update repo ---
 if [ -d "$INSTALL_DIR/.git" ]; then
-    echo -e "${BLUE}→${RESET} Updating existing installation..."
-    cd "$INSTALL_DIR"
-    git pull origin main
-    echo -e "${GREEN}✓${RESET} Updated to latest version"
+    echo -e "${BLUE}->>${RESET} Updating existing installation..."
+    cd "$INSTALL_DIR" && git pull origin main --quiet
 else
-    echo -e "${BLUE}→${RESET} Cloning repository..."
-    mkdir -p "$(dirname "$INSTALL_DIR")"
-    git clone "$REPO_URL" "$INSTALL_DIR"
-    echo -e "${GREEN}✓${RESET} Repository cloned"
+    echo -e "${BLUE}->>${RESET} Cloning repository..."
+    git clone --quiet "$REPO_URL" "$INSTALL_DIR"
 fi
 
-cd "$INSTALL_DIR"
-echo ""
+echo -e "${GREEN}ok${RESET} Repository ready at $INSTALL_DIR"
 
-# Detect shell
-SHELL_RC=""
-SHELL_NAME=$(basename "$SHELL")
-
-case "$SHELL_NAME" in
-    zsh)
-        SHELL_RC="$HOME/.zshrc"
-        ;;
-    bash)
-        SHELL_RC="$HOME/.bashrc"
-        if [ ! -f "$SHELL_RC" ]; then
-            SHELL_RC="$HOME/.bash_profile"
-        fi
-        ;;
-    *)
-        SHELL_RC="$HOME/.profile"
-        ;;
-esac
-
-echo -e "${BLUE}→${RESET} Detected shell: ${BOLD}$SHELL_NAME${RESET} (config: $SHELL_RC)"
-echo ""
-
-# Add to shell config
-if ! grep -q "CLAUDE_PLUGIN_ROOT" "$SHELL_RC" 2>/dev/null; then
-    echo -e "${BLUE}→${RESET} Adding to shell configuration..."
-    cat >> "$SHELL_RC" << EOF
-
-# Neural Claude Code
-export CLAUDE_PLUGIN_ROOT="$INSTALL_DIR"
-EOF
-    echo -e "${GREEN}✓${RESET} Added to $SHELL_RC"
-
-    # Source it immediately
-    export CLAUDE_PLUGIN_ROOT="$INSTALL_DIR"
-else
-    echo -e "${YELLOW}⚠${RESET} Already configured in $SHELL_RC"
+# --- Backup existing settings ---
+if [ -f "$SETTINGS_FILE" ]; then
+    BACKUP="$SETTINGS_FILE.backup.$(date +%Y%m%d%H%M%S)"
+    cp "$SETTINGS_FILE" "$BACKUP"
+    echo -e "${GREEN}ok${RESET} Backed up settings.json to $(basename $BACKUP)"
 fi
 
-echo ""
+# --- Install hooks ---
+mkdir -p "$HOOKS_DIR"
+cp "$INSTALL_DIR/hooks/"*.sh "$HOOKS_DIR/"
+chmod +x "$HOOKS_DIR/"*.sh
+echo -e "${GREEN}ok${RESET} Installed 5 security hooks"
 
-# Register commands
-echo -e "${BLUE}→${RESET} Registering commands..."
-mkdir -p "$HOME/.claude/commands"
-for cmd_file in "$INSTALL_DIR"/commands/*.md; do
-    if [ -f "$cmd_file" ]; then
-        cp "$cmd_file" "$HOME/.claude/commands/"
+# --- Install skills ---
+for skill in forge init git-save overseer slop-scan; do
+    SKILL_SRC="$INSTALL_DIR/skills/$skill"
+    SKILL_DST="$SKILLS_DIR/$skill"
+    if [ -d "$SKILL_SRC" ]; then
+        mkdir -p "$SKILL_DST"
+        cp "$SKILL_SRC/SKILL.md" "$SKILL_DST/SKILL.md"
     fi
 done
-echo -e "${GREEN}✓${RESET} Commands registered"
+echo -e "${GREEN}ok${RESET} Installed 5 skills (forge, init, git-save, overseer, slop-scan)"
 
-# Run setup hooks
-if [ -f "$INSTALL_DIR/scripts/setup-hooks.sh" ]; then
-    echo -e "${BLUE}→${RESET} Setting up hooks..."
-    bash "$INSTALL_DIR/scripts/setup-hooks.sh"
-    echo -e "${GREEN}✓${RESET} Hooks configured"
-else
-    echo -e "${YELLOW}⚠${RESET} Setup script not found, skipping hooks"
-fi
+# --- Install rules ---
+mkdir -p "$RULES_DIR"
+cp "$INSTALL_DIR/core/rules/"*.md "$RULES_DIR/"
+echo -e "${GREEN}ok${RESET} Installed 5 compact rules (~135 tokens total)"
 
-echo ""
-echo -e "${BOLD}═══════════════════════════════════════════════════════════${RESET}"
-echo -e "${GREEN}✓ Installation complete!${RESET}"
-echo -e "${BOLD}═══════════════════════════════════════════════════════════${RESET}"
-echo ""
+# --- Merge settings.json ---
+NEURAL_SETTINGS="$INSTALL_DIR/core/settings.json"
 
-# Offer to install skills
-echo -e "${BOLD}Next step: Install skills${RESET}"
-echo ""
-
-# Check if interactive installer will work (needs bash 4+)
-BASH_MAJOR_VERSION="${BASH_VERSINFO[0]:-3}"
-INTERACTIVE_AVAILABLE=true
-
-if [ "$BASH_MAJOR_VERSION" -lt 4 ]; then
-    INTERACTIVE_AVAILABLE=false
-fi
-
-echo "Would you like to install recommended skills now?"
-
-if [ "$INTERACTIVE_AVAILABLE" = true ]; then
-    echo "  1) Yes, install now (interactive)"
-    echo "  2) Install recommended bundle (auto) ⭐ Recommended"
-    echo "  3) Skip (install later with /install-skills)"
-else
-    echo "  1) Install recommended bundle (auto) ⭐ Recommended"
-    echo "  2) Skip (install later with /install-skills)"
-    echo ""
-    echo -e "${YELLOW}ℹ${RESET} Interactive mode requires bash 4+. Install with: ${BOLD}brew install bash${RESET}"
-fi
-
-echo ""
-read -p "Select: " choice
-
-if [ "$INTERACTIVE_AVAILABLE" = true ]; then
-    # Menu with interactive option
-    case "$choice" in
-        1)
-            echo ""
-            echo -e "${BLUE}→${RESET} Launching interactive installer..."
-            bash "$INSTALL_DIR/scripts/install-skills.sh"
-            ;;
-        2)
-            echo ""
-            echo -e "${BLUE}→${RESET} Installing recommended bundle..."
-
-            # Install to global by default
-            TARGET_DIR="$HOME/.claude/skills"
-            mkdir -p "$TARGET_DIR"
-
-            # Copy recommended skills
-            recommended=(
-                "debugging"
-                "tdd"
-                "deep-research"
-                "slop-scan"
-                "slop-fix"
-                "overseer"
+if [ -f "$SETTINGS_FILE" ]; then
+    # Merge: add neural hooks without overwriting existing ones
+    TEMP=$(mktemp)
+    jq -s '
+        .[0] as $existing |
+        .[1] as $neural |
+        $existing * {
+            outputStyle: ($existing.outputStyle // $neural.outputStyle),
+            hooks: (
+                ($existing.hooks // {}) as $eh |
+                ($neural.hooks // {}) as $nh |
+                reduce ($nh | keys[]) as $event (
+                    $eh;
+                    .[$event] = ((.[$event] // []) + $nh[$event])
+                )
             )
-
-            for skill in "${recommended[@]}"; do
-                if [ -d "$INSTALL_DIR/skills/$skill" ]; then
-                    echo -e "${BLUE}→${RESET} Installing $skill..."
-                    mkdir -p "$TARGET_DIR/$skill"
-                    cp -r "$INSTALL_DIR/skills/$skill/"* "$TARGET_DIR/$skill/"
-                    echo -e "${GREEN}✓${RESET} $skill"
-                fi
-            done
-
-            echo ""
-            echo -e "${GREEN}✓${RESET} Installed ${#recommended[@]} skills to $TARGET_DIR"
-            ;;
-        3)
-            echo ""
-            echo -e "${YELLOW}⚠${RESET} Skipped skill installation"
-            ;;
-    esac
+        }
+    ' "$SETTINGS_FILE" "$NEURAL_SETTINGS" > "$TEMP"
+    mv "$TEMP" "$SETTINGS_FILE"
+    echo -e "${GREEN}ok${RESET} Merged hooks into existing settings.json"
 else
-    # Menu without interactive option (bash 3.2)
-    case "$choice" in
-        1)
-            echo ""
-            echo -e "${BLUE}→${RESET} Installing recommended bundle..."
-
-            # Install to global by default
-            TARGET_DIR="$HOME/.claude/skills"
-            mkdir -p "$TARGET_DIR"
-
-            # Copy recommended skills
-            recommended=(
-                "debugging"
-                "tdd"
-                "deep-research"
-                "slop-scan"
-                "slop-fix"
-                "overseer"
-            )
-
-            for skill in "${recommended[@]}"; do
-                if [ -d "$INSTALL_DIR/skills/$skill" ]; then
-                    echo -e "${BLUE}→${RESET} Installing $skill..."
-                    mkdir -p "$TARGET_DIR/$skill"
-                    cp -r "$INSTALL_DIR/skills/$skill/"* "$TARGET_DIR/$skill/"
-                    echo -e "${GREEN}✓${RESET} $skill"
-                fi
-            done
-
-            echo ""
-            echo -e "${GREEN}✓${RESET} Installed ${#recommended[@]} skills to $TARGET_DIR"
-            ;;
-        2)
-            echo ""
-            echo -e "${YELLOW}⚠${RESET} Skipped skill installation"
-            ;;
-    esac
+    mkdir -p "$CLAUDE_DIR"
+    cp "$NEURAL_SETTINGS" "$SETTINGS_FILE"
+    echo -e "${GREEN}ok${RESET} Created settings.json with neural hooks"
 fi
 
+# --- Copy .gitignore template ---
+if [ -f "$INSTALL_DIR/.gitignore.template" ]; then
+    echo -e "${BLUE}->>${RESET} .gitignore template available at: $INSTALL_DIR/.gitignore.template"
+    echo -e "    Copy to your project: cp $INSTALL_DIR/.gitignore.template /path/to/project/.gitignore"
+fi
+
+# --- Summary ---
 echo ""
-echo -e "${BOLD}Quick Start:${RESET}"
+echo -e "${BOLD}Installation complete${RESET}"
 echo ""
-echo "  # Reload shell"
-echo "  source $SHELL_RC"
+echo "  Hooks:  $HOOKS_DIR/ (5 scripts)"
+echo "  Skills: $SKILLS_DIR/ (forge, init, git-save, overseer, slop-scan)"
+echo "  Rules:  $RULES_DIR/ (5 compact rules)"
 echo ""
-echo "  # In any Claude Code session:"
-echo "  /install-skills          # Install more skills"
-echo "  /slop-scan               # Detect technical debt"
-echo "  /debug                   # Systematic debugging"
-echo "  /tdd                     # Test-driven development"
+echo -e "${BOLD}Next steps:${RESET}"
+echo "  1. Open Claude Code in your project"
+echo "  2. Run /init to generate a project-specific CLAUDE.md"
+echo "  3. Run /forge \"your task\" to use the dev pipeline"
 echo ""
-echo -e "${BOLD}Documentation:${RESET}"
-echo "  https://github.com/brolag/neural-claude-code"
+echo -e "${BOLD}Token budget:${RESET} ~635 tokens/message overhead (rules + CLAUDE.md)"
 echo ""
-echo -e "${GREEN}Happy coding! 🚀${RESET}"

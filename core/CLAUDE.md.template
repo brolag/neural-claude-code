@@ -1,0 +1,26 @@
+# {{PROJECT_NAME}}
+
+## Stack
+{{STACK_DESCRIPTION}}
+
+## Conventions
+- Language: {{LANGUAGE}}
+- Tests: run `{{TEST_COMMAND}}` before committing
+- Lint: run `{{LINT_COMMAND}}` before committing
+- Branch: feature branches, never push directly to main
+
+## Key Directories
+{{DIRECTORY_MAP}}
+
+## Workflow
+- Use `/forge` for features (3+ files) — automated pipeline with review
+- Use `/forge --full` for complex tasks — adds deliberation + parallel execution
+- Use `/git-save` when ready to commit
+- Use `/overseer` for pre-merge code review
+- Use `/slop-scan` to detect tech debt
+
+## What NOT to do
+- Don't add features beyond what was asked
+- Don't refactor code you didn't change
+- Don't add comments to self-explanatory code
+- Don't commit .env files or secrets
