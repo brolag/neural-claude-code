@@ -1,43 +1,32 @@
 ---
 name: git-save
-description: Stage and commit code changes with Conventional Commits format. Use when: code changes are complete and ready to commit, at the end of engineering workflows, after overseer approval, user says "save", "commit", "ship it". Don't use when: tests are failing, work is still in progress, overseer flagged critical issues, user said "don't commit yet".
-trigger: commit, save changes, ship it, git save
+description: "Stage and commit with Conventional Commits. Use when changes are ready to commit."
+trigger: commit, save, ship it, git save
 allowed-tools: Bash
 ---
 
-# Git Save
+# /git-save — Commit Workflow
 
-Professional commit workflow following Conventional Commits v1.0.0.
-
-## Behavior
-
-1. Run `git status` — identify changed files
-2. Run `git diff` — understand what changed and why
-3. Run `git log --oneline -5` — match existing commit style
-4. Stage specific files by name (never `git add -A` blindly)
-5. Draft commit message: type(scope): description
-6. Commit with Co-Authored-By footer
+1. `git status` — identify changed files
+2. `git diff` — understand what changed
+3. `git log --oneline -5` — match existing commit style
+4. Stage specific files by name (never `git add -A`)
+5. Skip files that look sensitive (.env, credentials, keys)
+6. Draft commit: `type(scope): description`
 
 ## Commit Types
 
-| type | use when |
+| type | when |
 |---|---|
-| `feat` | new feature added |
-| `fix` | bug fixed |
-| `refactor` | code restructured, no behavior change |
-| `style` | formatting, no logic change |
+| `feat` | new feature |
+| `fix` | bug fix |
+| `refactor` | restructure, no behavior change |
 | `docs` | documentation only |
-| `test` | tests added or updated |
+| `test` | tests added/updated |
 | `chore` | build, deps, config |
 
-## Skip When
-
-- Tests are failing
-- Overseer flagged critical issues
-- User explicitly said "not yet" or "hold off"
-- Uncommitted work is partial / WIP
-
-## Done When
-
-- [ ] Commit created successfully
-- [ ] `git status` shows clean working tree (for committed files)
+## Rules
+- NEVER commit if tests are failing
+- NEVER commit .env or credential files
+- NEVER auto-push (commit only, user pushes manually)
+- Ask before committing if scope is unclear
