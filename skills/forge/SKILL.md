@@ -1,8 +1,8 @@
 ---
 name: forge
-description: "Dev pipeline: scan, plan, execute, review, ship. Simple mode by default, --full for complex tasks."
+description: "Full dev pipeline: scan, plan, execute, review, ship. Use when user says /forge or wants the full quality pipeline on a task. Don't use for quick fixes (<25 LOC) or docs-only changes."
 argument-hint: "[task description] [--full]"
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent, TaskCreate, TaskUpdate, Skill
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git *), Bash(npm *), Bash(npx *), Bash(pytest *), Bash(find *), Bash(wc *), Bash(mkdir *), Bash(date *), Bash(ls *), Agent, TaskCreate, TaskUpdate, Skill
 ---
 
 # /forge — Development Pipeline
