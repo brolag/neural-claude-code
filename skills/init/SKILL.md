@@ -1,8 +1,8 @@
 ---
 name: init
-description: "Scan project and generate a customized CLAUDE.md. Detects stack, test commands, and conventions."
+description: "Scan project and generate a customized CLAUDE.md. Detects stack, test commands, and conventions. Use when onboarding to a new project or user says 'init', 'setup claude', 'generate CLAUDE.md'."
 argument-hint: "[project path]"
-allowed-tools: Read, Write, Glob, Grep, Bash
+allowed-tools: Read, Write, Glob, Grep, Bash(ls *), Bash(git log *)
 ---
 
 # /init — Generate Project CLAUDE.md

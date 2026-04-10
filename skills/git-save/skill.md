@@ -1,8 +1,9 @@
 ---
 name: git-save
-description: "Stage and commit with Conventional Commits. Use when changes are ready to commit."
+description: "Stage and commit code changes with Conventional Commits format. Use when: code changes are complete and ready to commit, after review approval, user says 'save', 'commit', 'ship it'. Don't use when: tests are failing or work is still in progress."
 trigger: commit, save, ship it, git save
-allowed-tools: Bash
+disable-model-invocation: true
+allowed-tools: Bash(git status *), Bash(git diff *), Bash(git log *), Bash(git add *), Bash(git commit *)
 ---
 
 # /git-save — Commit Workflow

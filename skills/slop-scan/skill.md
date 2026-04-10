@@ -1,8 +1,8 @@
 ---
 name: slop-scan
-description: "Scan codebase for AI slop, tech debt, and refactor opportunities."
-argument-hint: "[path] [--quick]"
-allowed-tools: Glob, Grep, Read, Bash
+description: "Scan a codebase for accumulated slop, technical debt, dead code, and refactor opportunities. Use when user says 'scan for slop', 'find tech debt', 'what needs cleanup', or before a refactor sprint."
+argument-hint: "[path] [--quick] [--commits N]"
+allowed-tools: Glob, Grep, Read, Bash(git log *), Bash(git diff *), Bash(wc *), Bash(find *)
 ---
 
 # /slop-scan — Detect Technical Debt

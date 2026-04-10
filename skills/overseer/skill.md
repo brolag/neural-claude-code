@@ -1,8 +1,8 @@
 ---
 name: overseer
-description: "Code review for quality, security, and consistency before merge."
+description: "Adversarial review of PRs and diffs before merge. Use when finishing a PR, before merging to main, or user says 'review this diff', 'check this PR', 'is this ready to merge'. Detects slop, security issues, inconsistencies."
 argument-hint: "[path or --pr NUMBER]"
-allowed-tools: Read, Grep, Glob, Bash
+allowed-tools: Read, Grep, Glob, Bash(git diff *), Bash(git log *), Bash(gh pr *)
 ---
 
 # /overseer — Code Review
