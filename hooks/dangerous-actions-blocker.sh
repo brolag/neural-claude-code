@@ -10,7 +10,14 @@ TOOL_INPUT=$(echo "$INPUT" | jq -r '.tool_input // empty')
 if [[ "$TOOL_NAME" == "Bash" ]]; then
     COMMAND=$(echo "$TOOL_INPUT" | jq -r '.command // empty')
 
-    for pattern in "rm -rf /" "rm -rf ~" "rm -rf \$HOME" "dd if=" "mkfs" \
+    # rm -rf of / or home ITSELF (not subpaths like /tmp/x or ~/foo) —
+    # matches the actual target so `rm -rf /tmp/build` stays allowed
+    if echo "$COMMAND" | grep -qE '(^|[;&|[:space:]])rm[[:space:]]+(-[a-zA-Z]+[[:space:]]+)*-[a-zA-Z]*r[a-zA-Z]*([[:space:]]+-[a-zA-Z]+)*[[:space:]]+"?(/|~|\$HOME)/?\*?"?([[:space:]]|$|[;&|])' 2>/dev/null; then
+        echo "BLOCKED: Destructive command detected: 'rm -rf' targeting / or home" >&2
+        exit 2
+    fi
+
+    for pattern in "dd if=" "mkfs" \
         ":(){:|:&};:" "> /dev/sda" "chmod -R 777 /" "--no-preserve-root" \
         "DROP DATABASE" "DROP TABLE"; do
         if [[ "$COMMAND" == *"$pattern"* ]]; then
