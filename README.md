@@ -103,7 +103,7 @@ Rules are for guidance that requires judgment. Hooks are for hard constraints.
 ## Quick Start
 
 ```bash
-# 1. Install (one command)
+# 1. Install (one command) — or install as a plugin (see "Install as a Plugin" below)
 curl -fsSL https://raw.githubusercontent.com/brolag/neural-claude-code/main/install.sh | bash
 
 # 2. Open Claude Code in your project
@@ -125,6 +125,33 @@ cd your-project
 4. Copies rules to `~/.claude/rules/neural/`
 5. Merges hooks into your `settings.json` (doesn't overwrite existing config)
 6. Sets `outputStyle: concise` for token savings
+
+---
+
+## Install as a Plugin
+
+Prefer Claude Code's native plugin system? Neural ships as a plugin too — no shell script, and it
+installs the **5 security hooks + the 7 skills**:
+
+```
+/plugin marketplace add brolag/neural-claude-code
+/plugin install neural@neural-claude-code
+```
+
+Skills are namespaced under the plugin: `/neural:spec`, `/neural:craft`, `/neural:vet`, `/neural:exercise`, etc.
+Update later with `/plugin marketplace update neural-claude-code`; remove with `/plugin uninstall neural`.
+
+**Plugin vs. curl installer — pick ONE (running both double-fires the hooks):**
+
+| | Plugin (`/plugin install`) | Curl (`install.sh`) |
+|---|:---:|:---:|
+| Security hooks | yes | yes |
+| Skills (spec / craft / vet / exercise / init / git-save / slop-scan) | yes (`/neural:` prefix) | yes (`/` prefix) |
+| Compact rules (always-on guidance) | no¹ | yes |
+| CLAUDE.md template + `outputStyle: concise` | no¹ | yes |
+
+¹ Claude Code plugins have no primitive for always-on rules or a global CLAUDE.md, so those stay
+curl-installer-only. The hooks — which *enforce* most of what the rules merely guide — ship in both.
 
 ---
 
@@ -222,6 +249,7 @@ PRs welcome. Keep it lightweight:
 - New rules must be 1-3 lines
 - New skills must have `allowed-tools` restricted to what they need
 - No external dependencies
+- Plugin/marketplace manifests must pass `claude plugin validate . --strict`
 
 ---
 

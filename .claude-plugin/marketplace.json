@@ -1,0 +1,24 @@
+{
+  "name": "neural-claude-code",
+  "owner": {
+    "name": "brolag",
+    "email": "info@alfredobonilla.com"
+  },
+  "description": "Neural Claude Code — a lightweight security + dev-pipeline harness for Claude Code.",
+  "version": "2.0.0",
+  "plugins": [
+    {
+      "name": "neural",
+      "source": "./",
+      "description": "5 security hooks + a spec -> craft -> vet/exercise dev pipeline. Zero dependencies; runs on vanilla Claude Code.",
+      "version": "2.0.0",
+      "category": "productivity",
+      "keywords": [
+        "security",
+        "code-review",
+        "pipeline",
+        "guardrails"
+      ]
+    }
+  ]
+}

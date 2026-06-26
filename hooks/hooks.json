@@ -1,0 +1,60 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/dangerous-actions-blocker.sh\"",
+            "timeout": 3000
+          }
+        ]
+      },
+      {
+        "matcher": "Bash|Write|Edit|WebFetch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/prompt-injection-detector.sh\"",
+            "timeout": 3000
+          }
+        ]
+      },
+      {
+        "matcher": "Read|Edit|Write|Grep|Glob",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/sensitive-file-guard.sh\"",
+            "timeout": 2000
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/output-scanner.sh\"",
+            "timeout": 3000
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/pre-compact.sh\"",
+            "timeout": 30000
+          }
+        ]
+      }
+    ]
+  }
+}
