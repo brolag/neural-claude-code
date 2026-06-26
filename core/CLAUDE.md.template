@@ -13,10 +13,10 @@
 {{DIRECTORY_MAP}}
 
 ## Workflow
-- Use `/forge` for features (3+ files) — automated pipeline with review
-- Use `/forge --full` for complex tasks — adds deliberation + parallel execution
+- Use `/spec` to plan a non-trivial change (3+ files) — produces an approvable plan, then stops
+- Use `/craft` to build an approved plan — executes, reviews with `/vet` + `/exercise`, stops for ship
+- Use `/vet` for a standalone pre-merge code review (clean-context reviewer)
 - Use `/git-save` when ready to commit
-- Use `/overseer` for pre-merge code review
 - Use `/slop-scan` to detect tech debt
 
 ## What NOT to do

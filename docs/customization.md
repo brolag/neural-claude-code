@@ -29,13 +29,17 @@ Create a directory in `~/.claude/skills/your-skill/`:
 ---
 name: your-skill
 description: "What it does in one line"
-allowed-tools: Read, Write, Edit, Bash
+argument-hint: "[optional args]"
+allowed-tools: Read, Write, Edit, Bash(git *), Bash(npm *)
 ---
 
 # /your-skill
 
 Instructions for Claude to follow when this skill is invoked.
 ```
+
+Keep `allowed-tools` restricted to exactly what the skill needs. Prefer scoped Bash patterns
+(`Bash(git *)`, `Bash(npm *)`) over a bare `Bash`, so an invoked skill can't run arbitrary commands.
 
 ## Adding Your Own Rules
 
@@ -52,7 +56,7 @@ One to three lines describing the rule. Keep it short — every line costs token
 
 - **Edit hooks**: `~/.claude/hooks/neural/*.sh` — modify patterns, add exceptions
 - **Edit rules**: `~/.claude/rules/neural/*.md` — adjust wording or add constraints
-- **Edit skills**: `~/.claude/skills/forge/SKILL.md` — customize the pipeline
+- **Edit skills**: `~/.claude/skills/craft/SKILL.md` — customize the build pipeline (or `/spec`, `/vet`, `/exercise`)
 
 ## Removing Neural Components
 

@@ -21,7 +21,7 @@ RULES_DIR="$CLAUDE_DIR/rules/neural"
 SETTINGS_FILE="$CLAUDE_DIR/settings.json"
 
 echo -e "${BOLD}Neural Claude Code v2${RESET}"
-echo -e "Lightweight harness: security hooks + forge pipeline + smart defaults"
+echo -e "Lightweight harness: security hooks + spec/craft dev pipeline + smart defaults"
 echo ""
 
 # --- Prerequisites ---
@@ -62,7 +62,7 @@ chmod +x "$HOOKS_DIR/"*.sh
 echo -e "${GREEN}ok${RESET} Installed 5 security hooks"
 
 # --- Install skills ---
-for skill in forge init git-save overseer slop-scan; do
+for skill in init spec craft vet exercise git-save slop-scan; do
     SKILL_SRC="$INSTALL_DIR/skills/$skill"
     SKILL_DST="$SKILLS_DIR/$skill"
     if [ -d "$SKILL_SRC" ]; then
@@ -70,7 +70,7 @@ for skill in forge init git-save overseer slop-scan; do
         cp "$SKILL_SRC/SKILL.md" "$SKILL_DST/SKILL.md"
     fi
 done
-echo -e "${GREEN}ok${RESET} Installed 5 skills (forge, init, git-save, overseer, slop-scan)"
+echo -e "${GREEN}ok${RESET} Installed 7 skills (init, spec, craft, vet, exercise, git-save, slop-scan)"
 
 # --- Install rules ---
 mkdir -p "$RULES_DIR"
@@ -117,13 +117,13 @@ echo ""
 echo -e "${BOLD}Installation complete${RESET}"
 echo ""
 echo "  Hooks:  $HOOKS_DIR/ (5 scripts)"
-echo "  Skills: $SKILLS_DIR/ (forge, init, git-save, overseer, slop-scan)"
+echo "  Skills: $SKILLS_DIR/ (init, spec, craft, vet, exercise, git-save, slop-scan)"
 echo "  Rules:  $RULES_DIR/ (5 compact rules)"
 echo ""
 echo -e "${BOLD}Next steps:${RESET}"
 echo "  1. Open Claude Code in your project"
 echo "  2. Run /init to generate a project-specific CLAUDE.md"
-echo "  3. Run /forge \"your task\" to use the dev pipeline"
+echo "  3. Run /spec \"your task\" to plan, then /craft to build it"
 echo ""
 echo -e "${BOLD}Token budget:${RESET} ~635 tokens/message overhead (rules + CLAUDE.md)"
 echo ""

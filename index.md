@@ -15,7 +15,7 @@ curl -fsSL https://raw.githubusercontent.com/brolag/neural-claude-code/main/inst
 
 ## What's Inside
 
-**21 files. ~635 tokens/message overhead. Zero external dependencies.**
+**23 files. ~635 tokens/message overhead. Zero external dependencies.**
 
 ### Security Hooks (0 tokens)
 
@@ -33,11 +33,12 @@ Bash scripts that run outside context. They enforce, not guide.
 
 | Skill | Purpose |
 |-------|---------|
-| `/forge` | Dev pipeline: scan, plan, execute, review, ship |
-| `/forge --full` | Full pipeline with 3-agent deliberation + 4-layer review |
 | `/init` | Auto-generate CLAUDE.md for your project |
+| `/spec` | Plan a non-trivial change into an approvable artifact. Stops for review; writes no code |
+| `/craft` | Build an approved `/spec` plan: baseline, execute, review, measure, stop for ship |
+| `/vet` | Clean-context review gate (fresh reviewer). Verdict SHIP/HOLD/BLOCK |
+| `/exercise` | Behavioral gate: run tests, drive the app as a user, report PASS/FAIL with evidence |
 | `/git-save` | Conventional commits with safety checks |
-| `/overseer` | Code review (security + quality + consistency) |
 | `/slop-scan` | Detect AI slop, tech debt, dead code |
 
 ### Rules (~135 tokens)
@@ -61,7 +62,8 @@ curl -fsSL https://raw.githubusercontent.com/brolag/neural-claude-code/main/inst
 # In your project
 cd your-project
 /init                           # generate CLAUDE.md
-/forge "add user auth"          # run the pipeline
+/spec "add user auth"           # plan it (stops for approval)
+/craft                          # build the approved plan, review, stop for ship
 ```
 
 ---
@@ -78,13 +80,17 @@ cd your-project
 
 ---
 
-## Forge Pipeline
+## Dev Pipeline
 
-**Simple mode** (default): scan, plan, execute, review, ship.
+Planning, building, and review are separate skills, each in a clean context:
 
-**Full mode** (`--full`): adds clarification, 3-agent deliberation, parallel execution, and 4-layer review (OWASP + quality + slop + overseer).
+**`/spec`** plans the change (signatures, CWE invariants, executable acceptance) into an approvable
+`plans/<date-task>/plan.md` and stops. **`/craft`** executes the approved plan, then runs two independent
+gates: **`/vet`** (code review by a fresh reviewer -> SHIP/HOLD/BLOCK) and **`/exercise`** (tests + drive
+the app as a user -> PASS/FAIL). Both green, then it stops for human confirmation.
 
-Use simple for most tasks. Use full for complex features (3+ files, auth, payments).
+Everything runs on vanilla Claude Code; a second model (Codex) and browser/computer-use MCP are optional
+enhancements, auto-detected and never required.
 
 ---
 

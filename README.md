@@ -27,11 +27,11 @@ Every Claude Code session runs without guardrails. No security hooks. No structu
 
 ## The Solution
 
-A 21-file starter kit that gives you production-grade guardrails in one command:
+A 23-file starter kit that gives you production-grade guardrails in one command:
 
 ```
 v1 (150+ files, ~4300 tokens/msg):  Commands, TTS, squads, custom memory...
-v2 (21 files, ~635 tokens/msg):     Hooks + skills + rules. That's it.
+v2 (23 files, ~635 tokens/msg):     Hooks + skills + rules. That's it.
 ```
 
 ---
@@ -56,12 +56,17 @@ Skills only load into context when you invoke them. No overhead otherwise.
 
 | Skill | What it does |
 |-------|-------------|
-| `/forge` | Dev pipeline: scan, plan, execute, review, ship |
-| `/forge --full` | Full pipeline: adds deliberation (3 agents) + parallel execution + 4-layer review |
 | `/init` | Scans your project and generates a customized CLAUDE.md |
+| `/spec` | Plans a non-trivial change into an approvable artifact (signatures, CWE invariants, executable acceptance). Stops for review; writes no code |
+| `/craft` | Builds an approved `/spec` plan: baseline, execute, review, measure, stop for ship |
+| `/vet` | Clean-context review gate. A fresh independent reviewer challenges the diff. Verdict SHIP/HOLD/BLOCK |
+| `/exercise` | Behavioral gate: runs tests, then drives the running app as a real user. Reports PASS/FAIL with evidence |
 | `/git-save` | Conventional commits workflow with safety checks |
-| `/overseer` | Code review for security, quality, and consistency |
 | `/slop-scan` | Detects AI slop, tech debt, dead code, and anti-patterns |
+
+Everything runs on vanilla Claude Code (the `Agent` tool + native tools). No second model, local LLM,
+or extra subscription is required. Optional enhancements (a second model via the Codex CLI for `/vet`,
+browser/computer-use MCP for `/exercise`) are auto-detected and never assumed.
 
 ### Compact Rules (~135 tokens total)
 
@@ -107,8 +112,9 @@ cd your-project
 # 3. Generate a project-specific CLAUDE.md
 /init
 
-# 4. Build something with the full pipeline
-/forge "add user authentication"
+# 4. Plan a change, then build it
+/spec "add user authentication"   # produces an approvable plan, stops for review
+/craft                            # executes the approved plan, reviews, stops for ship
 ```
 
 ### What the Installer Does
@@ -122,37 +128,39 @@ cd your-project
 
 ---
 
-## Forge Pipeline
+## Dev Pipeline
 
-### Simple Mode (default)
-
-For most tasks. Fast and focused.
+Planning, building, and review are separate skills so each runs in a clean context. The flow:
 
 ```
-/forge "add pagination to API"
-
-  SCAN     Read CLAUDE.md, git log, find related files
-  PLAN     Requirements + acceptance criteria + subtasks
-  EXECUTE  Implement with tests, max 3 fix attempts
-  REVIEW   Security + quality review (fresh agent context)
-  SHIP     Report + wait for human confirmation
+/spec "add pagination to API"   -> approvable plan, then STOP for review
+        |
+        v   (you approve)
+/craft                          -> builds the plan, then runs the gates below
+        |
+        +--> /vet        code review in a clean context  -> SHIP / HOLD / BLOCK
+        +--> /exercise   tests + drive the app as a user  -> PASS / FAIL
+        |
+        v   (both green)
+      report + wait for human confirmation (commit with /git-save when you say so)
 ```
 
-### Full Mode
+### `/spec` — plan first
 
-For complex tasks: 3+ files, auth, payments, architecture changes.
+Research the code, decompose into independent subtasks, lock signatures, note CWE invariants, write
+executable acceptance, scan for contradictions. Produces `plans/<date-task>/plan.md` and stops. No code.
 
-```
-/forge --full "redesign auth system"
+### `/craft` — build the approved plan
 
-  SCAN        Read project context
-  CLARIFY     Max 3 questions (skip if clear)
-  DELIBERATE  3 agents debate: simplicity vs scalability vs security
-  PLAN        Spec + design + task breakdown
-  EXECUTE     Parallel agents with worktree isolation
-  REVIEW      4-layer: OWASP + quality + slop + overseer
-  SHIP        Report + wait for human confirmation
-```
+Captures a baseline, implements each subtask against its locked signature (directly, or via Claude
+subagents for parallel work), then calls `/vet` and `/exercise` as independent gates, measures the delta
+vs baseline, and stops for ship. Never self-reviews; never auto-commits.
+
+### `/vet` and `/exercise` — the gates
+
+`/vet` is a fresh reviewer with no author context (correctness + acceptance + consistency). `/exercise`
+runs the tests and drives the running app as a real user, reporting PASS/FAIL with evidence. Both can also
+be run standalone before a PR.
 
 ---
 

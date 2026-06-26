@@ -7,7 +7,7 @@ AI coding agents start every session from zero. They don't know your conventions
 Neural Claude Code fixes this with the minimum viable harness:
 
 1. **Security hooks** prevent destructive actions and secret leaks (zero token cost)
-2. **Forge pipeline** gives you a repeatable dev workflow (scan, plan, execute, review)
+2. **Dev pipeline** gives you a repeatable workflow: `/spec` (plan) -> `/craft` (build) -> `/vet` + `/exercise` (review)
 3. **Compact rules** guide behavior without burning tokens every message
 
 ## Design Principles
@@ -19,7 +19,7 @@ If something can be enforced with a hook (bash script, 0 tokens), don't write a 
 CLAUDE.md and rules are loaded into context on every message. A 200-line CLAUDE.md costs thousands of tokens per session. Keep it under 30 lines.
 
 ### Skills are on-demand
-Skills only load when invoked (/forge, /overseer, etc.). They cost zero tokens when idle. Put detailed instructions in skills, not in CLAUDE.md.
+Skills only load when invoked (/spec, /craft, /vet, etc.). They cost zero tokens when idle. Put detailed instructions in skills, not in CLAUDE.md.
 
 ### Zero dependencies
 Only requires bash and jq. No npm packages, no Go binaries, no Python dependencies. Engram memory is an optional upgrade, not a requirement.
