@@ -27,11 +27,11 @@ Every Claude Code session runs without guardrails. No security hooks. No structu
 
 ## The Solution
 
-A 23-file starter kit that gives you production-grade guardrails in one command:
+A 22-file starter kit that gives you production-grade guardrails in one command:
 
 ```
 v1 (150+ files, ~4300 tokens/msg):  Commands, TTS, squads, custom memory...
-v2 (23 files, ~635 tokens/msg):     Hooks + skills + rules. That's it.
+v2 (22 files, ~635 tokens/msg):     Hooks + skills + rules. That's it.
 ```
 
 ---
@@ -56,7 +56,6 @@ Skills only load into context when you invoke them. No overhead otherwise.
 
 | Skill | What it does |
 |-------|-------------|
-| `/init` | Scans your project and generates a customized CLAUDE.md |
 | `/spec` | Plans a non-trivial change into an approvable artifact (signatures, CWE invariants, executable acceptance). Stops for review; writes no code |
 | `/craft` | Builds an approved `/spec` plan: baseline, execute, review, measure, stop for ship |
 | `/vet` | Clean-context review gate. A fresh independent reviewer challenges the diff. Verdict SHIP/HOLD/BLOCK |
@@ -109,7 +108,7 @@ curl -fsSL https://raw.githubusercontent.com/brolag/neural-claude-code/main/inst
 # 2. Open Claude Code in your project
 cd your-project
 
-# 3. Generate a project-specific CLAUDE.md
+# 3. Generate a project-specific CLAUDE.md (Claude Code's built-in /init)
 /init
 
 # 4. Plan a change, then build it
@@ -131,7 +130,7 @@ cd your-project
 ## Install as a Plugin
 
 Prefer Claude Code's native plugin system? Neural ships as a plugin too — no shell script, and it
-installs the **5 security hooks + the 7 skills**:
+installs the **5 security hooks + the 6 skills**:
 
 ```
 /plugin marketplace add brolag/neural-claude-code
@@ -146,7 +145,7 @@ Update later with `/plugin marketplace update neural-claude-code`; remove with `
 | | Plugin (`/plugin install`) | Curl (`install.sh`) |
 |---|:---:|:---:|
 | Security hooks | yes | yes |
-| Skills (spec / craft / vet / exercise / init / git-save / slop-scan) | yes (`/neural:` prefix) | yes (`/` prefix) |
+| Skills (spec / craft / vet / exercise / git-save / slop-scan) | yes (`/neural:` prefix) | yes (`/` prefix) |
 | Compact rules (always-on guidance) | no¹ | yes |
 | CLAUDE.md template + `outputStyle: concise` | no¹ | yes |
 

@@ -13,6 +13,7 @@ RESET='\033[0m'
 CLAUDE_DIR="$HOME/.claude"
 HOOKS_DIR="$CLAUDE_DIR/hooks/neural"
 RULES_DIR="$CLAUDE_DIR/rules/neural"
+# init is deprecated (redundant with Claude Code's built-in /init); kept here to clean up older installs
 SKILLS=("init" "spec" "craft" "vet" "exercise" "git-save" "slop-scan")
 
 echo -e "${BOLD}Neural Claude Code — Uninstall${RESET}"

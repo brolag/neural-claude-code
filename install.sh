@@ -62,7 +62,7 @@ chmod +x "$HOOKS_DIR/"*.sh
 echo -e "${GREEN}ok${RESET} Installed 5 security hooks"
 
 # --- Install skills ---
-for skill in init spec craft vet exercise git-save slop-scan; do
+for skill in spec craft vet exercise git-save slop-scan; do
     SKILL_SRC="$INSTALL_DIR/skills/$skill"
     SKILL_DST="$SKILLS_DIR/$skill"
     if [ -d "$SKILL_SRC" ]; then
@@ -70,7 +70,9 @@ for skill in init spec craft vet exercise git-save slop-scan; do
         cp "$SKILL_SRC/SKILL.md" "$SKILL_DST/SKILL.md"
     fi
 done
-echo -e "${GREEN}ok${RESET} Installed 7 skills (init, spec, craft, vet, exercise, git-save, slop-scan)"
+# Remove deprecated init skill (redundant with Claude Code's built-in /init)
+rm -rf "$SKILLS_DIR/init"
+echo -e "${GREEN}ok${RESET} Installed 6 skills (spec, craft, vet, exercise, git-save, slop-scan)"
 
 # --- Install rules ---
 mkdir -p "$RULES_DIR"
@@ -117,7 +119,7 @@ echo ""
 echo -e "${BOLD}Installation complete${RESET}"
 echo ""
 echo "  Hooks:  $HOOKS_DIR/ (5 scripts)"
-echo "  Skills: $SKILLS_DIR/ (init, spec, craft, vet, exercise, git-save, slop-scan)"
+echo "  Skills: $SKILLS_DIR/ (spec, craft, vet, exercise, git-save, slop-scan)"
 echo "  Rules:  $RULES_DIR/ (5 compact rules)"
 echo ""
 echo -e "${BOLD}Next steps:${RESET}"

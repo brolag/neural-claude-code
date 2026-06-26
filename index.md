@@ -15,7 +15,7 @@ curl -fsSL https://raw.githubusercontent.com/brolag/neural-claude-code/main/inst
 
 ## What's Inside
 
-**23 files. ~635 tokens/message overhead. Zero external dependencies.**
+**22 files. ~635 tokens/message overhead. Zero external dependencies.**
 
 ### Security Hooks (0 tokens)
 
@@ -33,7 +33,6 @@ Bash scripts that run outside context. They enforce, not guide.
 
 | Skill | Purpose |
 |-------|---------|
-| `/init` | Auto-generate CLAUDE.md for your project |
 | `/spec` | Plan a non-trivial change into an approvable artifact. Stops for review; writes no code |
 | `/craft` | Build an approved `/spec` plan: baseline, execute, review, measure, stop for ship |
 | `/vet` | Clean-context review gate (fresh reviewer). Verdict SHIP/HOLD/BLOCK |
@@ -61,7 +60,7 @@ curl -fsSL https://raw.githubusercontent.com/brolag/neural-claude-code/main/inst
 
 # In your project
 cd your-project
-/init                           # generate CLAUDE.md
+/init                           # generate CLAUDE.md (Claude Code built-in)
 /spec "add user auth"           # plan it (stops for approval)
 /craft                          # build the approved plan, review, stop for ship
 ```
