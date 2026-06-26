@@ -785,7 +785,7 @@
             <div class="terminal-body" id="terminal-output">
                 <div class="terminal-line"><span class="prompt">$</span> <span class="command">curl -fsSL .../install.sh | bash</span></div>
                 <div class="terminal-line"><span class="success">[ok]</span> <span class="output">5 security hooks installed (0 tokens)</span></div>
-                <div class="terminal-line"><span class="success">[ok]</span> <span class="output">7 skills: init, spec, craft, vet, exercise, git-save, slop-scan</span></div>
+                <div class="terminal-line"><span class="success">[ok]</span> <span class="output">6 skills: spec, craft, vet, exercise, git-save, slop-scan</span></div>
                 <div class="terminal-line"><span class="success">[ok]</span> <span class="output">5 compact rules (~135 tokens total)</span></div>
                 <div class="terminal-line"><span class="success">[ok]</span> <span class="output">outputStyle: concise</span></div>
                 <div class="terminal-line"><span class="dim">---</span></div>
@@ -802,7 +802,7 @@
     
     <section class="section">
         <div class="stats">
-            <div><div class="stat-value">23</div><div class="stat-label">TOTAL_FILES</div></div>
+            <div><div class="stat-value">22</div><div class="stat-label">TOTAL_FILES</div></div>
             <div><div class="stat-value">~635</div><div class="stat-label">TOKENS/MESSAGE</div></div>
             <div><div class="stat-value">0</div><div class="stat-label">DEPENDENCIES</div></div>
         </div>
@@ -829,7 +829,6 @@
             <p>> On-demand tools. Zero tokens when idle. Load only when invoked._</p>
         </div>
         <div class="commands-grid">
-            <a href="https://github.com/brolag/neural-claude-code/blob/main/skills/init/SKILL.md" class="command-card" target="_blank" rel="noopener noreferrer"><code>/init</code><p>Auto-generate project CLAUDE.md</p></a>
             <a href="https://github.com/brolag/neural-claude-code/blob/main/skills/spec/SKILL.md" class="command-card" target="_blank" rel="noopener noreferrer"><code>/spec</code><p>Plan a change into an approvable artifact</p></a>
             <a href="https://github.com/brolag/neural-claude-code/blob/main/skills/craft/SKILL.md" class="command-card" target="_blank" rel="noopener noreferrer"><code>/craft</code><p>Build the approved plan, review, ship</p></a>
             <a href="https://github.com/brolag/neural-claude-code/blob/main/skills/vet/SKILL.md" class="command-card" target="_blank" rel="noopener noreferrer"><code>/vet</code><p>Clean-context review: SHIP/HOLD/BLOCK</p></a>
@@ -864,7 +863,7 @@
                 <pre><code><span class="prompt">></span> /init</code></pre>
             </div>
 
-            <p style="color: var(--text-dim); font-size: 0.8rem; margin-top: 1rem;">Installs 5 hooks, 7 skills, 5 rules. Merges into existing settings.json without overwriting.</p>
+            <p style="color: var(--text-dim); font-size: 0.8rem; margin-top: 1rem;">Installs 5 hooks, 6 skills, 5 rules. Merges into existing settings.json without overwriting.</p>
         </div>
 
         <div class="install-box">
@@ -1077,7 +1076,7 @@
 
             skills: () => {
                 addLine('[SKILLS: 27+ loaded]', 'success');
-                const skills = ['spec', 'craft', 'vet', 'exercise', 'init', 'git-save', 'slop-scan', 'deep-research', 'memory-system', '...'];
+                const skills = ['spec', 'craft', 'vet', 'exercise', 'git-save', 'slop-scan', 'deep-research', 'memory-system', '...'];
                 skills.forEach(s => addLine(`  > ${s}`));
             },
 
