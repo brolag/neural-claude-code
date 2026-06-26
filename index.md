@@ -66,6 +66,17 @@ cd your-project
 /craft                          # build the approved plan, review, stop for ship
 ```
 
+**Or install as a plugin** (native Claude Code — ships the hooks + skills):
+
+```
+/plugin marketplace add brolag/neural-claude-code
+/plugin install neural@neural-claude-code
+```
+
+Skills are namespaced `/neural:spec`, `/neural:craft`, etc. Use one method, not both — the plugin and
+the curl installer would double-fire the hooks. The plugin delivers hooks + skills; the curl installer
+also adds the compact rules and CLAUDE.md template.
+
 ---
 
 ## Design Principles

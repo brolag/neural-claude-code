@@ -866,6 +866,21 @@
 
             <p style="color: var(--text-dim); font-size: 0.8rem; margin-top: 1rem;">Installs 5 hooks, 7 skills, 5 rules. Merges into existing settings.json without overwriting.</p>
         </div>
+
+        <div class="install-box">
+            <h3>OR_INSTALL_AS_PLUGIN</h3>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Native Claude Code plugin (hooks + skills)</span>
+                    <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                </div>
+                <pre><code><span class="prompt">></span> /plugin marketplace add brolag/neural-claude-code
+<span class="prompt">></span> /plugin install neural@neural-claude-code</code></pre>
+            </div>
+
+            <p style="color: var(--text-dim); font-size: 0.8rem; margin-top: 1rem;">Skills namespaced as <code>/neural:spec</code>, <code>/neural:craft</code>, etc. Pick ONE install method — the plugin and the curl installer together double-fire the hooks. The plugin ships hooks + skills; the curl installer also adds the compact rules and CLAUDE.md template.</p>
+        </div>
     </section>
 
     <section class="cta-section">
