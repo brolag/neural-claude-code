@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<!--
+  ResultViewer template · html-artifact-builder skill
+  HOW TO USE: copy this file, replace every <!-- REPLACE ... --> block with the real
+  run report. Keep <style>/<script> as-is unless the project defines its own palette.
+  Sections (in order): Summary · Files Changed · Commands Run · Errors/Warnings · Next Steps.
+  Self-contained: no CDN, no build, no external fonts, no required localStorage.
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resultado · REPLACE task title</title>
+<style>
+  :root{
+    --bg:#f6f5f1; --surface:#ffffff; --surface-2:#efede6; --border:#e3e0d6; --track:#e7e4da;
+    --ink:#1b1b19; --ink-soft:#56534b; --ink-faint:#8b877a;
+    --accent:#2f6f6a; --accent-soft:#e2efed; --accent-line:#bcdcd8;
+    --done:#2e7d52; --done-bg:#e6f2ea;
+    --risk:#9a6400; --risk-bg:#fbf0db;
+    --error:#b3261e; --error-bg:#f8e4e2;
+    --info:#2b5aa8; --info-bg:#e7eefa;
+    --decision:#6b4ea3; --decision-bg:#efe9f8;
+    --shadow:0 1px 0 rgba(0,0,0,.02); --shadow-pop:0 12px 34px rgba(40,38,30,.17),0 2px 8px rgba(0,0,0,.05);
+    --radius:12px; --maxw:1180px;
+    /* Fonts are applied LITERALLY in the rules below (var() in font-family proved unreliable in
+       some browsers — it fell back to serif). To change the typeface, edit the stack in: body, code, .s-num, pre, td.num. */
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#16161a; --surface:#1e1f25; --surface-2:#26272e; --border:#34353d; --track:#2c2d35;
+      --ink:#ecebe6; --ink-soft:#b3b1a9; --ink-faint:#86847d;
+      --accent:#6fd0c6; --accent-soft:#1f322f; --accent-line:#2c4d49;
+      --done:#62c98c; --done-bg:#16291f; --risk:#e0ad55; --risk-bg:#2c2415;
+      --error:#ef6b62; --error-bg:#2e1916; --info:#7aa6e8; --info-bg:#161f2e;
+      --decision:#b69ce6; --decision-bg:#221b30;
+      --shadow:0 1px 0 rgba(0,0,0,.25); --shadow-pop:0 14px 40px rgba(0,0,0,.5),0 2px 10px rgba(0,0,0,.4);
+    }
+    .codeblock pre{background:#101116 !important; border:1px solid #2c2d35}
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; font-size:106.25%} /* 17px base — scales every rem */
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:"Avenir Next","Avenir","Segoe UI",system-ui,Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:1rem; line-height:1.62; -webkit-font-smoothing:antialiased; overflow-x:hidden}
+  a{color:var(--accent); text-decoration:none} a:hover{text-decoration:underline}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.86em; background:var(--surface-2); padding:.1em .4em; border-radius:5px; word-break:break-word}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 clamp(16px,4vw,40px)}
+
+  header.hero{padding:clamp(26px,5vw,50px) 0 24px; border-bottom:1px solid var(--border)}
+  .eyebrow{display:inline-flex; align-items:center; gap:8px; font-size:.74rem; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); font-weight:750}
+  .eyebrow::before{content:''; width:22px; height:2px; background:var(--accent); display:inline-block}
+  h1{font-size:clamp(1.8rem,4.8vw,2.9rem); line-height:1.1; margin:.3em 0 .12em; letter-spacing:-.012em; font-weight:720}
+  .tldr{font-size:clamp(1.05rem,2.4vw,1.34rem); line-height:1.4; color:var(--ink-soft); max-width:64ch; font-weight:430} .tldr b{color:var(--ink); font-weight:680}
+  .steps{display:flex; align-items:center; gap:0; margin:24px 0 4px; max-width:520px; flex-wrap:wrap}
+  .step{display:flex; align-items:center; gap:8px; font-size:.78rem; font-weight:650; color:var(--ink-faint)}
+  .step .dot{width:13px; height:13px; border-radius:50%; border:2px solid var(--track); background:var(--surface); flex:none}
+  .step.on{color:var(--accent)} .step.on .dot{background:var(--accent); border-color:var(--accent); box-shadow:0 0 0 4px var(--accent-soft)}
+  .step .bar{flex:1; height:2px; background:var(--track); margin:0 10px; min-width:26px} .step.on .bar{background:var(--accent)}
+  .stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(108px,1fr)); gap:10px; margin-top:26px}
+  .stat{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; box-shadow:var(--shadow); position:relative; overflow:hidden}
+  .stat::before{content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--accent); opacity:.5}
+  .stat.s-risk::before{background:var(--risk)} .stat.s-done::before{background:var(--done)} .stat.s-error::before{background:var(--error)}
+  .stat .n{display:block; font-size:1.9rem; line-height:1; font-weight:790; letter-spacing:-.03em; color:var(--ink)}
+  .stat .l{display:block; font-size:.74rem; color:var(--ink-faint); margin-top:5px; font-weight:600; text-transform:uppercase; letter-spacing:.04em}
+  .stat .h{display:inline-flex; align-items:center; gap:5px; font-size:1.02rem; font-weight:720; color:var(--done)}
+
+  .badge{display:inline-flex; align-items:center; gap:6px; font-size:.78rem; font-weight:650; padding:4px 10px 4px 8px; border-radius:999px; border:1px solid transparent; white-space:nowrap}
+  .b-done{color:var(--done); background:var(--done-bg); border-color:color-mix(in srgb,var(--done) 30%,transparent)}
+  .b-risk{color:var(--risk); background:var(--risk-bg); border-color:color-mix(in srgb,var(--risk) 30%,transparent)}
+  .b-error{color:var(--error); background:var(--error-bg); border-color:color-mix(in srgb,var(--error) 30%,transparent)}
+  .b-info{color:var(--info); background:var(--info-bg); border-color:color-mix(in srgb,var(--info) 30%,transparent)}
+  .b-add{color:var(--done); background:var(--done-bg); border-color:color-mix(in srgb,var(--done) 30%,transparent)}
+  .b-mod{color:var(--info); background:var(--info-bg); border-color:color-mix(in srgb,var(--info) 30%,transparent)}
+  .b-del{color:var(--error); background:var(--error-bg); border-color:color-mix(in srgb,var(--error) 30%,transparent)}
+
+  .grid{display:grid; grid-template-columns:218px minmax(0,1fr); gap:clamp(22px,4vw,48px); padding:28px 0 90px; align-items:start}
+  nav.toc{position:sticky; top:18px; max-height:calc(100vh - 36px); overflow:auto; font-size:.86rem; padding-right:4px}
+  nav.toc .toc-h{font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); font-weight:700; margin:0 0 8px 12px}
+  nav.toc ol{list-style:none; margin:0; padding:0; border-left:2px solid var(--border)}
+  nav.toc li a{display:block; padding:5px 12px; color:var(--ink-soft); border-left:2px solid transparent; margin-left:-2px; line-height:1.3}
+  nav.toc li a:hover{color:var(--ink)}
+  nav.toc li a.here{color:var(--accent); border-left-color:var(--accent); font-weight:650; background:linear-gradient(90deg,var(--accent-soft),transparent)}
+  .controls{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 18px}
+  .ctrl{font:inherit; font-size:.82rem; font-weight:600; color:var(--ink-soft); background:var(--surface); border:1px solid var(--border); padding:7px 13px; border-radius:8px; cursor:pointer}
+  .ctrl:hover{border-color:var(--accent); color:var(--accent)}
+
+  .timeline{position:relative}
+  .timeline::before{content:''; position:absolute; left:13px; top:12px; bottom:12px; width:2px; background:var(--border); z-index:0}
+  .node{position:relative; padding-left:44px; margin:0 0 16px}
+  .node-dot{position:absolute; left:3px; top:15px; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.72rem; z-index:1; border:3px solid var(--bg); background:var(--surface)}
+  .d-info{color:var(--info); box-shadow:inset 0 0 0 2px var(--info)}
+  .d-build{color:var(--accent); box-shadow:inset 0 0 0 2px var(--accent)}
+  .d-error{color:var(--error); box-shadow:inset 0 0 0 2px var(--error)}
+  .d-risk{color:var(--risk); box-shadow:inset 0 0 0 2px var(--risk)}
+  .d-done{color:var(--done); box-shadow:inset 0 0 0 2px var(--done)}
+
+  section.card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); scroll-margin-top:16px; box-shadow:var(--shadow)}
+  details{margin:0}
+  summary{list-style:none; cursor:pointer; display:flex; align-items:center; gap:13px; padding:15px 19px; user-select:none}
+  summary::-webkit-details-marker{display:none}
+  .chev{width:14px; height:14px; flex:none; color:var(--ink-faint); transition:transform .18s ease}
+  details[open] .chev{transform:rotate(90deg)}
+  .s-num{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:1.05rem; font-weight:720; color:var(--ink-faint); flex:none; letter-spacing:-.02em; min-width:1.6em}
+  .s-title{font-size:1.08rem; font-weight:690; flex:1; min-width:0; letter-spacing:-.01em}
+  .s-tag{font-size:.74rem; color:var(--ink-faint); font-weight:600}
+  .body{padding:2px 19px 19px 19px; border-top:1px solid var(--border)}
+  .body > :first-child{margin-top:14px}
+  .body p{margin:.55em 0; color:var(--ink-soft)} .body strong{color:var(--ink)}
+  .body ul{margin:.4em 0; padding-left:1.25em} .body li{margin:.3em 0; color:var(--ink-soft)}
+  h3{font-size:.95rem; margin:1.3em 0 .3em; color:var(--ink); font-weight:690; letter-spacing:-.01em} h3:first-child{margin-top:.2em}
+
+  .callout{display:flex; gap:11px; align-items:flex-start; padding:12px 14px; border-radius:9px; margin:12px 0; font-size:.93rem; line-height:1.5}
+  .callout .gi{flex:none; margin-top:1px}
+  .c-info{background:var(--info-bg); color:var(--info)} .c-info b,.c-info strong{color:var(--info)}
+  .c-risk{background:var(--risk-bg); color:var(--risk)} .c-risk b,.c-risk strong{color:var(--risk)}
+  .c-error{background:var(--error-bg); color:var(--error)} .c-error b,.c-error strong{color:var(--error)}
+  .c-done{background:var(--done-bg); color:var(--done)} .c-done b,.c-done strong{color:var(--done)}
+
+  table{width:100%; border-collapse:collapse; margin:12px 0; font-size:.9rem}
+  th,td{text-align:left; padding:9px 12px; border-bottom:1px solid var(--border); vertical-align:top}
+  th{font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-faint); font-weight:700}
+  tr:last-child td{border-bottom:none}
+  td.num{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.84rem; white-space:nowrap}
+  .add{color:var(--done)} .del{color:var(--error)}
+
+  .codeblock{position:relative; margin:12px 0}
+  .codeblock pre{margin:0; background:#1f211d; color:#e7e6df; border-radius:9px; padding:14px 16px; overflow-x:auto; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.82rem; line-height:1.55}
+  .cmd-state{display:inline-block; font-size:.72rem; font-weight:700; margin:0 0 6px; padding:2px 8px; border-radius:6px}
+  .cmd-ok{color:var(--done); background:var(--done-bg)} .cmd-fail{color:var(--error); background:var(--error-bg)}
+  .copybtn{position:absolute; top:9px; right:9px; font:inherit; font-size:.72rem; font-weight:650; color:#cfcec6; background:#34362f; border:1px solid #4a4c43; padding:4px 9px; border-radius:6px; cursor:pointer}
+  .copybtn:hover{background:#42443b; color:#fff} .copybtn.ok{color:#9fe0b6; border-color:#3e6b4f}
+
+  /* next steps checklist */
+  .ns-bar{display:flex; flex-wrap:wrap; gap:10px 14px; align-items:center; margin:12px 0 14px}
+  .copyans{font:inherit; font-size:.82rem; font-weight:650; color:#fff; background:var(--accent); border:none; padding:8px 14px; border-radius:8px; cursor:pointer}
+  .copyans:hover{filter:brightness(1.06)} .copyans.ok{background:var(--done)}
+  .ns{list-style:none; margin:8px 0 0; padding:0}
+  .ns li{display:flex; gap:11px; align-items:flex-start; padding:9px 0; border-bottom:1px dashed var(--border)}
+  .ns li:last-child{border-bottom:none}
+  .ns input{margin-top:3px; flex:none; width:17px; height:17px; accent-color:var(--accent); cursor:pointer}
+  .ns .tx{flex:1; min-width:0; color:var(--ink)} .ns .tx small{display:block; color:var(--ink-faint); font-size:.82rem; margin-top:2px}
+  .ns li.done .tx{color:var(--ink-faint); text-decoration:line-through}
+
+  .na{position:fixed; right:18px; bottom:18px; width:min(330px,calc(100vw - 36px)); background:var(--surface); border:1px solid var(--border); border-radius:14px; box-shadow:var(--shadow-pop); z-index:50; overflow:hidden}
+  .na-head{display:flex; align-items:center; gap:9px; padding:11px 13px; background:var(--surface-2); border-bottom:1px solid var(--border)}
+  .na-head .t{font-weight:700; font-size:.86rem; flex:1}
+  .na-head .ct{font-size:.72rem; font-weight:700; color:#fff; background:var(--error); border-radius:999px; padding:1px 8px}
+  .na-head .ct.clear{background:var(--done)}
+  .na-x{border:none; background:none; cursor:pointer; color:var(--ink-faint); font-size:1.05rem; line-height:1; padding:2px 4px} .na-x:hover{color:var(--ink)}
+  .na-list{list-style:none; margin:0; padding:6px; max-height:46vh; overflow:auto}
+  .na-list li a{display:flex; gap:9px; align-items:flex-start; padding:9px 10px; border-radius:8px; color:var(--ink); font-size:.85rem; line-height:1.4}
+  .na-list li a:hover{background:var(--surface-2); text-decoration:none}
+  .na-empty{padding:18px 14px; text-align:center; color:var(--ink-soft); font-size:.88rem}
+  .na-reopen{position:fixed; right:18px; bottom:18px; z-index:50; display:none; align-items:center; gap:7px; font:inherit; font-size:.8rem; font-weight:650; color:var(--bg); background:var(--ink); border:none; padding:9px 14px; border-radius:999px; cursor:pointer; box-shadow:var(--shadow-pop)}
+
+  .reveal{opacity:0; transform:translateY(10px)} .reveal.in{opacity:1; transform:none; transition:opacity .24s ease, transform .24s ease}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    .reveal{opacity:1 !important; transform:none !important; transition:none !important} .chev{transition:none}
+  }
+  footer{border-top:1px solid var(--border); padding:22px 0 40px; color:var(--ink-faint); font-size:.82rem}
+  @media (max-width:820px){
+    .grid{grid-template-columns:1fr; gap:8px}
+    nav.toc{position:static; max-height:none; margin-bottom:6px; border:1px solid var(--border); border-radius:10px; padding:12px; background:var(--surface)}
+    nav.toc ol{border-left:none; columns:2; column-gap:8px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <!-- REPLACE hero: H1 = what was done, TL;DR = the outcome in one line. -->
+    <div class="reveal">
+      <div class="eyebrow">ResultViewer · post-ejecución</div>
+      <h1>Migración de componentes Vue 2 → Vue 3</h1>
+      <p class="tldr">Migrados <b>14 componentes</b> a <code>&lt;script setup&gt;</code> + Composition API. Build verde, <b>2 avisos</b> menores pendientes.</p>
+    </div>
+    <!-- REPLACE steps: mark how far the run got. Failed run → leave "verificado"/"listo" off. -->
+    <div class="steps reveal" aria-label="Estado del resultado">
+      <span class="step on"><span class="dot"></span>ejecutado</span><span class="bar"></span>
+      <span class="step on"><span class="dot"></span>verificado</span><span class="bar"></span>
+      <span class="step"><span class="dot"></span>listo p/ ship</span>
+    </div>
+    <!-- REPLACE stats: real counts. -->
+    <div class="stats reveal">
+      <div class="stat"><span class="n" data-to="14">0</span><span class="l">archivos</span></div>
+      <div class="stat"><span class="n" data-to="6">0</span><span class="l">comandos</span></div>
+      <div class="stat s-done"><span class="n" data-to="0">0</span><span class="l">errores</span></div>
+      <div class="stat s-risk"><span class="n" data-to="2">0</span><span class="l">avisos</span></div>
+      <div class="stat"><span class="n" data-prefix="~" data-suffix="m" id="rtStat">0</span><span class="l">lectura</span></div>
+      <div class="stat s-done"><span class="h"><span aria-hidden="true">✓</span> Done</span><span class="l">estado del run</span></div>
+    </div>
+  </header>
+
+  <div class="grid">
+    <nav class="toc" aria-label="Secciones"><p class="toc-h">En esta página</p><ol id="tocList"></ol></nav>
+
+    <main id="content">
+      <div class="controls reveal">
+        <button class="ctrl" id="expandAll">▾ Expandir todo</button>
+        <button class="ctrl" id="collapseAll">▸ Colapsar todo</button>
+      </div>
+
+      <div class="timeline">
+        <!-- 01 SUMMARY -->
+        <div class="node reveal">
+          <span class="node-dot d-info" aria-hidden="true">●</span>
+          <section class="card" id="summary" data-title="Summary" data-accent="info">
+            <details open>
+              <summary><svg class="chev" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="s-num">01</span><span class="s-title">Summary</span><span class="s-tag">empieza acá</span></summary>
+              <div class="body">
+                <!-- REPLACE: 2-3 sentences. What was done, the outcome, what is left. -->
+                <p>Migré los 14 componentes del directorio <code>components/forms/</code> de Options API a <code>&lt;script setup&gt;</code> con Composition API. Reemplacé <code>this.$emit</code> por <code>defineEmits</code> y las props por <code>defineProps</code> tipadas.</p>
+                <div class="callout c-done"><span class="gi" aria-hidden="true">✓</span><div><strong>Resultado.</strong> <code>npm run build</code> pasa, los tests unitarios verdes (47/47). Quedan 2 avisos de deprecación a revisar (ver sección 04).</div></div>
+              </div>
+            </details>
+          </section>
+        </div>
+
+        <!-- 02 FILES CHANGED -->
+        <div class="node reveal">
+          <span class="node-dot d-build" aria-hidden="true">▣</span>
+          <section class="card" id="files" data-title="Files Changed" data-accent="accent">
+            <details open>
+              <summary><svg class="chev" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="s-num">02</span><span class="s-title">Files Changed</span><span class="s-tag">14 archivos · +312 −188</span></summary>
+              <div class="body">
+                <!-- REPLACE: one row per file. Type badge: b-add / b-mod / b-del. Group long lists under h3 (chunking). -->
+                <h3>Componentes migrados</h3>
+                <table>
+                  <thead><tr><th>Archivo</th><th>Tipo</th><th>Líneas</th></tr></thead>
+                  <tbody>
+                    <tr><td><code>components/forms/LoginForm.vue</code></td><td><span class="badge b-mod">◐ modificado</span></td><td class="num"><span class="add">+28</span> <span class="del">−19</span></td></tr>
+                    <tr><td><code>components/forms/SignupForm.vue</code></td><td><span class="badge b-mod">◐ modificado</span></td><td class="num"><span class="add">+34</span> <span class="del">−22</span></td></tr>
+                    <tr><td><code>components/forms/useFormState.ts</code></td><td><span class="badge b-add">+ nuevo</span></td><td class="num"><span class="add">+41</span></td></tr>
+                    <tr><td><code>components/forms/mixins/formMixin.js</code></td><td><span class="badge b-del">− borrado</span></td><td class="num"><span class="del">−63</span></td></tr>
+                  </tbody>
+                </table>
+                <p style="font-size:.85rem; color:var(--ink-faint)">… +10 archivos más en el mismo patrón (omitidos por brevedad — listar todos si el usuario lo pide).</p>
+              </div>
+            </details>
+          </section>
+        </div>
+
+        <!-- 03 COMMANDS RUN -->
+        <div class="node reveal">
+          <span class="node-dot d-build" aria-hidden="true">$</span>
+          <section class="card" id="commands" data-title="Commands Run" data-accent="accent">
+            <details open>
+              <summary><svg class="chev" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="s-num">03</span><span class="s-title">Commands Run</span><span class="s-tag">6 · todos OK</span></summary>
+              <div class="body">
+                <!-- REPLACE: one codeblock per command. Mark .cmd-ok / .cmd-fail. Copy button stays. -->
+                <span class="cmd-state cmd-ok">✓ exit 0</span>
+                <div class="codeblock"><button class="copybtn">Copiar</button>
+<pre>npm run lint -- --fix
+npx vue-tsc --noEmit
+npm run test:unit</pre></div>
+                <span class="cmd-state cmd-ok">✓ exit 0 · build 12.4s</span>
+                <div class="codeblock"><button class="copybtn">Copiar</button>
+<pre>npm run build</pre></div>
+              </div>
+            </details>
+          </section>
+        </div>
+
+        <!-- 04 ERRORS / WARNINGS (feeds Needs-Attention) -->
+        <div class="node reveal">
+          <span class="node-dot d-risk" aria-hidden="true">▲</span>
+          <section class="card" id="errors" data-title="Errores y avisos" data-accent="risk">
+            <details open>
+              <summary><svg class="chev" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="s-num">04</span><span class="s-title">Errores y avisos</span><span class="s-tag">0 errores · 2 avisos</span></summary>
+              <div class="body">
+                <!-- REPLACE: one callout per issue. c-error = blocking, c-risk = warning. Mirror each into #na below.
+                     If clean, use a single c-done "Sin errores ni avisos" callout and render .na-empty. -->
+                <div class="callout c-risk"><span class="gi" aria-hidden="true">▲</span><div><strong>Aviso.</strong> <code>SignupForm.vue</code> usa <code>$listeners</code>, removido en Vue 3. Funciona vía compat build, pero conviene migrar a <code>useAttrs()</code>.</div></div>
+                <div class="callout c-risk"><span class="gi" aria-hidden="true">▲</span><div><strong>Aviso.</strong> Filtro global <code>{{ price | currency }}</code> en <code>CheckoutForm.vue</code> — los filtros no existen en Vue 3. Reemplazar por método computado.</div></div>
+              </div>
+            </details>
+          </section>
+        </div>
+
+        <!-- 05 NEXT STEPS — actionable checklist + copy-back -->
+        <div class="node reveal">
+          <span class="node-dot d-done" aria-hidden="true">→</span>
+          <section class="card" id="next" data-title="Next Steps" data-accent="done">
+            <details open>
+              <summary><svg class="chev" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="s-num">05</span><span class="s-title">Next Steps</span><span class="s-tag" id="nsTag">próximos pasos</span></summary>
+              <div class="body">
+                <!-- REPLACE: one .ns li per step. data-id stable. Check = done. "Copiar próximos pasos"
+                     exports the PENDING ones as a markdown checklist to paste back into chat. -->
+                <div class="ns-bar">
+                  <button class="copyans" id="copyNext">Copiar próximos pasos</button>
+                  <span class="q-summary" id="nsSummary" style="font-size:.85rem;color:var(--ink-soft)"></span>
+                </div>
+                <ul class="ns">
+                  <li data-id="useattrs"><input type="checkbox"><span class="tx">Migrar <code>$listeners</code> → <code>useAttrs()</code> en <code>SignupForm.vue</code><small>aviso de deprecación, no bloquea</small></span></li>
+                  <li data-id="filter"><input type="checkbox"><span class="tx">Reemplazar el filtro <code>currency</code> por computed en <code>CheckoutForm.vue</code></span></li>
+                  <li data-id="review"><input type="checkbox"><span class="tx">Revisar el diff antes del PR</span></li>
+                </ul>
+              </div>
+            </details>
+          </section>
+        </div>
+      </div>
+
+      <footer>Generado desde el resultado del run · no editar a mano · regenerable on demand · ResultViewer</footer>
+    </main>
+  </div>
+</div>
+
+<!-- Needs Attention: aggregate every error/warning. If clean, render .na-empty "All clear". -->
+<aside class="na" id="na" aria-label="Needs attention">
+  <div class="na-head"><span aria-hidden="true" style="color:var(--risk)">▲</span><span class="t">Needs attention</span>
+    <span class="ct" id="naCount">2</span><button class="na-x" id="naClose" aria-label="Cerrar panel">×</button></div>
+  <ul class="na-list" id="naList">
+    <li><a href="#errors"><span style="color:var(--risk)" aria-hidden="true">▲</span><span><strong>$listeners removido</strong> — migrar a useAttrs()</span></a></li>
+    <li><a href="#errors"><span style="color:var(--risk)" aria-hidden="true">▲</span><span><strong>Filtro currency</strong> — reemplazar por computed</span></a></li>
+  </ul>
+</aside>
+<button class="na-reopen" id="naReopen"><span aria-hidden="true">▲</span> Needs attention (<span id="naReopenN">2</span>)</button>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var mins=1;
+  try{ var txt=(document.getElementById('content').innerText||'').trim();
+    var words=txt?txt.split(/\s+/).length:0; mins=Math.max(1,Math.ceil(words/238)); }catch(e){}
+
+  function countUp(el,to,prefix,suffix){
+    if(reduce){ el.textContent=(prefix||'')+to+(suffix||''); return; }
+    var start=null;
+    function tick(ts){ if(!start)start=ts; var p=Math.min(1,(ts-start)/900);
+      el.textContent=(prefix||'')+Math.round((1-Math.pow(1-p,3))*to)+(suffix||''); if(p<1)requestAnimationFrame(tick); }
+    requestAnimationFrame(tick);
+  }
+  document.querySelectorAll('.stat .n').forEach(function(el){
+    var to = el.id==='rtStat' ? mins : parseInt(el.getAttribute('data-to')||'0',10);
+    countUp(el,to,el.getAttribute('data-prefix')||'',el.getAttribute('data-suffix')||'');
+  });
+
+  var secs=[].slice.call(document.querySelectorAll('section.card[data-title]'));
+  var tocList=document.getElementById('tocList'), links={};
+  secs.forEach(function(s){ var li=document.createElement('li'), a=document.createElement('a');
+    a.href='#'+s.id; a.textContent=s.getAttribute('data-title'); li.appendChild(a); tocList.appendChild(li); links[s.id]=a; });
+  var spy=new IntersectionObserver(function(es){ es.forEach(function(en){ if(en.isIntersecting){
+    Object.keys(links).forEach(function(k){links[k].classList.remove('here');});
+    if(links[en.target.id])links[en.target.id].classList.add('here'); } }); }, {rootMargin:'-12% 0px -70% 0px',threshold:0});
+  secs.forEach(function(s){ spy.observe(s); });
+
+  var reveals=[].slice.call(document.querySelectorAll('.reveal'));
+  if(reduce){ reveals.forEach(function(el){ el.classList.add('in'); }); }
+  else{ var io=new IntersectionObserver(function(es,obs){ es.forEach(function(en){
+    if(en.isIntersecting){ en.target.classList.add('in'); obs.unobserve(en.target); } }); },
+    {rootMargin:'0px 0px -8% 0px',threshold:.06}); reveals.forEach(function(el){ io.observe(el); }); }
+
+  function setAll(o){ document.querySelectorAll('section.card details').forEach(function(d){ d.open=o; }); }
+  document.getElementById('expandAll').addEventListener('click',function(){ setAll(true); });
+  document.getElementById('collapseAll').addEventListener('click',function(){ setAll(false); });
+
+  document.querySelectorAll('.copybtn').forEach(function(btn){
+    btn.addEventListener('click',function(){ var pre=btn.parentElement.querySelector('pre'); var t=pre?pre.innerText:'';
+      function ok(){ var o=btn.textContent; btn.textContent='Copiado ✓'; btn.classList.add('ok');
+        setTimeout(function(){ btn.textContent=o; btn.classList.remove('ok'); },1400); }
+      if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(ok).catch(function(){fb(t,ok);}); } else fb(t,ok); }); });
+  function fb(t,cb){ try{ var ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.focus(); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); cb(); }catch(e){} }
+
+  var na=document.getElementById('na'), reopen=document.getElementById('naReopen');
+  document.getElementById('naClose').addEventListener('click',function(){ na.style.display='none'; reopen.style.display='inline-flex'; });
+  reopen.addEventListener('click',function(){ na.style.display=''; reopen.style.display='none'; });
+})();
+
+/* ---- next-steps checklist: mark done & export pending ---- */
+(function(){
+  "use strict";
+  var items=[].slice.call(document.querySelectorAll('.ns li'));
+  if(!items.length) return;
+  var STORE='haq-next-'+((location.pathname.split('/').pop())||'result');
+  var mem={};
+  function load(){ try{ return JSON.parse(localStorage.getItem(STORE))||{}; }catch(e){ return mem; } }
+  function save(d){ try{ localStorage.setItem(STORE,JSON.stringify(d)); }catch(e){ mem=d; } }
+  var state=load();
+  var nsSummary=document.getElementById('nsSummary'), nsTag=document.getElementById('nsTag');
+
+  function refresh(){
+    var done=0;
+    items.forEach(function(li){ var c=li.querySelector('input').checked; li.classList.toggle('done',c); if(c) done++; });
+    var pend=items.length-done;
+    if(nsSummary) nsSummary.innerHTML='<b>'+done+'/'+items.length+'</b> hechos · <b>'+pend+'</b> pendientes';
+    if(nsTag) nsTag.textContent=pend+' pendientes';
+  }
+  items.forEach(function(li){
+    var id=li.getAttribute('data-id'), cb=li.querySelector('input');
+    if(state[id]) cb.checked=true;
+    cb.addEventListener('change',function(){
+      var d=load(); d[id]=cb.checked; save(d); refresh();
+    });
+  });
+  var copyBtn=document.getElementById('copyNext');
+  if(copyBtn) copyBtn.addEventListener('click',function(){
+    var lines=['## Próximos pasos',''];
+    items.forEach(function(li){ var c=li.querySelector('input').checked;
+      lines.push('- ['+(c?'x':' ')+'] '+li.querySelector('.tx').textContent.replace(/\s+/g,' ').trim()); });
+    var text=lines.join('\n');
+    function ok(){ copyBtn.textContent='Copiado ✓'; copyBtn.classList.add('ok');
+      setTimeout(function(){ copyBtn.textContent='Copiar próximos pasos'; copyBtn.classList.remove('ok'); },1500); }
+    if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(ok).catch(function(){ nfb(text,ok); }); } else nfb(text,ok);
+  });
+  function nfb(t,cb){ try{ var ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.focus(); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); cb(); }catch(e){} }
+  refresh();
+})();
+</script>
+</body>
+</html>

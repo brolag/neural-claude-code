@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<!--
+  PlanViewer template · html-artifact-builder skill
+  HOW TO USE: copy this file, replace every <!-- REPLACE ... --> block and the
+  example content with the real plan. Keep the <style> and <script> as-is unless
+  the project defines its own palette (then override the :root color vars).
+  Sections (in order): Overview · Phases & Tasks · Decisions · Risks · Open Questions.
+  Self-contained: no CDN, no build, no external fonts, no localStorage required.
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan · REPLACE task title</title>
+<style>
+  :root{
+    --bg:#f6f5f1; --surface:#ffffff; --surface-2:#efede6; --border:#e3e0d6; --track:#e7e4da;
+    --ink:#1b1b19; --ink-soft:#56534b; --ink-faint:#8b877a;
+    --accent:#2f6f6a; --accent-soft:#e2efed; --accent-line:#bcdcd8;
+    --done:#2e7d52; --done-bg:#e6f2ea;
+    --risk:#9a6400; --risk-bg:#fbf0db;
+    --error:#b3261e; --error-bg:#f8e4e2;
+    --info:#2b5aa8; --info-bg:#e7eefa;
+    --decision:#6b4ea3; --decision-bg:#efe9f8;
+    --shadow:0 1px 0 rgba(0,0,0,.02); --shadow-pop:0 12px 34px rgba(40,38,30,.17),0 2px 8px rgba(0,0,0,.05);
+    --radius:12px; --maxw:1180px;
+    /* Fonts are applied LITERALLY in the rules below (var() in font-family proved unreliable in
+       some browsers — it fell back to serif). To change the typeface, edit the stack in: body, code, .s-num, pre. */
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#16161a; --surface:#1e1f25; --surface-2:#26272e; --border:#34353d; --track:#2c2d35;
+      --ink:#ecebe6; --ink-soft:#b3b1a9; --ink-faint:#86847d;
+      --accent:#6fd0c6; --accent-soft:#1f322f; --accent-line:#2c4d49;
+      --done:#62c98c; --done-bg:#16291f; --risk:#e0ad55; --risk-bg:#2c2415;
+      --error:#ef6b62; --error-bg:#2e1916; --info:#7aa6e8; --info-bg:#161f2e;
+      --decision:#b69ce6; --decision-bg:#221b30;
+      --shadow:0 1px 0 rgba(0,0,0,.25); --shadow-pop:0 14px 40px rgba(0,0,0,.5),0 2px 10px rgba(0,0,0,.4);
+    }
+    .codeblock pre{background:#101116 !important; border:1px solid #2c2d35}
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; font-size:106.25%} /* 17px base — scales every rem */
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:"Avenir Next","Avenir","Segoe UI",system-ui,Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:1rem; line-height:1.62; -webkit-font-smoothing:antialiased; overflow-x:hidden}
+  a{color:var(--accent); text-decoration:none} a:hover{text-decoration:underline}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.86em; background:var(--surface-2);
+    padding:.1em .4em; border-radius:5px; word-break:break-word}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 clamp(16px,4vw,40px)}
+
+  /* hero */
+  header.hero{padding:clamp(26px,5vw,50px) 0 24px; border-bottom:1px solid var(--border)}
+  .eyebrow{display:inline-flex; align-items:center; gap:8px; font-size:.74rem; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--accent); font-weight:750}
+  .eyebrow::before{content:''; width:22px; height:2px; background:var(--accent); display:inline-block}
+  h1{font-size:clamp(1.8rem,4.8vw,2.9rem); line-height:1.1; margin:.3em 0 .12em;
+    letter-spacing:-.012em; font-weight:720}
+  .tldr{font-size:clamp(1.05rem,2.4vw,1.34rem); line-height:1.4; color:var(--ink-soft);
+    max-width:64ch; font-weight:430} .tldr b{color:var(--ink); font-weight:680}
+  .steps{display:flex; align-items:center; gap:0; margin:24px 0 4px; max-width:520px; flex-wrap:wrap}
+  .step{display:flex; align-items:center; gap:8px; font-size:.78rem; font-weight:650; color:var(--ink-faint)}
+  .step .dot{width:13px; height:13px; border-radius:50%; border:2px solid var(--track); background:var(--surface); flex:none}
+  .step.on{color:var(--accent)} .step.on .dot{background:var(--accent); border-color:var(--accent); box-shadow:0 0 0 4px var(--accent-soft)}
+  .step .bar{flex:1; height:2px; background:var(--track); margin:0 10px; min-width:26px} .step.on .bar{background:var(--accent)}
+  .stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(108px,1fr)); gap:10px; margin-top:26px}
+  .stat{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    padding:14px 16px; box-shadow:var(--shadow); position:relative; overflow:hidden}
+  .stat::before{content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--accent); opacity:.5}
+  .stat.s-risk::before{background:var(--risk)} .stat.s-done::before{background:var(--done)}
+  .stat .n{display:block; font-size:1.9rem; line-height:1; font-weight:790; letter-spacing:-.03em; color:var(--ink)}
+  .stat .l{display:block; font-size:.74rem; color:var(--ink-faint); margin-top:5px; font-weight:600; text-transform:uppercase; letter-spacing:.04em}
+  .stat .h{display:inline-flex; align-items:center; gap:5px; font-size:1.02rem; font-weight:720; color:var(--done)}
+  .stat .v{display:block; font-size:1.4rem; line-height:1.06; font-weight:760; letter-spacing:-.01em; color:var(--ink)}
+  .stat .v.sm{font-size:1.04rem; font-weight:700; line-height:1.2}
+  .stat.s-done .v{color:var(--done)} .stat.s-risk .v{color:var(--risk)} .stat.s-error .v{color:var(--error)}
+  .readline{margin:10px 0 0; font-size:.82rem; color:var(--ink-faint); font-weight:600}
+
+  /* badges */
+  .badge{display:inline-flex; align-items:center; gap:6px; font-size:.78rem; font-weight:650;
+    padding:4px 10px 4px 8px; border-radius:999px; border:1px solid transparent; white-space:nowrap}
+  .b-done{color:var(--done); background:var(--done-bg); border-color:color-mix(in srgb,var(--done) 30%,transparent)}
+  .b-risk{color:var(--risk); background:var(--risk-bg); border-color:color-mix(in srgb,var(--risk) 30%,transparent)}
+  .b-error{color:var(--error); background:var(--error-bg); border-color:color-mix(in srgb,var(--error) 30%,transparent)}
+  .b-info{color:var(--info); background:var(--info-bg); border-color:color-mix(in srgb,var(--info) 30%,transparent)}
+  .b-decision{color:var(--decision); background:var(--decision-bg); border-color:color-mix(in srgb,var(--decision) 30%,transparent)}
+  .b-todo{color:var(--ink-faint); background:var(--surface-2); border-color:var(--border)}
+
+  /* layout */
+  .grid{display:grid; grid-template-columns:218px minmax(0,1fr); gap:clamp(22px,4vw,48px); padding:28px 0 90px; align-items:start}
+  nav.toc{position:sticky; top:18px; max-height:calc(100vh - 36px); overflow:auto; font-size:.86rem; padding-right:4px}
+  nav.toc .toc-h{font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); font-weight:700; margin:0 0 8px 12px}
+  nav.toc ol{list-style:none; margin:0; padding:0; border-left:2px solid var(--border)}
+  nav.toc li a{display:block; padding:5px 12px; color:var(--ink-soft); border-left:2px solid transparent; margin-left:-2px; line-height:1.3}
+  nav.toc li a:hover{color:var(--ink)}
+  nav.toc li a.here{color:var(--accent); border-left-color:var(--accent); font-weight:650; background:linear-gradient(90deg,var(--accent-soft),transparent)}
+  .controls{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 18px}
+  .ctrl{font:inherit; font-size:.82rem; font-weight:600; color:var(--ink-soft); background:var(--surface); border:1px solid var(--border); padding:7px 13px; border-radius:8px; cursor:pointer}
+  .ctrl:hover{border-color:var(--accent); color:var(--accent)}
+
+  /* timeline */
+  .timeline{position:relative}
+  .timeline::before{content:''; position:absolute; left:13px; top:12px; bottom:12px; width:2px; background:var(--border); z-index:0}
+  .node{position:relative; padding-left:44px; margin:0 0 16px}
+  .node-dot{position:absolute; left:3px; top:15px; width:22px; height:22px; border-radius:50%; display:flex;
+    align-items:center; justify-content:center; font-size:.72rem; z-index:1; border:3px solid var(--bg); background:var(--surface)}
+  .d-info{color:var(--info); box-shadow:inset 0 0 0 2px var(--info)}
+  .d-decision{color:var(--decision); box-shadow:inset 0 0 0 2px var(--decision)}
+  .d-build{color:var(--accent); box-shadow:inset 0 0 0 2px var(--accent)}
+  .d-risk{color:var(--risk); box-shadow:inset 0 0 0 2px var(--risk)}
+  .d-done{color:var(--done); box-shadow:inset 0 0 0 2px var(--done)}
+
+  section.card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); scroll-margin-top:16px; box-shadow:var(--shadow)}
+  details{margin:0}
+  summary{list-style:none; cursor:pointer; display:flex; align-items:center; gap:13px; padding:15px 19px; user-select:none}
+  summary::-webkit-details-marker{display:none}
+  .chev{width:14px; height:14px; flex:none; color:var(--ink-faint); transition:transform .18s ease}
+  details[open] .chev{transform:rotate(90deg)}
+  .s-num{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:1.05rem; font-weight:720; color:var(--ink-faint); flex:none; letter-spacing:-.02em; min-width:1.6em}
+  .s-title{font-size:1.08rem; font-weight:690; flex:1; min-width:0; letter-spacing:-.01em}
+  .s-tag{font-size:.74rem; color:var(--ink-faint); font-weight:600}
+  .body{padding:2px 19px 19px 19px; border-top:1px solid var(--border)}
+  .body > :first-child{margin-top:14px}
+  .body p{margin:.55em 0; color:var(--ink-soft)} .body strong{color:var(--ink)}
+  .body ul{margin:.4em 0; padding-left:1.25em} .body li{margin:.3em 0; color:var(--ink-soft)}
+  h3{font-size:.95rem; margin:1.3em 0 .3em; color:var(--ink); font-weight:690; letter-spacing:-.01em}
+  h3:first-child{margin-top:.2em}
+
+  /* phase → tasks list */
+  .tasks{list-style:none; margin:10px 0; padding:0}
+  .tasks li{display:flex; gap:10px; align-items:flex-start; padding:8px 0; border-bottom:1px dashed var(--border); color:var(--ink)}
+  .tasks li:last-child{border-bottom:none}
+  .tasks .ti{flex:none; margin-top:1px; font-size:.9rem}
+  .t-done .ti{color:var(--done)} .t-doing .ti{color:var(--accent)} .t-todo .ti{color:var(--ink-faint)}
+  .tasks .tx{flex:1; min-width:0} .tasks .tx small{display:block; color:var(--ink-faint); font-size:.82rem; margin-top:2px}
+
+  /* decision queue (open questions) */
+  .q-bar{display:flex; flex-wrap:wrap; gap:10px 14px; align-items:center; margin:12px 0 14px}
+  .q-summary{font-size:.85rem; color:var(--ink-soft)} .q-summary b{color:var(--ink)}
+  .copyans{font:inherit; font-size:.82rem; font-weight:650; color:#fff; background:var(--accent); border:none; padding:8px 14px; border-radius:8px; cursor:pointer}
+  .copyans:hover{filter:brightness(1.06)} .copyans.ok{background:var(--done)}
+  .q{border:1px solid var(--border); border-radius:10px; padding:12px 14px; margin:10px 0; background:var(--surface)}
+  .q.answered{border-color:color-mix(in srgb,var(--done) 45%,var(--border)); background:color-mix(in srgb,var(--done-bg) 50%,var(--surface))}
+  .q-head{display:flex; align-items:flex-start; gap:10px; flex-wrap:wrap}
+  .q-state{flex:none; font-size:.73rem; font-weight:700; color:var(--ink-faint); display:inline-flex; align-items:center; gap:5px; padding-top:2px; min-width:88px}
+  .q.answered .q-state{color:var(--done)}
+  .q-text{flex:1; min-width:160px; font-weight:600; color:var(--ink)}
+  .q-flag{flex:none; font-size:.75rem; color:var(--ink-soft); display:inline-flex; align-items:center; gap:5px; cursor:pointer; user-select:none}
+  .q-flag input{accent-color:var(--risk); margin:0}
+  .q-opts{display:flex; flex-wrap:wrap; gap:6px; margin:11px 0 0}
+  .q-opt{font:inherit; font-size:.8rem; font-weight:600; color:var(--ink-soft); background:var(--surface-2); border:1px solid var(--border); padding:5px 11px; border-radius:999px; cursor:pointer}
+  .q-opt:hover{border-color:var(--accent); color:var(--accent)}
+  .q-opt.sel{background:var(--accent-soft); border-color:var(--accent); color:var(--accent)}
+  .q-ans{width:100%; margin-top:9px; font:inherit; font-size:.88rem; color:var(--ink); background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:8px 10px; resize:vertical; min-height:38px}
+  .q-ans:focus{outline:2px solid var(--accent-soft); border-color:var(--accent)}
+
+  .callout{display:flex; gap:11px; align-items:flex-start; padding:12px 14px; border-radius:9px; margin:12px 0; font-size:.93rem; line-height:1.5}
+  .callout .gi{flex:none; margin-top:1px}
+  .c-info{background:var(--info-bg); color:var(--info)} .c-info b,.c-info strong{color:var(--info)}
+  .c-risk{background:var(--risk-bg); color:var(--risk)} .c-risk b,.c-risk strong{color:var(--risk)}
+  .c-done{background:var(--done-bg); color:var(--done)} .c-done b,.c-done strong{color:var(--done)}
+
+  table{width:100%; border-collapse:collapse; margin:12px 0; font-size:.9rem}
+  th,td{text-align:left; padding:9px 12px; border-bottom:1px solid var(--border); vertical-align:top}
+  th{font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-faint); font-weight:700}
+  tr:last-child td{border-bottom:none}
+
+  .codeblock{position:relative; margin:12px 0}
+  .codeblock pre{margin:0; background:#1f211d; color:#e7e6df; border-radius:9px; padding:14px 16px; overflow-x:auto; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.82rem; line-height:1.55}
+  .copybtn{position:absolute; top:9px; right:9px; font:inherit; font-size:.72rem; font-weight:650; color:#cfcec6; background:#34362f; border:1px solid #4a4c43; padding:4px 9px; border-radius:6px; cursor:pointer}
+  .copybtn:hover{background:#42443b; color:#fff} .copybtn.ok{color:#9fe0b6; border-color:#3e6b4f}
+
+  .na{position:fixed; right:18px; bottom:18px; width:min(330px,calc(100vw - 36px)); background:var(--surface); border:1px solid var(--border); border-radius:14px; box-shadow:var(--shadow-pop); z-index:50; overflow:hidden}
+  .na-head{display:flex; align-items:center; gap:9px; padding:11px 13px; background:var(--surface-2); border-bottom:1px solid var(--border)}
+  .na-head .t{font-weight:700; font-size:.86rem; flex:1}
+  .na-head .ct{font-size:.72rem; font-weight:700; color:#fff; background:var(--risk); border-radius:999px; padding:1px 8px}
+  .na-head .ct.clear{background:var(--done)}
+  .na-x{border:none; background:none; cursor:pointer; color:var(--ink-faint); font-size:1.05rem; line-height:1; padding:2px 4px} .na-x:hover{color:var(--ink)}
+  .na-list{list-style:none; margin:0; padding:6px; max-height:46vh; overflow:auto}
+  .na-list li a{display:flex; gap:9px; align-items:flex-start; padding:9px 10px; border-radius:8px; color:var(--ink); font-size:.85rem; line-height:1.4}
+  .na-list li a:hover{background:var(--surface-2); text-decoration:none}
+  .na-empty{padding:18px 14px; text-align:center; color:var(--ink-soft); font-size:.88rem}
+  .na-reopen{position:fixed; right:18px; bottom:18px; z-index:50; display:none; align-items:center; gap:7px; font:inherit; font-size:.8rem; font-weight:650; color:var(--bg); background:var(--ink); border:none; padding:9px 14px; border-radius:999px; cursor:pointer; box-shadow:var(--shadow-pop)}
+
+  .reveal{opacity:0; transform:translateY(10px)}
+  .reveal.in{opacity:1; transform:none; transition:opacity .24s ease, transform .24s ease}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    .reveal{opacity:1 !important; transform:none !important; transition:none !important} .chev{transition:none}
+  }
+  footer{border-top:1px solid var(--border); padding:22px 0 40px; color:var(--ink-faint); font-size:.82rem}
+  @media (max-width:820px){
+    .grid{grid-template-columns:1fr; gap:8px}
+    nav.toc{position:static; max-height:none; margin-bottom:6px; border:1px solid var(--border); border-radius:10px; padding:12px; background:var(--surface)}
+    nav.toc ol{border-left:none; columns:2; column-gap:8px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <!-- REPLACE hero: eyebrow stays, set H1 to the task, TL;DR = one punchy line. -->
+    <div class="reveal">
+      <div class="eyebrow">PlanViewer · pre-ejecución</div>
+      <h1>Refactor del módulo de autenticación</h1>
+      <p class="tldr">Migrar de sesiones en cookie a <b>JWT con refresh tokens</b> sin downtime, en 3 fases con rollback por fase.</p>
+      <p class="readline">~<span id="readmins">?</span> min de lectura</p>
+    </div>
+    <!-- REPLACE steps: mark the current state with class "on" up to where the plan is. -->
+    <div class="steps reveal" aria-label="Estado del plan">
+      <span class="step on"><span class="dot"></span>draft</span><span class="bar"></span>
+      <span class="step" id="stepApproved"><span class="dot"></span>approved</span><span class="bar"></span>
+      <span class="step"><span class="dot"></span>building</span>
+    </div>
+    <!-- REPLACE stats: decision-grade, all fillable by Claude when generating the plan.
+         Text values use .v (add .sm if long). Numbers use .n (data-to = count-up target).
+         "bloqueantes" (#blockStat) is driven live by the decision queue — leave its value/class to JS.
+         Severity tint via parent class: s-done (good) · s-risk (caution) · s-error (bad). -->
+    <div class="stats reveal">
+      <div class="stat"><span class="v">M</span><span class="l">esfuerzo</span></div>
+      <div class="stat s-done"><span class="v">Zero</span><span class="l">downtime</span></div>
+      <div class="stat"><span class="v sm">auth + db</span><span class="l">blast radius</span></div>
+      <div class="stat"><span class="n" data-to="2">0</span><span class="l">deps externas</span></div>
+      <div class="stat s-risk"><span class="n" id="blockStat">1</span><span class="l">bloqueantes</span></div>
+      <div class="stat s-risk"><span class="v">MEDIO</span><span class="l">riesgo</span></div>
+    </div>
+  </header>
+
+  <div class="grid">
+    <nav class="toc" aria-label="Secciones"><p class="toc-h">En esta página</p><ol id="tocList"></ol></nav>
+
+    <main id="content">
+      <div class="controls reveal">
+        <button class="ctrl" id="expandAll">▾ Expandir todo</button>
+        <button class="ctrl" id="collapseAll">▸ Colapsar todo</button>
+      </div>
+
+      <div class="timeline">
+        <!-- 01 OVERVIEW (keep open) -->
+        <div class="node reveal">
+          <span class="node-dot d-info" aria-hidden="true">●</span>
+          <section class="card" id="overview" data-title="Overview" data-accent="info">
+            <details open>
+              <summary><svg class="chev" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="s-num">01</span><span class="s-title">Overview</span><span class="s-tag">empieza acá</span></summary>
+              <div class="body">
+                <!-- REPLACE: 2-3 sentences. Why this change, what outcome, what stays out of scope. -->
+                <p>El login actual guarda la sesión en una cookie firmada server-side. No escala a múltiples servicios y no permite revocación granular. Pasamos a <strong>JWT de vida corta + refresh token rotatorio</strong>.</p>
+                <div class="callout c-info"><span class="gi" aria-hidden="true">●</span><div><strong>Resultado esperado.</strong> Auth stateless, revocación por refresh token, cero downtime durante la migración.</div></div>
+              </div>
+            </details>
+          </section>
+        </div>
+
+        <!-- 02 PHASES & TASKS (keep open) -->
+        <div class="node reveal">
+          <span class="node-dot d-build" aria-hidden="true">▣</span>
+          <section class="card" id="phases" data-title="Fases y tareas" data-accent="accent">
+            <details open>
+              <summary><svg class="chev" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="s-num">02</span><span class="s-title">Fases y tareas</span><span class="s-tag">3 fases · 7 tareas</span></summary>
+              <div class="body">
+                <!-- REPLACE: one h3 per phase, 3-5 tasks each (chunking). State icon per task:
+                     ✓ t-done · ◐ t-doing · ○ t-todo -->
+                <h3>Fase 1 · Emitir tokens en paralelo</h3>
+                <ul class="tasks">
+                  <li class="t-todo"><span class="ti" aria-hidden="true">○</span><span class="tx">Agregar <code>signAccessToken()</code> y <code>signRefreshToken()</code> en <code>auth/tokens.ts</code><small>HS256, access 15min, refresh 7d</small></span></li>
+                  <li class="t-todo"><span class="ti" aria-hidden="true">○</span><span class="tx">Emitir ambos tokens en el login actual sin quitar la cookie <small>doble escritura, feature-flag <code>JWT_DUAL_WRITE</code></small></span></li>
+                  <li class="t-todo"><span class="ti" aria-hidden="true">○</span><span class="tx">Tabla <code>refresh_tokens</code> con índice por <code>user_id</code> + <code>jti</code></span></li>
+                </ul>
+                <h3>Fase 2 · Validar por token</h3>
+                <ul class="tasks">
+                  <li class="t-todo"><span class="ti" aria-hidden="true">○</span><span class="tx">Middleware <code>requireAuth</code> lee Authorization Bearer, cae a cookie si falta</span></li>
+                  <li class="t-todo"><span class="ti" aria-hidden="true">○</span><span class="tx">Endpoint <code>POST /auth/refresh</code> con rotación + detección de reuse</span></li>
+                </ul>
+                <h3>Fase 3 · Retirar la cookie</h3>
+                <ul class="tasks">
+                  <li class="t-todo"><span class="ti" aria-hidden="true">○</span><span class="tx">Apagar <code>JWT_DUAL_WRITE</code>, dejar solo tokens</span></li>
+                  <li class="t-todo"><span class="ti" aria-hidden="true">○</span><span class="tx">Borrar el código de cookie y sus tests</span></li>
+                </ul>
+              </div>
+            </details>
+          </section>
+        </div>
+
+        <!-- 03 DECISIONS (keep open) -->
+        <div class="node reveal">
+          <span class="node-dot d-decision" aria-hidden="true">◆</span>
+          <section class="card" id="decisions" data-title="Decisiones" data-accent="decision">
+            <details open>
+              <summary><svg class="chev" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="s-num">03</span><span class="s-title">Decisiones</span><span class="s-tag">2</span></summary>
+              <div class="body">
+                <!-- REPLACE: table of locked decisions. -->
+                <table>
+                  <thead><tr><th>#</th><th>Decisión</th><th>Estado</th></tr></thead>
+                  <tbody>
+                    <tr><td>1</td><td><strong>HS256</strong> con secreto rotable (no RS256) — un solo servicio emisor por ahora</td><td><span class="badge b-decision"><span aria-hidden="true">◆</span> elegido</span></td></tr>
+                    <tr><td>2</td><td><strong>Refresh rotatorio</strong> con detección de reuse → revoca toda la familia</td><td><span class="badge b-decision"><span aria-hidden="true">◆</span> elegido</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </details>
+          </section>
+        </div>
+
+        <!-- 04 RISKS (keep open; each risk feeds the Needs-Attention panel) -->
+        <div class="node reveal">
+          <span class="node-dot d-risk" aria-hidden="true">▲</span>
+          <section class="card" id="risks" data-title="Riesgos" data-accent="risk">
+            <details open>
+              <summary><svg class="chev" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="s-num">04</span><span class="s-title">Riesgos</span><span class="s-tag">3</span></summary>
+              <div class="body">
+                <!-- REPLACE: one callout per risk. Mirror each into the #na panel below. -->
+                <div class="callout c-risk"><span class="gi" aria-hidden="true">▲</span><div><strong>Tokens viejos válidos tras un rollback.</strong> <em>Mitigación:</em> versión <code>kid</code> en el header, rechazar versiones retiradas.</div></div>
+                <div class="callout c-risk"><span class="gi" aria-hidden="true">▲</span><div><strong>Reuse de refresh por carrera en mobile.</strong> <em>Mitigación:</em> ventana de gracia de 10s para la rotación.</div></div>
+                <div class="callout c-risk"><span class="gi" aria-hidden="true">▲</span><div><strong>Secreto filtrado = todos los tokens válidos.</strong> <em>Mitigación:</em> secreto en el vault, rotación con 2 kids activos.</div></div>
+              </div>
+            </details>
+          </section>
+        </div>
+
+        <!-- 05 OPEN QUESTIONS — decision queue (keep open: these gate execution) -->
+        <div class="node reveal">
+          <span class="node-dot d-info" aria-hidden="true">?</span>
+          <section class="card" id="open" data-title="Preguntas abiertas" data-accent="info">
+            <details open>
+              <summary><svg class="chev" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="s-num">05</span><span class="s-title">Preguntas abiertas</span><span class="s-tag" id="openTag">gestioná acá</span></summary>
+              <div class="body">
+                <!-- REPLACE: one .q per open question.
+                     data-id = stable slug · data-blocking = true|false (checkbox starts checked if true).
+                     Optional .q-opt buttons = the options Claude proposed (clicking fills the textarea).
+                     Answer = a non-empty textarea. "Copiar respuestas para Claude" exports markdown
+                     to paste back into chat — that is how answers reach Claude (no auto channel exists).
+                     If there are NO open questions, drop the whole queue and show a c-done "All clear" callout. -->
+                <div class="q-bar">
+                  <button class="copyans" id="copyAns">Copiar respuestas para Claude</button>
+                  <span class="q-summary" id="qSummary"></span>
+                </div>
+
+                <div class="q" data-id="refresh-storage" data-blocking="true">
+                  <div class="q-head">
+                    <span class="q-state"><span class="gi" aria-hidden="true">○</span><span class="lbl">abierta</span></span>
+                    <span class="q-text">¿El refresh token vive en cookie httpOnly o en el secure storage del cliente?</span>
+                    <label class="q-flag"><input type="checkbox" class="q-blocking" checked> bloqueante</label>
+                  </div>
+                  <div class="q-opts">
+                    <button type="button" class="q-opt">cookie httpOnly</button>
+                    <button type="button" class="q-opt">secure storage</button>
+                  </div>
+                  <textarea class="q-ans" placeholder="Elegí una opción o escribí tu respuesta..."></textarea>
+                </div>
+
+                <div class="q" data-id="access-ttl" data-blocking="false">
+                  <div class="q-head">
+                    <span class="q-state"><span class="gi" aria-hidden="true">○</span><span class="lbl">abierta</span></span>
+                    <span class="q-text">¿15 min de access token es muy corto para el tráfico mobile?</span>
+                    <label class="q-flag"><input type="checkbox" class="q-blocking"> bloqueante</label>
+                  </div>
+                  <textarea class="q-ans" placeholder="Tu respuesta o nota..."></textarea>
+                </div>
+              </div>
+            </details>
+          </section>
+        </div>
+      </div>
+
+      <footer>Generado desde el plan · no editar a mano · regenerable on demand · PlanViewer</footer>
+    </main>
+  </div>
+</div>
+
+<!-- Needs Attention: aggregate every risk / blocker / open decision. If none, render .na-empty "All clear". -->
+<aside class="na" id="na" aria-label="Needs attention">
+  <div class="na-head"><span aria-hidden="true" style="color:var(--risk)">▲</span><span class="t">Needs attention</span>
+    <span class="ct" id="naCount">3</span><button class="na-x" id="naClose" aria-label="Cerrar panel">×</button></div>
+  <ul class="na-list" id="naList">
+    <!-- static risk/blocker items: keep class na-risk so the question engine doesn't clear them -->
+    <li class="na-risk"><a href="#risks"><span style="color:var(--risk)" aria-hidden="true">▲</span><span><strong>Rollback deja tokens viejos válidos</strong> — versionar con kid</span></a></li>
+    <li class="na-risk"><a href="#risks"><span style="color:var(--risk)" aria-hidden="true">▲</span><span><strong>Reuse de refresh por carrera</strong> — ventana de gracia 10s</span></a></li>
+    <!-- blocking unanswered questions are injected here by the decision-queue script -->
+  </ul>
+</aside>
+<button class="na-reopen" id="naReopen"><span aria-hidden="true">▲</span> Needs attention (<span id="naReopenN">3</span>)</button>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var mins = 1;
+  try{ var txt=(document.getElementById('content').innerText||'').trim();
+    var words=txt?txt.split(/\s+/).length:0; mins=Math.max(1,Math.ceil(words/238)); }catch(e){}
+
+  function countUp(el,to,prefix,suffix){
+    if(reduce){ el.textContent=(prefix||'')+to+(suffix||''); return; }
+    var start=null;
+    function tick(ts){ if(!start)start=ts; var p=Math.min(1,(ts-start)/900);
+      el.textContent=(prefix||'')+Math.round((1-Math.pow(1-p,3))*to)+(suffix||''); if(p<1)requestAnimationFrame(tick); }
+    requestAnimationFrame(tick);
+  }
+  var rl=document.getElementById('readmins'); if(rl) rl.textContent=mins;
+  document.querySelectorAll('.stat .n').forEach(function(el){
+    if(el.id==='blockStat') return; // live-managed by the decision queue
+    countUp(el,parseInt(el.getAttribute('data-to')||'0',10),el.getAttribute('data-prefix')||'',el.getAttribute('data-suffix')||'');
+  });
+
+  var secs=[].slice.call(document.querySelectorAll('section.card[data-title]'));
+  var tocList=document.getElementById('tocList'), links={};
+  secs.forEach(function(s){ var li=document.createElement('li'), a=document.createElement('a');
+    a.href='#'+s.id; a.textContent=s.getAttribute('data-title'); li.appendChild(a); tocList.appendChild(li); links[s.id]=a; });
+  var spy=new IntersectionObserver(function(es){ es.forEach(function(en){ if(en.isIntersecting){
+    Object.keys(links).forEach(function(k){links[k].classList.remove('here');});
+    if(links[en.target.id])links[en.target.id].classList.add('here'); } }); },
+    {rootMargin:'-12% 0px -70% 0px',threshold:0});
+  secs.forEach(function(s){ spy.observe(s); });
+
+  var reveals=[].slice.call(document.querySelectorAll('.reveal'));
+  if(reduce){ reveals.forEach(function(el){ el.classList.add('in'); }); }
+  else{ var io=new IntersectionObserver(function(es,obs){ es.forEach(function(en){
+    if(en.isIntersecting){ en.target.classList.add('in'); obs.unobserve(en.target); } }); },
+    {rootMargin:'0px 0px -8% 0px',threshold:.06}); reveals.forEach(function(el){ io.observe(el); }); }
+
+  function setAll(o){ document.querySelectorAll('section.card details').forEach(function(d){ d.open=o; }); }
+  document.getElementById('expandAll').addEventListener('click',function(){ setAll(true); });
+  document.getElementById('collapseAll').addEventListener('click',function(){ setAll(false); });
+
+  document.querySelectorAll('.copybtn').forEach(function(btn){
+    btn.addEventListener('click',function(){ var pre=btn.parentElement.querySelector('pre'); var t=pre?pre.innerText:'';
+      function ok(){ var o=btn.textContent; btn.textContent='Copiado ✓'; btn.classList.add('ok');
+        setTimeout(function(){ btn.textContent=o; btn.classList.remove('ok'); },1400); }
+      if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(ok).catch(function(){fb(t,ok);}); } else fb(t,ok); }); });
+  function fb(t,cb){ try{ var ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.focus(); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); cb(); }catch(e){} }
+
+  var na=document.getElementById('na'), reopen=document.getElementById('naReopen');
+  document.getElementById('naClose').addEventListener('click',function(){ na.style.display='none'; reopen.style.display='inline-flex'; });
+  reopen.addEventListener('click',function(){ na.style.display=''; reopen.style.display='none'; });
+})();
+
+/* ---- decision queue: manage & export open questions ---- */
+(function(){
+  "use strict";
+  var qs=[].slice.call(document.querySelectorAll('.q'));
+  if(!qs.length) return;
+  var STORE='haq-open-'+((location.pathname.split('/').pop())||'plan');
+  var mem={};
+  function load(){ try{ return JSON.parse(localStorage.getItem(STORE))||{}; }catch(e){ return mem; } }
+  function save(d){ try{ localStorage.setItem(STORE,JSON.stringify(d)); }catch(e){ mem=d; } }
+  var state=load();
+
+  var naList=document.getElementById('naList'),
+      naCount=document.getElementById('naCount'),
+      naReopenN=document.getElementById('naReopenN'),
+      stepApproved=document.getElementById('stepApproved'),
+      blockStat=document.getElementById('blockStat'),
+      qSummary=document.getElementById('qSummary'),
+      openTag=document.getElementById('openTag'),
+      baseRisks=naList?naList.querySelectorAll('.na-risk').length:0;
+
+  function esc(s){ return s.replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
+  function ansOf(q){ var t=q.querySelector('.q-ans'); return t?t.value.trim():''; }
+
+  function persist(){
+    var d={};
+    qs.forEach(function(q){ d[q.getAttribute('data-id')]={a:ansOf(q),b:q.querySelector('.q-blocking').checked}; });
+    save(d);
+  }
+
+  function refresh(){
+    var answered=0, pendingBlock=0, total=qs.length;
+    if(naList){ [].slice.call(naList.querySelectorAll('.na-q')).forEach(function(li){ li.remove(); }); }
+    qs.forEach(function(q){
+      var ans=ansOf(q), blocking=q.querySelector('.q-blocking').checked;
+      q.classList.toggle('answered',!!ans);
+      var lbl=q.querySelector('.q-state .lbl'), ico=q.querySelector('.q-state .gi');
+      if(lbl) lbl.textContent=ans?'respondida':'abierta';
+      if(ico) ico.textContent=ans?'✓':'○';
+      if(ans) answered++;
+      if(blocking&&!ans){
+        pendingBlock++;
+        if(naList){
+          var li=document.createElement('li'); li.className='na-q';
+          li.innerHTML='<a href="#open"><span style="color:var(--info)" aria-hidden="true">?</span><span><strong>'+esc(q.querySelector('.q-text').textContent)+'</strong> — bloqueante sin responder</span></a>';
+          naList.appendChild(li);
+        }
+      }
+    });
+    var naTotal=baseRisks+pendingBlock;
+    if(naCount){ naCount.textContent=naTotal; naCount.classList.toggle('clear',naTotal===0); }
+    if(naReopenN) naReopenN.textContent=naTotal;
+    if(openTag) openTag.textContent=(total-answered)+' sin responder';
+    if(qSummary) qSummary.innerHTML='<b>'+answered+'/'+total+'</b> respondidas · <b>'+pendingBlock+'</b> bloqueantes pendientes';
+    if(stepApproved) stepApproved.classList.toggle('on',pendingBlock===0);
+    if(blockStat){
+      blockStat.textContent=pendingBlock;
+      if(blockStat.parentElement){ blockStat.parentElement.classList.toggle('s-done',pendingBlock===0); blockStat.parentElement.classList.toggle('s-risk',pendingBlock>0); }
+    }
+  }
+
+  qs.forEach(function(q){
+    var id=q.getAttribute('data-id'), ta=q.querySelector('.q-ans'), blk=q.querySelector('.q-blocking');
+    if(state[id]){ if(ta&&state[id].a!=null) ta.value=state[id].a; if(blk&&state[id].b!=null) blk.checked=state[id].b; }
+    q.querySelectorAll('.q-opt').forEach(function(opt){
+      if(ta&&ta.value.trim()===opt.textContent.trim()) opt.classList.add('sel');
+      opt.addEventListener('click',function(){
+        q.querySelectorAll('.q-opt').forEach(function(o){ o.classList.remove('sel'); });
+        opt.classList.add('sel'); if(ta) ta.value=opt.textContent.trim(); persist(); refresh();
+      });
+    });
+    if(ta) ta.addEventListener('input',function(){
+      q.querySelectorAll('.q-opt').forEach(function(o){ o.classList.toggle('sel',o.textContent.trim()===ta.value.trim()); });
+      persist(); refresh();
+    });
+    if(blk) blk.addEventListener('change',function(){ persist(); refresh(); });
+  });
+
+  var copyBtn=document.getElementById('copyAns');
+  if(copyBtn) copyBtn.addEventListener('click',function(){
+    var lines=['## Respuestas a preguntas abiertas',''], pend=[];
+    qs.forEach(function(q,i){
+      var ans=ansOf(q), tag=q.querySelector('.q-blocking').checked?'  [bloqueante]':'';
+      if(ans) lines.push((i+1)+'. '+q.querySelector('.q-text').textContent+' → '+ans+tag);
+      else pend.push('- '+q.querySelector('.q-text').textContent+tag);
+    });
+    if(pend.length){ lines.push('','### Sin responder'); pend.forEach(function(p){ lines.push(p); }); }
+    var text=lines.join('\n');
+    function ok(){ copyBtn.textContent='Copiado ✓'; copyBtn.classList.add('ok');
+      setTimeout(function(){ copyBtn.textContent='Copiar respuestas para Claude'; copyBtn.classList.remove('ok'); },1500); }
+    if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(ok).catch(function(){ qfb(text,ok); }); } else qfb(text,ok);
+  });
+  function qfb(t,cb){ try{ var ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.focus(); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); cb(); }catch(e){} }
+
+  refresh();
+})();
+</script>
+</body>
+</html>
