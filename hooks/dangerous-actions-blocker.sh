@@ -10,10 +10,13 @@ TOOL_INPUT=$(echo "$INPUT" | jq -r '.tool_input // empty')
 if [[ "$TOOL_NAME" == "Bash" ]]; then
     COMMAND=$(echo "$TOOL_INPUT" | jq -r '.command // empty')
 
-    # rm -rf of / or home ITSELF (not subpaths like /tmp/x or ~/foo) —
-    # matches the actual target so `rm -rf /tmp/build` stays allowed
-    if echo "$COMMAND" | grep -qE '(^|[;&|[:space:]])rm[[:space:]]+(-[a-zA-Z]+[[:space:]]+)*-[a-zA-Z]*r[a-zA-Z]*([[:space:]]+-[a-zA-Z]+)*[[:space:]]+"?(/|~|\$HOME)/?\*?"?([[:space:]]|$|[;&|])' 2>/dev/null; then
-        echo "BLOCKED: Destructive command detected: 'rm -rf' targeting / or home" >&2
+    # rm -rf of a protected root ITSELF (or its trailing-slash / glob form),
+    # not subpaths. `rm -rf /tmp/build` and `rm -rf ~/proj` stay allowed;
+    # `rm -rf /`, `~`, `$HOME`, and system dirs (/etc /usr /var ...) are blocked.
+    # The target alternation matches the actual argument, so deleting a child
+    # of a protected dir (e.g. `rm -rf /etc/myapp`) is still permitted.
+    if echo "$COMMAND" | grep -qE '(^|[;&|[:space:]])rm[[:space:]]+(-[a-zA-Z]+[[:space:]]+)*-[a-zA-Z]*r[a-zA-Z]*([[:space:]]+-[a-zA-Z]+)*[[:space:]]+"?(/|~|\$HOME|\$\{HOME\}|/etc|/usr|/var|/bin|/sbin|/lib|/lib64|/boot|/dev|/proc|/sys|/opt|/root|/home|/System|/Library|/Applications)/?\*?"?([[:space:]]|$|[;&|])' 2>/dev/null; then
+        echo "BLOCKED: Destructive command detected: 'rm -rf' targeting a protected root (/, ~, \$HOME, or a system dir)" >&2
         exit 2
     fi
 
