@@ -1,11 +1,11 @@
 ---
-name: html-artifact-builder
+name: html
 description: Render a Claude Code plan (PlanViewer) or task result (ResultViewer) as a single-file HTML artifact with anti-fatigue UX. Use when the user asks for an HTML artifact, a plan/result view, or to "show this as HTML". Not for plain markdown/text or one-liners.
 allowed-tools: Read, Write
 argument-hint: "[plan|result] [source-path]"
 ---
 
-# html-artifact-builder
+# html
 
 Build a single-file, framework-free HTML artifact that makes a plan or a run report easy and calm to read. Two templates: **PlanViewer** (before executing) and **ResultViewer** (after finishing).
 
