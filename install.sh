@@ -62,15 +62,17 @@ chmod +x "$HOOKS_DIR/"*.sh
 echo -e "${GREEN}ok${RESET} Installed 5 security hooks"
 
 # --- Install skills ---
-for skill in init spec craft vet exercise git-save slop-scan; do
+for skill in init spec craft vet exercise git-save slop-scan html; do
     SKILL_SRC="$INSTALL_DIR/skills/$skill"
     SKILL_DST="$SKILLS_DIR/$skill"
     if [ -d "$SKILL_SRC" ]; then
         mkdir -p "$SKILL_DST"
-        cp "$SKILL_SRC/SKILL.md" "$SKILL_DST/SKILL.md"
+        # copy the whole skill dir: most are SKILL.md only, but html
+        # also ships templates/ and references/ that it needs at runtime
+        cp -R "$SKILL_SRC/." "$SKILL_DST/"
     fi
 done
-echo -e "${GREEN}ok${RESET} Installed 7 skills (init, spec, craft, vet, exercise, git-save, slop-scan)"
+echo -e "${GREEN}ok${RESET} Installed 8 skills (init, spec, craft, vet, exercise, git-save, slop-scan, html)"
 
 # --- Install rules ---
 mkdir -p "$RULES_DIR"
@@ -117,7 +119,7 @@ echo ""
 echo -e "${BOLD}Installation complete${RESET}"
 echo ""
 echo "  Hooks:  $HOOKS_DIR/ (5 scripts)"
-echo "  Skills: $SKILLS_DIR/ (init, spec, craft, vet, exercise, git-save, slop-scan)"
+echo "  Skills: $SKILLS_DIR/ (init, spec, craft, vet, exercise, git-save, slop-scan, html)"
 echo "  Rules:  $RULES_DIR/ (5 compact rules)"
 echo ""
 echo -e "${BOLD}Next steps:${RESET}"

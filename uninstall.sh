@@ -13,7 +13,7 @@ RESET='\033[0m'
 CLAUDE_DIR="$HOME/.claude"
 HOOKS_DIR="$CLAUDE_DIR/hooks/neural"
 RULES_DIR="$CLAUDE_DIR/rules/neural"
-SKILLS=("init" "spec" "craft" "vet" "exercise" "git-save" "slop-scan")
+SKILLS=("init" "spec" "craft" "vet" "exercise" "git-save" "slop-scan" "html")
 
 echo -e "${BOLD}Neural Claude Code — Uninstall${RESET}"
 echo ""

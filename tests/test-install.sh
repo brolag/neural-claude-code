@@ -57,11 +57,11 @@ chmod +x "$HOOKS_DIR/"*.sh
 assert "Hooks copied" "$([ -f "$HOOKS_DIR/dangerous-actions-blocker.sh" ] && echo true || echo false)"
 
 # Copy skills
-for skill in init spec craft vet exercise git-save slop-scan; do
+for skill in init spec craft vet exercise git-save slop-scan html; do
     mkdir -p "$SKILLS_DIR/$skill"
-    cp "$SCRIPT_DIR/skills/$skill/SKILL.md" "$SKILLS_DIR/$skill/SKILL.md" 2>/dev/null
+    cp -R "$SCRIPT_DIR/skills/$skill/." "$SKILLS_DIR/$skill/" 2>/dev/null
 done
-assert "Skills copied (7)" "$([ -f "$SKILLS_DIR/craft/SKILL.md" ] && [ -f "$SKILLS_DIR/init/SKILL.md" ] && echo true || echo false)"
+assert "Skills copied (8)" "$([ -f "$SKILLS_DIR/craft/SKILL.md" ] && [ -f "$SKILLS_DIR/init/SKILL.md" ] && [ -f "$SKILLS_DIR/html/templates/plan-viewer.html" ] && echo true || echo false)"
 
 # Copy rules
 cp "$SCRIPT_DIR/core/rules/"*.md "$RULES_DIR/"
@@ -76,7 +76,7 @@ HOOK_COUNT=$(ls "$HOOKS_DIR/"*.sh 2>/dev/null | wc -l | tr -d ' ')
 SKILL_COUNT=$(ls -d "$SKILLS_DIR/"*/ 2>/dev/null | wc -l | tr -d ' ')
 RULE_COUNT=$(ls "$RULES_DIR/"*.md 2>/dev/null | wc -l | tr -d ' ')
 assert "5 hooks installed" "$([ "$HOOK_COUNT" -eq 5 ] && echo true || echo false)"
-assert "7 skills installed" "$([ "$SKILL_COUNT" -eq 7 ] && echo true || echo false)"
+assert "8 skills installed" "$([ "$SKILL_COUNT" -eq 8 ] && echo true || echo false)"
 assert "5 rules installed" "$([ "$RULE_COUNT" -eq 5 ] && echo true || echo false)"
 
 echo ""
@@ -128,7 +128,7 @@ echo ""
 # --- Test 5: Skill Files Valid ---
 echo -e "${BOLD}## Skill Validation${RESET}"
 
-for skill in init spec craft vet exercise git-save slop-scan; do
+for skill in init spec craft vet exercise git-save slop-scan html; do
     SKILL_FILE="$SKILLS_DIR/$skill/SKILL.md"
     if [ -f "$SKILL_FILE" ]; then
         HAS_FRONTMATTER=$(head -1 "$SKILL_FILE" | grep -c "^---$")
