@@ -1,11 +1,10 @@
 {
   "name": "neural",
   "displayName": "Neural Claude Code",
-  "description": "Lightweight Claude Code harness: 5 security hooks + a spec -> craft -> vet/exercise dev pipeline. Zero dependencies; runs on vanilla Claude Code.",
-  "version": "2.0.0",
+  "description": "Lightweight Claude Code harness: 5 security hooks + a discover -> spec -> craft -> vet/exercise pipeline. Zero dependencies; runs on vanilla Claude Code.",
+  "version": "2.1.0",
   "author": {
-    "name": "brolag",
-    "email": "info@alfredobonilla.com"
+    "name": "brolag"
   },
   "homepage": "https://github.com/brolag/neural-claude-code",
   "repository": "https://github.com/brolag/neural-claude-code",
@@ -15,6 +14,7 @@
     "hooks",
     "code-review",
     "pipeline",
+    "discover",
     "spec",
     "craft",
     "guardrails"

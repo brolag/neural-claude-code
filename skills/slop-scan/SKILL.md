@@ -1,7 +1,7 @@
 ---
 name: slop-scan
-description: "Scan a codebase for accumulated slop, technical debt, dead code, and refactor opportunities. Use when user says 'scan for slop', 'find tech debt', 'what needs cleanup', or before a refactor sprint."
-argument-hint: "[path] [--quick] [--commits N]"
+description: "Scan a codebase for accumulated slop, technical debt, dead code, and refactor opportunities. Default is recent changes only. Use when user says 'scan for slop', 'find tech debt', 'what needs cleanup', or before a refactor sprint. Don't use as the pre-PR gate — that is /vet (lens D)."
+argument-hint: "[path] [--quick] [--commits N] [--full]"
 allowed-tools: Glob, Grep, Read, Bash(git log *), Bash(git diff *), Bash(wc *), Bash(find *)
 ---
 
@@ -9,9 +9,11 @@ allowed-tools: Glob, Grep, Read, Bash(git log *), Bash(git diff *), Bash(wc *), 
 
 ## Usage
 ```
-/slop-scan              # full project scan
-/slop-scan src/         # specific directory
-/slop-scan --quick      # top issues only
+/slop-scan              # recent changes (uncommitted + staged)
+/slop-scan --commits 3  # last N commits
+/slop-scan src/         # changed files in a directory
+/slop-scan --full       # whole project
+/slop-scan --quick      # top issues only, still recent-changes unless --full
 ```
 
 ## What It Detects
@@ -25,7 +27,11 @@ allowed-tools: Glob, Grep, Read, Bash(git log *), Bash(git diff *), Bash(wc *), 
 
 ## Process
 
-1. List files by type (exclude node_modules, .git, vendor)
+1. Select files (default = diff mode):
+   - Default: `git diff --name-only HEAD` + `git diff --cached --name-only`
+   - `--commits N`: `git diff --name-only HEAD~N`
+   - `--full`: all files by type (exclude node_modules, .git, dist, vendor)
+   - If no git changes found, ask before running `--full`
 2. Prioritize most-changed files (`git log --format=%H -- FILE | wc -l`)
 3. Grep for patterns (TODO, FIXME, unused, deprecated)
 4. Read top hotspot files for deeper analysis

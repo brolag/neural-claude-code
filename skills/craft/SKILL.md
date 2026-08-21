@@ -1,80 +1,95 @@
 ---
 name: craft
-description: "Build a planned change: take an approved /spec plan, capture a baseline, execute the subtasks, review with /vet and /exercise in a clean context, measure the delta, and stop for ship. If no approved plan exists, runs /spec first. Don't use for trivial changes (<25 LOC); edit directly."
+description: "Build a non-trivial change from an approved plan.md. Use after /spec to capture a baseline, execute dependency-aware subtasks, record evidence and deviations, run independent /vet and /exercise gates, measure the delta, and stop for human ship approval without committing or publishing automatically. Don't use for trivial changes (<25 LOC); edit directly."
+trigger: /craft
 argument-hint: "[--plan <path>] [task description if no plan]"
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git *), Bash(npm *), Bash(npx *), Bash(pytest *), Bash(cargo *), Bash(go *), Agent, AskUserQuestion, Skill
 ---
 
-# /craft — Build Orchestrator
+# Craft
 
-Executes an approved plan into shipped code. Planning is `/spec`'s job; this skill builds.
-It separates execution from review (independent, clean context via `/vet` and `/exercise`).
+Execute an approved plan into verified work. Planning belongs to `/spec`. Review and behavior remain independent gates.
 
-## 1. Get an approved plan
+This skill is the Claude Code port of the Neural Codex craft gate. Same contract, slash invocation. Parallel work uses the native `Agent` tool. No external model pool is required.
 
-- `--plan <path>`: use it.
-- Else: find the newest `plans/<...>/plan.md`.
-- If none exists: run `/spec` on the task first, get the user's approval, THEN continue.
+## 1. Resolve and approve the plan
 
-Never build without an approved plan that has locked signatures and executable acceptance. If the plan
-is stale (code drifted from it), re-run `/spec` to refresh before building.
+Use an explicit plan path when supplied. Otherwise select the newest related `plans/**/plan.md`.
 
-## 2. Capture baseline
+Before reading or writing beside the plan, resolve the repository root, the repository's `plans/` directory, and the candidate file. Require `os.path.commonpath([candidate, plans_root]) == plans_root`, require a regular `plan.md`-style Markdown file, and reject symlinks that leave `plans/`. Reject `../../outside/plan.md`, `plans/../outside/plan.md`, `/tmp/external-plan.md`, and any equivalent traversal. Only after this check may `baseline.md` or evidence be written beside the plan.
 
-Record the current state to `plans/<...>/baseline.md`: test count and pass/fail, coverage if available,
-lint count, relevant perf if the task touches a hot path. A metric that cannot be captured cheaply gets
-"n/a" and the reason. This is the "before" that step 6 proves against.
+If no plan exists and the change is still poorly understood, run `/discover` first. Otherwise run `/spec`, get approval, then continue.
 
-## 3. Execute against the locked signatures
+Proceed only when:
 
-Implement each subtask bound to the plan's signatures. Work directly, or spawn Claude subagents (the
-`Agent` tool) for independent subtasks that can run in parallel — that is all you need; nothing here
-requires an external model pool. (If you happen to have another runner wired up, you can route subtasks
-there, but it is optional and never assumed.)
+- frontmatter is `status: approved`, or
+- the user explicitly invokes `/craft` immediately after reviewing a specific draft, which counts as approval and must be recorded in the Amend log.
 
-A signature change is a plan deviation, not a worker decision: it goes back to `/spec` (update the plan)
-rather than being silently absorbed. Work in small reversible steps and run each subtask's acceptance
-check (the `verify:` command / test) as you complete it. Address root causes, never suppress a failing
-check. Keep state in the plan and files, not in context, and push heavy investigation into subagents so
-the main context stays clean.
+If the plan is missing, stale, blocked, or still ambiguous, stop and return to `/spec`. Validate that locked signatures still match the repository and the `[needs:]` graph is complete and acyclic. Inherit references from a sibling `unknowns-map.md` when one exists.
 
-Update the plan live: flip each subtask `[ ]` -> `[~]` when you start it and `[~]` -> `[x]` when its
-`verify` passes. Use `[!]` with a one-line reason ONLY for a genuine external blocker (missing dependency,
-unavailable service), not a fixable failure; on a `[!]`, set the plan frontmatter `status: blocked` and
-STOP for escalation instead of looping. Append today's ISO date to the plan's `modified:` list on your
-first edit of it.
+## 2. Capture the baseline before edits
 
-## 4. Review: /vet (code) + /exercise (behavior)
+Write `baseline.md` beside the plan. Record:
 
-Run two independent gates in a clean context (never self-review — the reviewer must not share the
-author's context):
-- `/vet --spec plans/<...>/plan.md`: an independent reviewer (a fresh Agent) checks correctness, verifies
-  the plan's acceptance criteria, and checks consistency.
-- `/exercise --spec plans/<...>/plan.md`: runs the test suite and drives the running app as a real user to
-  confirm the feature works end to end (the behavioral gate; catches "tests pass but it is broken for the
-  user"). Skip only if there is nothing runnable to exercise.
-- **SHIP** on both -> continue.
-- **HOLD / BLOCK** from either -> fix the findings and re-run that gate. Cap at about 3 loops, then stop
-  and escalate to the user.
+- branch, base commit, and pre-existing dirty files
+- test pass/fail count and warnings
+- lint, typecheck, coverage, documentation, or performance measures that apply
+- unavailable metrics as `n/a` with a reason
+- the observable before-state the change intends to improve
 
-## 5. Measure the delta
+Never overwrite or discard user changes. If overlapping dirty work makes the build unsafe, stop with exact paths.
 
-Re-measure against `baseline.md` (tests, coverage, lint, perf) and report the before -> after delta.
-Turn "all green" into a proven improvement.
+## 3. Execute the dependency graph
 
-## 6. Stop for ship
+Set the plan to `in-progress`, append the date to `modified`, and mark a subtask `[~]` before editing it.
 
-Finalize the plan frontmatter: set `status: done`, append the implementing commit SHA(s) to `commits:`
-(or note `pending commit` if not yet committed), and if the plan changed during the build append a dated
-line to `## Amend log`. Summarize: subtasks done, `/vet` and `/exercise` verdicts, measured delta, files
-changed. Then STOP for human review. Do NOT auto-commit; commit only when the user asks (use `/git-save`).
+Execute locally by default. Spawn Claude `Agent` subagents only when subtasks are independent and parallel work is warranted (user request or a clear `[needs:]`-free batch). Treat `[tier:]` as routing guidance, not permission to change scope.
 
-## Composes with
+For each subtask:
 
-- `/spec` (produces the plan), `/vet` (code review) and `/exercise` (behavioral gate).
+1. implement against the locked signatures
+2. run its acceptance commands
+3. record evidence and relevant limitations
+4. mark `[x]` only after its checks pass
+5. block dependent subtasks after a prerequisite failure
+
+Fix root causes rather than suppressing checks. Keep durable state in the plan and evidence files, not only in conversation context.
+
+## 4. Control deviations
+
+A locked signature, security invariant, or scope change is a plan deviation. Update the plan through `/spec`, append the reason to the Amend log, and obtain approval when the change materially alters behavior or side effects.
+
+New evidence may refine implementation details without approval only when it preserves the contract. Never weaken acceptance criteria to make a failing build look green.
+
+## 5. Run independent gates
+
+After implementation checks pass:
+
+1. Run `/vet --spec <plan>` in fresh context with a neutral change bundle.
+2. Run `/exercise --spec <plan>` to drive the installed software, documentation, CLI, or application as a user.
+
+Both gates are required when behavior is runnable. If a gate is unavailable, failed, or inconclusive, report that state and do not call the build complete. Fix addressable findings and rerun the affected gate, with roughly three loops before escalating.
+
+## 6. Measure and stop for ship
+
+Repeat the baseline commands and report before -> after:
+
+- tests, warnings, and coverage where configured
+- lint/type/doc validation
+- relevant behavior or performance
+- `/vet` verdict and `/exercise` verdict
+- residual risk and unrun checks
+
+When all required checks pass, set the plan to `done`, record `pending commit` unless a user-authorized commit already exists, and summarize changed files. STOP for human ship approval.
+
+Do not commit, push, open or merge a pull request, deploy, or send an external message unless the user explicitly authorizes that separate side effect. Commit with `/git-save` only when asked.
+
+## Usage Examples
+
+- `/craft --plan plans/2026-07-12-hooks/plan.md`
+- `/craft implement the plan we just approved`
+- `/craft continue the approved plan after the blocker was resolved`
 
 ## Done when
 
-Every subtask is implemented against its signature, `/vet` returns SHIP, the delta vs baseline is
-measured and reported, the plan frontmatter is finalized (status, commits, amend log), and the result is
-presented for ship (not committed).
+Every subtask passes its acceptance checks, `/vet` and `/exercise` provide evidence-backed green verdicts, the delta is measured, the plan is current, and the result is waiting for human ship approval.

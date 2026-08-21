@@ -1,127 +1,123 @@
 ---
 name: spec
-description: "Plan a non-trivial change BEFORE any code: research the context, decompose into testable subtasks, lock signatures, note CWE invariants, write executable acceptance, and surface contradictions. Produces an approvable plan artifact and STOPS for review. Does not write code. Pairs with /craft, which executes the plan. Don't use for trivial changes (<25 LOC) or pure conversation."
-argument-hint: "[task description]"
-allowed-tools: Read, Glob, Grep, Bash(git *), Bash(gh *), Write, AskUserQuestion
+description: "Plan a non-trivial change before implementation. Use when work needs repository research, locked interfaces, security invariants, dependency-aware subtasks, executable acceptance criteria, and explicit approval. Consumes unknowns-map.md when available, writes plan.md, and stops without coding. Don't use for trivial changes (<25 LOC) or pure conversation."
+trigger: /spec
+argument-hint: "[task description] [--no-html]"
+allowed-tools: Read, Glob, Grep, Bash(git *), Bash(rg *), Bash(fd *), Bash(gh *), Write, AskUserQuestion
 ---
 
-# /spec — Planning Gate
+# Spec
 
-Turn a task into a reviewable plan before any code. The plan is the contract that `/craft` executes.
-Planning is convergent judgment: do it once, well, get it approved. This skill never writes implementation code.
+Turn intent and repository evidence into an approvable implementation contract. Never write implementation code.
 
-Four concepts shape the plan: signatures-first declarations, `requires`/`ensures` acceptance,
-`@invariant` for security, and a contradiction scan.
+This skill is the Claude Code port of the Neural Codex spec gate. Same contract, slash invocation.
 
-## 0. Right-size (skip ceremony when trivial)
+## 1. Right-size and research
 
-If the change fits in one sentence and is obvious (under 25 LOC, no new interface, no ambiguity),
-say so and tell the user to implement directly or run `/craft` with an inline task. A plan for a one-line fix is waste.
+Skip ceremony for an obvious change under roughly 25 lines with no new interface, ambiguity, or risk.
 
-## 1. Research the ground (no edits)
+Otherwise:
 
-- Read CLAUDE.md, AGENTS.md, and the relevant existing code and patterns (Glob/Grep/Read).
-- Note the conventions to match (naming, error handling, test style). Reuse beats new.
-- Check related git history or issues if useful (`gh issue list`, recent merged PRs).
+1. Find the newest related `plans/**/unknowns-map.md` and read it first.
+2. Read repository guidance, the relevant code, tests, documentation, and useful history.
+3. Reuse established patterns before proposing new ones.
+4. If discovery was skipped, record that fact and clarify only architecture-changing ambiguity (AskUserQuestion, at most 3).
 
-Do not propose new patterns when existing ones already work.
+Treat resolved discovery decisions as inputs. Preserve unresolved blockers instead of guessing around them.
 
-## 2. Clarify (interview, only if ambiguous)
+If the user cannot yet say what "good" looks like, route to `/discover` instead of guessing a plan.
 
-If edge cases, scope, or tradeoffs are unclear, ask the user up to about 3 focused questions
-(AskUserQuestion). Surface the hard parts now, not mid-build.
+## 2. Lock the contract
 
-## 3. Decompose
+Declare every introduced or changed interface before implementation:
 
-Break the task into independent subtasks, each with a clear acceptance criterion. A subtask must be
-executable on its own; that independence is what lets `/craft` execute them in any order (or in parallel
-via subagents).
-
-## 4. Lock signatures (signatures-first)
-
-Declare every interface the change introduces or modifies BEFORE any body: name, parameter types,
-return type, the file it lands in, and a `[reuse]` / `[adapt]` / `[new]` label. A `[new]` signature that
-recreates existing logic is a defect; reference the existing symbol instead.
-- Types: `type AccountRow = { id: string; name: string; status: PayerStatus }` [new] -> src/types/model.ts
-- Functions: `async function listAccounts(): Promise<ActionResult<AccountRow[]>>` [new] -> src/lib/accounts.ts
-
-## 5. Security invariants (CWE as @invariant)
-
-Author posture: senior security engineer, OWASP-quality. Per feature, state the relevant CWE and the
-boundary mitigation as an invariant that must hold:
-- `@invariant`: all user-rendered content is escaped (CWE-79)
-- `@invariant`: all DB access is parameterized (CWE-89)
-- `@invariant`: file paths are validated against traversal (CWE-22)
-
-## 6. Executable acceptance (when / requires / ensures)
-
-Every subtask gets at least one machine-checkable criterion, shaped as when/requires/ensures and backed
-by a command, a `must_include` / `must_not_include`, or a test path. No prose-only checkboxes.
-- when: `ShipOrder(order, tracking)` / requires: `order.status = confirmed` / ensures: `order.status = shipped`
-  - verify: `npm test -- ship-order`
-- Tests pass -> verify: `npm test`
-- No type errors -> verify: `npm run typecheck`
-
-## 7. Contradiction scan (done by hand)
-
-Before finalizing, scan the requirements for pairs that conflict: overlapping preconditions with
-incompatible outcomes (e.g. "must be authenticated" vs "guest checkout allowed"), and states that can
-never be reached or left. Flag and resolve them; do not let a contradiction sit silently.
-
-## 8. Out of scope
-
-State the explicit non-goals.
-
-## 9. Write the plan and STOP
-
-Write `plans/<YYYY-MM-DD-task-slug>/plan.md` with the frontmatter and sections below. `status` starts
-`draft` and flips to `approved` only after the user approves; `modified` and `commits` start empty.
-The plan is a living artifact; `/craft` updates its frontmatter and Amend log during the build.
-Then STOP and present it for approval. Do NOT proceed to code. `/craft` consumes this file.
-
-```markdown
----
-project: [name]          # repo basename or CLAUDE.md title
-created: YYYY-MM-DD
-status: draft            # draft | approved | in-progress | done | blocked
-modified: []             # append-only; /craft appends an ISO date each time it edits the plan
-commits: []              # append-only; SHAs that implemented subtasks
----
-
-# Plan: [project] / [task]
-
-## Context
-[codebase state, files, constraints, conventions to match]
-
-## Signatures
-- `sig` [new|reuse|adapt] -> file
-
-## Security invariants
-- @invariant: ... (CWE-XX)
-
-## Subtasks
-<!-- state legend: [ ] todo | [~] in-progress | [x] done | [!] blocked (reason inline) -->
-- [ ] S1: [description] -- verify: `<command>` | must_include: `<string>` | test: `<path>`
-- [ ] S2: ...
-
-## Out of scope
-- ...
-
-## Open questions
-- ...
-
-## Notes
-<!-- free-form: discoveries the rigid sections don't capture -->
-
-## Amend log
-<!-- append-only; post-approval changes: YYYY-MM-DD - what changed - why -->
+```text
+name(parameters) -> result [new|adapt|reuse] -> path
 ```
 
-## Composes with
+Interfaces include functions, types, commands, files, routes, events, schemas, and durable artifact shapes. A new interface that duplicates an existing one is a planning defect.
 
-- `/craft` reads the approved plan and executes it (then reviews with `/vet` + `/exercise`).
+For every relevant security or trust boundary, add an `@invariant` with its CWE and concrete mitigation. Cover path handling, secret exposure, command execution, authorization, destructive side effects, and validation integrity when applicable.
+
+Keep every invariant testable at its boundary. Do not treat a general security promise as a replacement for a concrete mitigation and verification command.
+
+## 3. Decompose and route
+
+Give every subtask a stable ID and a `[tier:]` model-routing tag:
+
+- `cheap`: mechanical edits, boilerplate, and narrow tests
+- `mid`: normal implementation requiring local judgment
+- `hard`: architecture, security, ambiguity, or tricky debugging
+- `batch`: long-running multi-step or operational work
+
+Add `[needs: S1, S2]` only for real dependencies. No dependency tag means the work may execute independently. Validate that every referenced ID exists and that the graph is acyclic.
+
+A subtask that produces or consumes a signature should name it inline: `[produces: listAccounts]` / `[consumes: AccountRow]`. `[needs:]` gives order. `[produces:]`/`[consumes:]` give the contract a context-free executor needs.
+
+## 4. Make acceptance executable
+
+Every subtask must include:
+
+- `when`: the triggering state or behavior
+- `requires`: preconditions and boundaries
+- `ensures`: observable postconditions
+- `verify`: a safe command, test path, or deterministic assertion
+- `must_include` or `must_not_include` when text contracts matter
+
+State what each verification oracle proves and what it does not prove. A green unit test cannot substitute for behavioral or independent review when those gates are required.
+
+These are acceptance failures, never write them:
+
+- prose-only checkboxes with no command, `must_include`, or test path
+- `TBD` / `TODO` signatures, or a `verify:` that names no real command or file
+- a criterion that restates the subtask title instead of asserting an observable state change
+
+## 5. Scan contradictions
+
+Resolve incompatible requirements, unreachable states, naming collisions, and approval ambiguity. Validate the dependency graph. Record deliberate tradeoffs and residual questions rather than hiding them in implementation notes.
+
+## 6. Write `plan.md` and stop
+
+Normalize the task slug to lowercase letters, digits, and hyphens. Resolve the repository root and its `plans/` directory before creating anything. Resolve the candidate artifact path and require `os.path.commonpath([candidate, plans_root]) == plans_root`. Reject `../../outside/plan.md`, `plans/../outside/plan.md`, and `/tmp/external-plan.md`.
+
+Write `plans/<YYYY-MM-DD-task-slug>/plan.md` with this frontmatter:
+
+```yaml
+---
+project: <repo>
+created: YYYY-MM-DD
+status: draft
+modified: []
+commits: []
+agents: []
+related:
+  back: []
+  forward: []
+---
+```
+
+Put a consumed `unknowns-map.md` path in `related.back`.
+
+Include these sections:
+
+1. Context and locked decisions
+2. Signatures
+3. Security invariants
+4. Subtasks with state legend, dependencies, tiers, and executable acceptance
+5. Contradiction scan
+6. Out of scope
+7. Open questions
+8. Notes
+9. Amend log
+
+`plan.md` is the source of truth. Do not generate HTML; accept `--no-html` as a compatibility no-op. `/html` remains available on demand for a PlanViewer. Present the plan and STOP for approval. A later explicit `/craft` invocation that clearly refers to this reviewed draft counts as approval. Otherwise require an explicit approval before changing its status.
+
+## Usage Examples
+
+- `/spec implement the approved unknowns map for account export`
+- `/spec plan the hook migration --no-html`
+- `/spec turn this issue into a dependency-aware build contract`
 
 ## Done when
 
-`plan.md` is written with frontmatter, every section filled, signatures + CWE invariants + executable
-acceptance present, contradictions scanned, and the plan presented for approval (no code written).
+The draft plan has locked signatures, CWE invariants, executable acceptance, a valid dependency graph, explicit non-goals, and has been presented without implementation edits.

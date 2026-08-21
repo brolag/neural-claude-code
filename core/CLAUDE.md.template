@@ -13,6 +13,7 @@
 {{DIRECTORY_MAP}}
 
 ## Workflow
+- Use `/discover` when the change is unfamiliar — unknowns map, then stop
 - Use `/spec` to plan a non-trivial change (3+ files) — produces an approvable plan, then stops
 - Use `/craft` to build an approved plan — executes, reviews with `/vet` + `/exercise`, stops for ship
 - Use `/vet` for a standalone pre-merge code review (clean-context reviewer)

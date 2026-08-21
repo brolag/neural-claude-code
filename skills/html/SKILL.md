@@ -1,6 +1,6 @@
 ---
 name: html
-description: Render a Claude Code plan (PlanViewer), a task result, or a recap of a branch/commit/PR diff (ResultViewer) as a single-file HTML artifact with anti-fatigue UX. Use when the user asks for an HTML artifact, a plan/result/recap view, or to "show this as HTML". Not for plain markdown/text or one-liners.
+description: Render a Claude Code plan (PlanViewer), a task result, or a recap of a branch/commit/PR diff (ResultViewer) as a single-file, self-contained HTML artifact with anti-fatigue UX. Use when the user asks for an HTML artifact, a plan/result/recap view, or to "show this as HTML". Not for plain markdown/text or one-liners.
 allowed-tools: Read, Write, Bash
 argument-hint: "[plan|result] [source-path | git-ref]"
 ---
@@ -20,7 +20,7 @@ Build a single-file, framework-free HTML artifact that makes a plan or a run rep
 ## When NOT to use
 - A one-line answer, a single code snippet, or prose explanation.
 - The user wants plain text or markdown only.
-- Do NOT auto-fire on every plan. `spec` already emits its own `plan.html` in the plan→craft flow; this skill is **on-demand and standalone**. Trigger only on an explicit request.
+- Do NOT auto-fire on every plan. `/spec` and `/discover` write Markdown only (Neural Codex contract). This skill is **on-demand and standalone** when the user asks for an HTML artifact.
 
 ## 1. Pick the template
 - **PlanViewer** (pre-execution) → `templates/plan-viewer.html`. Sections: Overview · Phases & Tasks · Decisions · Risks · Open Questions.
@@ -28,6 +28,8 @@ Build a single-file, framework-free HTML artifact that makes a plan or a run rep
   - **Recap from a diff:** point the ResultViewer at a branch, commit, or PR instead of the current session. Read the real change with read-only git (`git diff <base>...<ref>`, `git show <commit>`, `git log --stat`) and fill Files Changed, per-file diffs, and stats from that output. Same template, the source is the diff. This is the reverse of a plan: it describes the change that was just made, one altitude above line-by-line review.
 
 If the user's intent is ambiguous (could be either), ask once; otherwise infer from tense ("show me the plan" → Plan, "what changed" → Result).
+
+This skill is the **calm, self-contained** look only. Invoke it when the user wants a PlanViewer or ResultViewer. `/spec` and `/discover` do not auto-emit HTML.
 
 ## 2. Build it
 1. **Read** the chosen template in full.
@@ -68,7 +70,7 @@ The factual blocks (Files Changed, Commands Run, diffs, stats, the stat-hero met
 
 ## 5. Aesthetic — avoid AI slop
 - Commit to ONE calm, legible, professional look. Neutral-dominant palette + 1-2 sharp accents via CSS variables (colors only).
-- **Reuse the project's palette if it defines one** (tailwind `theme.colors`, CSS `:root` vars, a brand/design doc) — same instinct as `spec`'s `plan.html`. Otherwise the template defaults.
+- **Reuse the project's palette if it defines one** (tailwind `theme.colors`, CSS `:root` vars, a brand/design doc). Otherwise the template defaults.
 - Avoid: purple-on-white gradients, uniformly rounded everything, dead-centered layouts, maximalism. This is a working tool, not a poster — prioritize calm and legibility.
 - Dark mode is automatic via `prefers-color-scheme`; keep both palettes legible.
 
@@ -82,9 +84,11 @@ Counting files/phases/decisions looks informative but doesn't change a decision.
 A self-contained artifact **cannot send anything back to Claude** — there is no channel from the document to the agent. So managing open questions means **closing the loop by hand**:
 - Each question is a card: text + optional option-buttons + free-text answer + a blocking/info toggle.
 - Answering live-updates the **blockers** stat, the Needs-Attention count, and the `approved` gate step.
-- The **"Copiar respuestas para Claude"** button exports markdown (answered + unanswered) that the user pastes into chat — that paste is how answers reach you.
+- The **"Copiar respuestas para Claude"** button emits a **natural-language directive, not a Q&A dump** — only answered questions, phrased as decisions, self-contained; a "sin responder: …" line only if blocking questions remain. That paste is how answers reach you. (Full rules: `references/principles.md` → *Prompt-output craft*.)
+- **Answer presets** (optional): 3-5 named profiles that snap the whole queue at once — e.g. "Aprobar todo lo no-bloqueante", "Modo conservador", "Solo bloqueantes". A preset writes into the same state, then the copy-back re-derives from it.
+- **One `state` object, one `updateAll()`** — every control writes to a single state, one function re-derives stats, Needs-Attention, the gate step, and the copy-back from it.
 - State persists via `localStorage` with in-memory fallback.
-- The ResultViewer's Next Steps use the same shape: checkable list + "Copiar próximos pasos".
+- The ResultViewer's Next Steps use the same shape: checkable list + "Copiar próximos pasos" (same natural-language rule — a directive list, not a checkbox dump).
 
 ## 8. Output format
 - Write to `artifacts/<YYYY-MM-DD>-<plan|result>-<slug>.html` (or the path the user gave).
@@ -102,5 +106,6 @@ A self-contained artifact **cannot send anything back to Claude** — there is n
 - [ ] Stat-hero is decision-grade, not vanity counts?
 - [ ] Reading-time shown (as subtitle)?
 - [ ] PlanViewer: Open Questions are a working decision queue with copy-back?
+- [ ] Copy-back is a natural-language directive (only answered / non-default values, self-contained), not a raw Q&A or checkbox dump? (§7)
 - [ ] Factual blocks (files, commands, diffs, stats, metrics) derived from real state, not invented — and anything inferred marked as inferred? (§4b)
 - [ ] No secrets transcribed from diffs/logs — redacted? (§4b)

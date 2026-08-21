@@ -12,7 +12,7 @@ BLUE='\033[0;34m'
 BOLD='\033[1m'
 RESET='\033[0m'
 
-INSTALL_DIR="${NEURAL_INSTALL_DIR:-$HOME/Sites/neural-claude-code}"
+INSTALL_DIR="${NEURAL_INSTALL_DIR:-$HOME/.neural-claude-code}"
 REPO_URL="https://github.com/brolag/neural-claude-code.git"
 CLAUDE_DIR="$HOME/.claude"
 HOOKS_DIR="$CLAUDE_DIR/hooks/neural"
@@ -21,7 +21,7 @@ RULES_DIR="$CLAUDE_DIR/rules/neural"
 SETTINGS_FILE="$CLAUDE_DIR/settings.json"
 
 echo -e "${BOLD}Neural Claude Code v2${RESET}"
-echo -e "Lightweight harness: security hooks + spec/craft dev pipeline + smart defaults"
+echo -e "Lightweight harness: security hooks + discover/spec/craft pipeline + smart defaults"
 echo ""
 
 # --- Prerequisites ---
@@ -62,17 +62,17 @@ chmod +x "$HOOKS_DIR/"*.sh
 echo -e "${GREEN}ok${RESET} Installed 5 security hooks"
 
 # --- Install skills ---
-for skill in init spec craft vet exercise git-save slop-scan html; do
+for skill in init discover spec craft vet exercise git-save slop-scan html; do
     SKILL_SRC="$INSTALL_DIR/skills/$skill"
     SKILL_DST="$SKILLS_DIR/$skill"
     if [ -d "$SKILL_SRC" ]; then
         mkdir -p "$SKILL_DST"
-        # copy the whole skill dir: most are SKILL.md only, but html
-        # also ships templates/ and references/ that it needs at runtime
+        # copy the whole skill dir: most are SKILL.md only, but html and
+        # discover also ship templates/ and references/ needed at runtime
         cp -R "$SKILL_SRC/." "$SKILL_DST/"
     fi
 done
-echo -e "${GREEN}ok${RESET} Installed 8 skills (init, spec, craft, vet, exercise, git-save, slop-scan, html)"
+echo -e "${GREEN}ok${RESET} Installed 9 skills (init, discover, spec, craft, vet, exercise, git-save, slop-scan, html)"
 
 # --- Install rules ---
 mkdir -p "$RULES_DIR"
@@ -119,13 +119,14 @@ echo ""
 echo -e "${BOLD}Installation complete${RESET}"
 echo ""
 echo "  Hooks:  $HOOKS_DIR/ (5 scripts)"
-echo "  Skills: $SKILLS_DIR/ (init, spec, craft, vet, exercise, git-save, slop-scan, html)"
+echo "  Skills: $SKILLS_DIR/ (init, discover, spec, craft, vet, exercise, git-save, slop-scan, html)"
 echo "  Rules:  $RULES_DIR/ (5 compact rules)"
 echo ""
 echo -e "${BOLD}Next steps:${RESET}"
 echo "  1. Open Claude Code in your project"
 echo "  2. Run /init to generate a project-specific CLAUDE.md"
-echo "  3. Run /spec \"your task\" to plan, then /craft to build it"
+echo "  3. Unfamiliar change: /discover  then  /spec  then  /craft"
+echo "     Known change:     /spec \"your task\"  then  /craft"
 echo ""
 echo -e "${BOLD}Token budget:${RESET} ~635 tokens/message overhead (rules + CLAUDE.md)"
 echo ""

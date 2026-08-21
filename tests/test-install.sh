@@ -57,11 +57,11 @@ chmod +x "$HOOKS_DIR/"*.sh
 assert "Hooks copied" "$([ -f "$HOOKS_DIR/dangerous-actions-blocker.sh" ] && echo true || echo false)"
 
 # Copy skills
-for skill in init spec craft vet exercise git-save slop-scan html; do
+for skill in init discover spec craft vet exercise git-save slop-scan html; do
     mkdir -p "$SKILLS_DIR/$skill"
     cp -R "$SCRIPT_DIR/skills/$skill/." "$SKILLS_DIR/$skill/" 2>/dev/null
 done
-assert "Skills copied (8)" "$([ -f "$SKILLS_DIR/craft/SKILL.md" ] && [ -f "$SKILLS_DIR/init/SKILL.md" ] && [ -f "$SKILLS_DIR/html/templates/plan-viewer.html" ] && echo true || echo false)"
+assert "Skills copied (9)" "$([ -f "$SKILLS_DIR/craft/SKILL.md" ] && [ -f "$SKILLS_DIR/init/SKILL.md" ] && [ -f "$SKILLS_DIR/html/templates/plan-viewer.html" ] && [ -f "$SKILLS_DIR/discover/references/unknowns-framework.md" ] && echo true || echo false)"
 
 # Copy rules
 cp "$SCRIPT_DIR/core/rules/"*.md "$RULES_DIR/"
@@ -76,7 +76,7 @@ HOOK_COUNT=$(ls "$HOOKS_DIR/"*.sh 2>/dev/null | wc -l | tr -d ' ')
 SKILL_COUNT=$(ls -d "$SKILLS_DIR/"*/ 2>/dev/null | wc -l | tr -d ' ')
 RULE_COUNT=$(ls "$RULES_DIR/"*.md 2>/dev/null | wc -l | tr -d ' ')
 assert "5 hooks installed" "$([ "$HOOK_COUNT" -eq 5 ] && echo true || echo false)"
-assert "8 skills installed" "$([ "$SKILL_COUNT" -eq 8 ] && echo true || echo false)"
+assert "9 skills installed" "$([ "$SKILL_COUNT" -eq 9 ] && echo true || echo false)"
 assert "5 rules installed" "$([ "$RULE_COUNT" -eq 5 ] && echo true || echo false)"
 
 echo ""
@@ -98,6 +98,18 @@ assert "No hardcoded /Users/ paths" "$([ "$HARDCODED" -eq 0 ] && echo true || ec
 # No secrets
 SECRETS=$(grep -rnE "(sk-ant-[a-z]{5}|AKIA[0-9A-Z]{16}|ghp_[a-zA-Z0-9]{36})" "$SCRIPT_DIR/hooks/" "$SCRIPT_DIR/skills/" "$SCRIPT_DIR/core/" 2>/dev/null | wc -l | tr -d ' ')
 assert "No real secrets in code" "$([ "$SECRETS" -eq 0 ] && echo true || echo false)"
+
+# No personal emails / home-layout defaults (scan shipped kit, not this test file)
+PII=$(grep -rnE '@gmail\.com|@icloud\.com|info@.+\.com' \
+    "$SCRIPT_DIR/.claude-plugin" "$SCRIPT_DIR/hooks" "$SCRIPT_DIR/skills" \
+    "$SCRIPT_DIR/core" "$SCRIPT_DIR/docs" "$SCRIPT_DIR/install.sh" \
+    "$SCRIPT_DIR/uninstall.sh" "$SCRIPT_DIR/README.md" "$SCRIPT_DIR/index.md" \
+    "$SCRIPT_DIR/index.html" 2>/dev/null | wc -l | tr -d ' ')
+assert "No personal emails in kit files" "$([ "$PII" -eq 0 ] && echo true || echo false)"
+SITES=$(grep -n 'HOME/Sites/neural-claude-code\|~/Sites/neural-claude-code' "$SCRIPT_DIR/install.sh" "$SCRIPT_DIR/uninstall.sh" "$SCRIPT_DIR/README.md" "$SCRIPT_DIR/index.md" "$SCRIPT_DIR/index.html" 2>/dev/null | wc -l | tr -d ' ')
+assert "Install default is not ~/Sites" "$([ "$SITES" -eq 0 ] && echo true || echo false)"
+HAS_EMAIL=$(jq -r '..|objects|select(has("email"))|.email' "$SCRIPT_DIR/.claude-plugin/plugin.json" "$SCRIPT_DIR/.claude-plugin/marketplace.json" 2>/dev/null | grep -c '@' || true)
+assert "Plugin manifests have no email" "$([ "${HAS_EMAIL:-0}" -eq 0 ] && echo true || echo false)"
 
 # Settings.json is valid JSON
 jq empty "$TEST_CLAUDE/settings.json" 2>/dev/null
@@ -128,7 +140,7 @@ echo ""
 # --- Test 5: Skill Files Valid ---
 echo -e "${BOLD}## Skill Validation${RESET}"
 
-for skill in init spec craft vet exercise git-save slop-scan html; do
+for skill in init discover spec craft vet exercise git-save slop-scan html; do
     SKILL_FILE="$SKILLS_DIR/$skill/SKILL.md"
     if [ -f "$SKILL_FILE" ]; then
         HAS_FRONTMATTER=$(head -1 "$SKILL_FILE" | grep -c "^---$")
