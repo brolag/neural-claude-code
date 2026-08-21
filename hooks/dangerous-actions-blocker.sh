@@ -10,7 +10,17 @@ TOOL_INPUT=$(echo "$INPUT" | jq -r '.tool_input // empty')
 if [[ "$TOOL_NAME" == "Bash" ]]; then
     COMMAND=$(echo "$TOOL_INPUT" | jq -r '.command // empty')
 
-    for pattern in "rm -rf /" "rm -rf ~" "rm -rf \$HOME" "dd if=" "mkfs" \
+    # rm -rf of a protected root ITSELF (or its trailing-slash / glob form),
+    # not subpaths. `rm -rf /tmp/build` and `rm -rf ~/proj` stay allowed;
+    # `rm -rf /`, `~`, `$HOME`, and system dirs (/etc /usr /var ...) are blocked.
+    # The target alternation matches the actual argument, so deleting a child
+    # of a protected dir (e.g. `rm -rf /etc/myapp`) is still permitted.
+    if echo "$COMMAND" | grep -qE '(^|[;&|[:space:]])rm[[:space:]]+(-[a-zA-Z]+[[:space:]]+)*-[a-zA-Z]*r[a-zA-Z]*([[:space:]]+-[a-zA-Z]+)*[[:space:]]+"?(/|~|\$HOME|\$\{HOME\}|/etc|/usr|/var|/bin|/sbin|/lib|/lib64|/boot|/dev|/proc|/sys|/opt|/root|/home|/System|/Library|/Applications)/?\*?"?([[:space:]]|$|[;&|])' 2>/dev/null; then
+        echo "BLOCKED: Destructive command detected: 'rm -rf' targeting a protected root (/, ~, \$HOME, or a system dir)" >&2
+        exit 2
+    fi
+
+    for pattern in "dd if=" "mkfs" \
         ":(){:|:&};:" "> /dev/sda" "chmod -R 777 /" "--no-preserve-root" \
         "DROP DATABASE" "DROP TABLE"; do
         if [[ "$COMMAND" == *"$pattern"* ]]; then

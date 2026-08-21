@@ -42,6 +42,36 @@ assert_exit "Allow safe command" 0 "$EC"
 EC=$(run_hook '{"tool_name":"Bash","tool_input":{"command":"rm -rf /"}}' "$HOOK")
 assert_exit "Block rm -rf /" 2 "$EC"
 
+EC=$(run_hook '{"tool_name":"Bash","tool_input":{"command":"rm -rf /*"}}' "$HOOK")
+assert_exit "Block rm -rf /*" 2 "$EC"
+
+EC=$(run_hook '{"tool_name":"Bash","tool_input":{"command":"rm -fr ~"}}' "$HOOK")
+assert_exit "Block rm -fr ~" 2 "$EC"
+
+EC=$(run_hook '{"tool_name":"Bash","tool_input":{"command":"rm -rf $HOME"}}' "$HOOK")
+assert_exit "Block rm -rf \$HOME" 2 "$EC"
+
+EC=$(run_hook '{"tool_name":"Bash","tool_input":{"command":"rm -rf /tmp/build-cache"}}' "$HOOK")
+assert_exit "Allow rm -rf /tmp/subpath (no false positive)" 0 "$EC"
+
+EC=$(run_hook '{"tool_name":"Bash","tool_input":{"command":"rm -rf ~/projects/old-clone"}}' "$HOOK")
+assert_exit "Allow rm -rf ~/subpath (no false positive)" 0 "$EC"
+
+EC=$(run_hook '{"tool_name":"Bash","tool_input":{"command":"rm -rf /etc"}}' "$HOOK")
+assert_exit "Block rm -rf /etc (system dir)" 2 "$EC"
+
+EC=$(run_hook '{"tool_name":"Bash","tool_input":{"command":"rm -rf /usr/"}}' "$HOOK")
+assert_exit "Block rm -rf /usr/ (system dir)" 2 "$EC"
+
+EC=$(run_hook '{"tool_name":"Bash","tool_input":{"command":"sudo rm -rf /var/*"}}' "$HOOK")
+assert_exit "Block sudo rm -rf /var/* (system dir glob)" 2 "$EC"
+
+EC=$(run_hook '{"tool_name":"Bash","tool_input":{"command":"rm -rf /home"}}' "$HOOK")
+assert_exit "Block rm -rf /home (system dir)" 2 "$EC"
+
+EC=$(run_hook '{"tool_name":"Bash","tool_input":{"command":"rm -rf /etc/myapp"}}' "$HOOK")
+assert_exit "Allow rm -rf /etc/subpath (no false positive)" 0 "$EC"
+
 EC=$(run_hook '{"tool_name":"Bash","tool_input":{"command":"git push --force origin main"}}' "$HOOK")
 assert_exit "Block force push to main" 2 "$EC"
 
