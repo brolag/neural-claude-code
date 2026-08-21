@@ -56,18 +56,30 @@ The 10 principles every artifact from this skill applies. Each: **what**, **why*
 
 ---
 
-## Two patterns layered on top of the principles
+## Patterns layered on top of the principles
 
 ### Decision queue (PlanViewer · Open Questions)
 A self-contained HTML artifact **cannot send anything back to Claude** — there is no channel from the artifact to the agent. So "managing" open questions means **closing the loop manually**: the document helps you decide, then exports your answers as markdown you paste into chat.
 - Each question is a card: text + optional option-buttons + free-text answer + a blocking/info toggle.
 - Answering live-updates the **bloqueantes** stat, the Needs-Attention count, and the `approved` gate step.
-- **"Copiar respuestas para Claude"** emits markdown (answered → `n. question → answer [bloqueante]`, plus an "unanswered" list). That paste is how answers reach Claude.
+- **"Copiar respuestas para Claude"** emits a **natural-language instruction, not a Q&A dump**: only the questions the user answered, each phrased as a directive, self-contained enough to act on with the artifact closed. A trailing "sin responder: …" line only if blocking questions remain. That paste is how answers reach Claude. (See *Prompt-output craft* below.)
 - State persists via `localStorage` with an in-memory fallback (try/catch) so reloads don't lose input.
 
 ### Stat-hero = decision-grade metrics, not vanity
 Counting files/phases/decisions looks informative but doesn't change whether you approve. Use metrics that drive the decision, all fillable by Claude when generating:
 - **Effort** (S/M/L or ~Xd) · **Downtime** (Zero/Yes) · **Blast radius** (modules/services touched, prod? db?) · **External deps** (N) · **Open blockers** (N, live) · **Risk** (Low/Med/High) · **Reversibility** (per-phase/partial/irreversible) · **Security surface** (auth/PII/payments/secrets) · **Readiness** (High/Med/Low) · **Acceptance coverage** (subtasks with executable criteria).
+
+### Prompt-output craft (any copy-back / export)
+A copy-back is a **prompt**, not a log. The artifact's whole value is the round-trip: the user manipulates, then pastes an instruction Claude can act on. So:
+- **Only non-default / touched values.** Mentioning everything buries the signal; skip what the user left alone.
+- **Qualitative next to quantitative.** "a pronounced shadow (blur 24px)" reads better than "24".
+- **Self-contained.** It must work as a standalone prompt with the artifact closed — name the target ("el card", "la fase 2"), not just loose values.
+- **A directive, not a spec sheet.** "Update the card to feel soft and elevated: 12px radius, 24px padding, medium shadow" beats "radius=12; padding=24; shadow=medium".
+
+Applies to the decision-queue copy-back and the ResultViewer Next Steps. Adapted from the Anthropic *playground* plugin.
+
+### Single state object
+All controls read and write one `state` object; every change calls one `updateAll()` that re-renders preview + stats + Needs-Attention + copy-back from that state. One source of truth, no partial-update drift, trivially serializable to `localStorage` and to presets. Presets are just named `state` snapshots that `updateAll()` re-derives everything from.
 
 ---
 
@@ -77,3 +89,5 @@ Counting files/phases/decisions looks informative but doesn't change whether you
 - Brysbaert, M. (2019) — *How many words do we read per minute? A review and meta-analysis of reading rate.*
 - WCAG 2.2 — 1.4.1 Use of Color · 2.3.3 Animation from Interactions.
 - Nielsen Norman Group — F-pattern / Z-pattern reading.
+- Anthropic — *Using Claude Code: the unreasonable effectiveness of HTML* (Claude Code blog, 2026).
+- Anthropic — *playground* plugin (`claude-plugins-official`): state object, live preview, prompt-output-as-natural-language, presets.

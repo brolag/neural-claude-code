@@ -14,10 +14,12 @@ It separates execution from review (independent, clean context via `/vet` and `/
 
 - `--plan <path>`: use it.
 - Else: find the newest `plans/<...>/plan.md`.
-- If none exists: run `/spec` on the task first, get the user's approval, THEN continue.
+- If none exists: if the change is still poorly understood, run `/discover` first; otherwise run `/spec`
+  on the task, get the user's approval, THEN continue.
 
 Never build without an approved plan that has locked signatures and executable acceptance. If the plan
-is stale (code drifted from it), re-run `/spec` to refresh before building.
+is stale (code drifted from it), re-run `/spec` to refresh before building. Inherit references from a
+sibling `unknowns-map.md` when one exists.
 
 ## 2. Capture baseline
 
@@ -71,7 +73,7 @@ changed. Then STOP for human review. Do NOT auto-commit; commit only when the us
 
 ## Composes with
 
-- `/spec` (produces the plan), `/vet` (code review) and `/exercise` (behavioral gate).
+- `/discover` (optional unknowns map), `/spec` (produces the plan), `/vet` (code review) and `/exercise` (behavioral gate).
 
 ## Done when
 

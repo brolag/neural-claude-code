@@ -56,7 +56,7 @@ One to three lines describing the rule. Keep it short — every line costs token
 
 - **Edit hooks**: `~/.claude/hooks/neural/*.sh` — modify patterns, add exceptions
 - **Edit rules**: `~/.claude/rules/neural/*.md` — adjust wording or add constraints
-- **Edit skills**: `~/.claude/skills/craft/SKILL.md` — customize the build pipeline (or `/spec`, `/vet`, `/exercise`)
+- **Edit skills**: `~/.claude/skills/craft/SKILL.md` — customize the build pipeline (or `/discover`, `/spec`, `/vet`, `/exercise`)
 
 ## Removing Neural Components
 

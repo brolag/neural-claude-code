@@ -1,6 +1,6 @@
 ---
 name: vet
-description: "Clean-context review gate. An independent reviewer (a fresh Agent, with no author context) challenges the diff for correctness, verifies it meets the approved spec's acceptance criteria, and checks project consistency. Verdict SHIP/HOLD/BLOCK. Use standalone before a PR/merge, or as craft's review phase. Don't use for trivial changes (<15 LOC) or docs-only edits."
+description: "Clean-context review gate. An independent reviewer (a fresh Agent, with no author context) challenges the diff for correctness, verifies it meets the approved spec's acceptance criteria, checks project consistency, and flags AI slop / dead code / missed reuse. Verdict SHIP/HOLD/BLOCK. Use standalone before a PR/merge, or as craft's review phase. Don't use for trivial changes (<15 LOC) or docs-only edits."
 argument-hint: "[--base <ref>] [--scope working-tree|branch] [--spec <path>] [focus area]"
 allowed-tools: Bash(git *), Bash(codex *), Bash(npm *), Bash(pytest *), Read, Glob, Grep, Agent
 ---
@@ -8,11 +8,12 @@ allowed-tools: Bash(git *), Bash(codex *), Bash(npm *), Bash(pytest *), Read, Gl
 # /vet — Clean-Context Review Gate
 
 The single review gate before merge. An INDEPENDENT reviewer (a fresh Agent with no author context, never
-the author's session) does three things in one pass:
+the author's session) does four things in one pass:
 
 1. Adversarial challenge: should this ship, and what will break?
 2. Acceptance check: does the diff satisfy the approved spec's executable criteria?
 3. Consistency: does it match project conventions, with tests present for new behavior?
+4. Cleanup: AI slop, over-engineering, dead code, missed reuse.
 
 The non-negotiable requirement is **context separation**: the reviewer must not share context with the
 author. A fresh Agent already gives that — no second model or subscription is required.
@@ -58,6 +59,12 @@ reason from the diff for the rest. Each gets pass/fail.
 Launch a fresh Agent as the independent reviewer. It receives ONLY the diff, the acceptance criteria, and
 the focus — never the author's session or reasoning.
 
+**Input hygiene (non-negotiable).** Pass the diff, the spec's acceptance criteria, and a neutral focus
+string — nothing else. Do NOT prepend a narrative that explains, motivates, or justifies the change
+("this fixes X by doing Y", "root cause was…"). That framing pre-sells the diff and anchors the reviewer
+on the author's happy path. If background is genuinely required, state it as neutral facts, never as a
+case for the change.
+
 ```
 Agent(subagent_type: "general-purpose", prompt: "<the review prompt below> + <diff> + <acceptance criteria>")
 ```
@@ -70,7 +77,7 @@ You are the independent review gate for a code change. You did not write this co
 </role>
 
 <task>
-Review the repository diff under three lenses and return a single verdict.
+Review the repository diff under four lenses and return a single verdict.
 Target: {{TARGET_LABEL}}
 Focus: {{USER_FOCUS}}
 Acceptance criteria to verify: {{ACCEPTANCE}}
@@ -93,15 +100,19 @@ For each acceptance criterion, state PASS or FAIL with evidence from the diff (o
 </lens_B_acceptance>
 
 <lens_C_consistency>
-Check that the change matches the project conventions (CLAUDE.md and surrounding code), ships tests for new behavior, and does not introduce hardcoded secrets, leftover TODO/FIXME, or suppressed errors.
+Read CLAUDE.md and the 2-3 files neighboring each changed file BEFORE judging — derive the local conventions (comment density, naming, error wrapping, test style, layering) from them; do not assume. Then check the change matches those conventions, ships tests for new behavior, and introduces no hardcoded secrets, leftover TODO/FIXME, or suppressed errors.
 </lens_C_consistency>
 
+<lens_D_cleanup>
+Flag AI slop and over-engineering as real findings, not nits: multi-paragraph comments where the codebase is terse, comments that merely restate the code, dead code, needless abstraction, and copy-paste that should reuse an existing symbol. Before accepting a new function/type/util, grep the repo for an equivalent — a newly added unit that recreates existing logic is a finding (cite the existing symbol).
+</lens_D_cleanup>
+
 <finding_bar>
-Report only material findings. No style nits or speculation without evidence. Each finding answers: what can go wrong, why this path is vulnerable, the likely impact, and the concrete fix.
+Report every material finding across all four lenses, including cleanup/slop ones, each tagged CRITICAL, HIGH, MEDIUM, LOW, or SLOP. "Material" means it changes correctness, safety, or maintainability, or violates a stated project convention. Exclude only pure cosmetic bikeshedding and speculation with no evidence. Each finding answers: what is wrong, why, the impact, and the concrete fix.
 </finding_bar>
 
 <calibration>
-Prefer one strong finding over several weak ones. Stay grounded: every finding must be defensible from the provided diff; do not invent code paths. If the change is sound and meets acceptance, say so and return no findings.
+Be comprehensive across the four lenses but grounded: every finding must be defensible from the provided diff and the conventions you actually read. Group findings by lens; if a lens is clean, say so. If the whole change is sound, meets acceptance, and carries no slop, return no findings and SHIP.
 </calibration>
 ```
 
@@ -140,11 +151,11 @@ fresh Agent is the gate.
 |-----------|--------|----------|
 | ...       | PASS/FAIL | ... |
 
-### Findings
-#### [CRITICAL|HIGH|MEDIUM] Title
+### Findings (grouped by lens: Correctness / Acceptance / Consistency / Cleanup)
+#### [CRITICAL|HIGH|MEDIUM|LOW|SLOP] Title
 - **File**: path:lines
-- **What can go wrong**: ...
-- **Why vulnerable**: ...
+- **What is wrong**: ...
+- **Why**: ...
 - **Impact**: ...
 - **Fix**: ...
 - **Confidence**: 0.0-1.0
@@ -154,8 +165,8 @@ fresh Agent is the gate.
 ```
 
 Verdict:
-- **SHIP**: no material findings AND every acceptance criterion passes.
-- **HOLD**: addressable findings, or one or more acceptance criteria fail. Fix and re-vet.
+- **SHIP**: every acceptance criterion passes and no finding above LOW. List any LOW/SLOP so the author can clean up, but they don't block.
+- **HOLD**: any MEDIUM-or-higher finding, or a failed acceptance criterion. Fix and re-vet.
 - **BLOCK**: fundamental approach problem. Rethink before continuing.
 
 No numeric quality score. A score with no behavioral anchor invites the scale trap; the verdict plus
@@ -172,7 +183,7 @@ cheaper to verify a candidate than to produce it, so spend the review budget on 
 ## Integration
 
 - `/craft` calls `/vet` as its review phase, passing the diff and the approved spec.
-- Complements, does not replace: `/slop-scan` (technical-debt scan). Run it separately when wanted.
+- `/vet` folds slop and cleanup into lens D, so a normal change needs only `/vet` before a PR. `/slop-scan` remains for a repo-wide (or `--full`) debt sweep.
 
 ## Error handling
 

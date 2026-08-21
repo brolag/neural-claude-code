@@ -15,7 +15,7 @@ curl -fsSL https://raw.githubusercontent.com/brolag/neural-claude-code/main/inst
 
 ## What's Inside
 
-**23 files. ~635 tokens/message overhead. Zero external dependencies.**
+**Hooks + skills + rules. ~635 tokens/message overhead. Zero external dependencies.**
 
 ### Security Hooks (0 tokens)
 
@@ -34,12 +34,14 @@ Bash scripts that run outside context. They enforce, not guide.
 | Skill | Purpose |
 |-------|---------|
 | `/init` | Auto-generate CLAUDE.md for your project |
+| `/discover` | Surface unknown-unknowns before you plan. Hands off to `/spec` |
 | `/spec` | Plan a non-trivial change into an approvable artifact. Stops for review; writes no code |
 | `/craft` | Build an approved `/spec` plan: baseline, execute, review, measure, stop for ship |
 | `/vet` | Clean-context review gate (fresh reviewer). Verdict SHIP/HOLD/BLOCK |
 | `/exercise` | Behavioral gate: run tests, drive the app as a user, report PASS/FAIL with evidence |
 | `/git-save` | Conventional commits with safety checks |
-| `/slop-scan` | Detect AI slop, tech debt, dead code |
+| `/slop-scan` | Detect AI slop, tech debt, dead code (recent changes by default) |
+| `/html` | On-demand PlanViewer / ResultViewer |
 
 ### Rules (~135 tokens)
 
@@ -62,6 +64,7 @@ curl -fsSL https://raw.githubusercontent.com/brolag/neural-claude-code/main/inst
 # In your project
 cd your-project
 /init                           # generate CLAUDE.md
+/discover "add user auth"       # optional: unknowns map when the change is unfamiliar
 /spec "add user auth"           # plan it (stops for approval)
 /craft                          # build the approved plan, review, stop for ship
 ```
@@ -95,10 +98,11 @@ also adds the compact rules and CLAUDE.md template.
 
 Planning, building, and review are separate skills, each in a clean context:
 
-**`/spec`** plans the change (signatures, CWE invariants, executable acceptance) into an approvable
-`plans/<date-task>/plan.md` and stops. **`/craft`** executes the approved plan, then runs two independent
-gates: **`/vet`** (code review by a fresh reviewer -> SHIP/HOLD/BLOCK) and **`/exercise`** (tests + drive
-the app as a user -> PASS/FAIL). Both green, then it stops for human confirmation.
+**`/discover`** (optional) maps unknowns when the change isn't understood yet. **`/spec`** plans the
+change (signatures, CWE invariants, executable acceptance) into an approvable `plans/<date-task>/plan.md`
+and stops. **`/craft`** executes the approved plan, then runs two independent gates: **`/vet`** (code
+review by a fresh reviewer -> SHIP/HOLD/BLOCK) and **`/exercise`** (tests + drive the app as a user ->
+PASS/FAIL). Both green, then it stops for human confirmation.
 
 Everything runs on vanilla Claude Code; a second model (Codex) and browser/computer-use MCP are optional
 enhancements, auto-detected and never required.

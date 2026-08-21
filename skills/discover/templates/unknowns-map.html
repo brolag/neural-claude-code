@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<!--
+  Unknowns Map template · discover skill
+  HOW TO USE: copy this file, replace every "REPLACE ..." comment block with the real
+  discovery output. Keep the style and script blocks as-is unless the project defines its own palette.
+  ORDER IS INTENTIONAL (per the field guide): decisions most likely to change lead;
+  settled/mechanical context sits at the bottom.
+  Sections: Decisions (lead) · Four-quadrant map · Blindspot findings · References · Copy-back → /spec.
+  Self-contained: no CDN, no build, no external fonts. localStorage guarded; clipboard iframe-safe.
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unknowns · REPLACE task title</title>
+<style>
+  :root{
+    --bg:#f6f5f1; --surface:#ffffff; --surface-2:#efede6; --border:#e3e0d6; --track:#e7e4da;
+    --ink:#1b1b19; --ink-soft:#56534b; --ink-faint:#8b877a;
+    --accent:#2f6f6a; --accent-soft:#e2efed; --accent-line:#bcdcd8;
+    --done:#2e7d52; --done-bg:#e6f2ea;
+    --risk:#9a6400; --risk-bg:#fbf0db;
+    --error:#b3261e; --error-bg:#f8e4e2;
+    --info:#2b5aa8; --info-bg:#e7eefa;
+    --decision:#6b4ea3; --decision-bg:#efe9f8;
+    --shadow:0 1px 0 rgba(0,0,0,.02); --shadow-pop:0 12px 34px rgba(40,38,30,.17),0 2px 8px rgba(0,0,0,.05);
+    --radius:12px; --maxw:1120px;
+    /* Fonts are applied LITERALLY below. var() in font-family proved unreliable (fell back to serif).
+       To change the typeface edit the stack in: body, code, .s-num, textarea. */
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#16161a; --surface:#1e1f25; --surface-2:#26272e; --border:#34353d; --track:#2c2d35;
+      --ink:#ecebe6; --ink-soft:#b3b1a9; --ink-faint:#86847d;
+      --accent:#6fd0c6; --accent-soft:#1f322f; --accent-line:#2c4d49;
+      --done:#62c98c; --done-bg:#16291f; --risk:#e0ad55; --risk-bg:#2c2415;
+      --error:#ef6b62; --error-bg:#2e1916; --info:#7aa6e8; --info-bg:#161f2e;
+      --decision:#b69ce6; --decision-bg:#221b30;
+      --shadow:0 1px 0 rgba(0,0,0,.25); --shadow-pop:0 14px 40px rgba(0,0,0,.5),0 2px 10px rgba(0,0,0,.4);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; font-size:106.25%}
+  body{margin:0; background:var(--bg); color:var(--ink);
+    font-family:"Avenir Next","Avenir","Segoe UI",system-ui,Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:1rem; line-height:1.62; -webkit-font-smoothing:antialiased; overflow-x:hidden}
+  a{color:var(--accent); text-decoration:none} a:hover{text-decoration:underline}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.86em;
+    background:var(--surface-2); padding:.1em .4em; border-radius:5px; word-break:break-word}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 clamp(16px,4vw,40px)}
+
+  /* hero */
+  header.hero{padding:clamp(26px,5vw,50px) 0 22px; border-bottom:1px solid var(--border)}
+  .eyebrow{display:inline-flex; align-items:center; gap:8px; font-size:.74rem; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--accent); font-weight:750}
+  .eyebrow::before{content:''; width:22px; height:2px; background:var(--accent); display:inline-block}
+  h1{font-size:clamp(1.8rem,4.8vw,2.8rem); line-height:1.1; margin:.3em 0 .12em; letter-spacing:-.012em; font-weight:720}
+  .tldr{font-size:clamp(1.02rem,2.3vw,1.28rem); line-height:1.42; color:var(--ink-soft); max-width:66ch; font-weight:430}
+  .tldr b{color:var(--ink); font-weight:680}
+  .readline{margin:12px 0 0; font-size:.82rem; color:var(--ink-faint); font-weight:600}
+  .stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:10px; margin-top:24px}
+  .stat{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    padding:14px 16px; box-shadow:var(--shadow); position:relative; overflow:hidden}
+  .stat::before{content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--accent); opacity:.5}
+  .stat.s-risk::before{background:var(--risk)} .stat.s-done::before{background:var(--done)}
+  .stat .n{display:block; font-size:1.85rem; line-height:1; font-weight:790; letter-spacing:-.03em; color:var(--ink)}
+  .stat.s-done .n{color:var(--done)} .stat.s-risk .n{color:var(--risk)}
+  .stat .v{display:block; font-size:1.28rem; line-height:1.1; font-weight:760; letter-spacing:-.01em; color:var(--ink)}
+  .stat .l{display:block; font-size:.72rem; color:var(--ink-faint); margin-top:5px; font-weight:600; text-transform:uppercase; letter-spacing:.04em}
+
+  /* sections */
+  main{padding:28px 0 90px}
+  section.block{margin:0 0 30px; scroll-margin-top:16px}
+  .h-row{display:flex; align-items:baseline; gap:12px; margin:0 0 14px; flex-wrap:wrap}
+  h2{font-size:1.3rem; font-weight:700; letter-spacing:-.01em; margin:0}
+  .h-sub{font-size:.85rem; color:var(--ink-faint); font-weight:500}
+
+  /* badges — status by color + icon + shape + text (WCAG 1.4.1) */
+  .badge{display:inline-flex; align-items:center; gap:6px; font-size:.76rem; font-weight:650;
+    padding:3px 10px 3px 8px; border-radius:999px; border:1px solid transparent; white-space:nowrap}
+  .b-done{color:var(--done); background:var(--done-bg); border-color:color-mix(in srgb,var(--done) 30%,transparent)}
+  .b-risk{color:var(--risk); background:var(--risk-bg); border-color:color-mix(in srgb,var(--risk) 30%,transparent)}
+  .b-info{color:var(--info); background:var(--info-bg); border-color:color-mix(in srgb,var(--info) 30%,transparent)}
+  .b-decision{color:var(--decision); background:var(--decision-bg); border-color:color-mix(in srgb,var(--decision) 30%,transparent)}
+  .b-open{color:var(--ink-faint); background:var(--surface-2); border-color:var(--border)}
+
+  /* decision cards (the lead) */
+  .dcard{background:var(--surface); border:1px solid var(--border); border-left:3px solid var(--decision);
+    border-radius:var(--radius); padding:15px 18px; margin:0 0 12px; box-shadow:var(--shadow)}
+  .dcard.open{border-left-color:var(--risk)}
+  .dcard .dh{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px}
+  .dcard .dt{font-weight:680; font-size:1.02rem}
+  .dcard p{margin:.35em 0 0; color:var(--ink-soft)}
+  .ans{margin-top:10px}
+  .ans label{display:block; font-size:.75rem; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-faint); font-weight:650; margin-bottom:4px}
+  .ans input{width:100%; font:inherit; font-size:.92rem; color:var(--ink); background:var(--bg);
+    border:1px solid var(--border); border-radius:8px; padding:8px 11px}
+  .ans input:focus{outline:2px solid var(--accent); outline-offset:1px; border-color:var(--accent)}
+
+  /* four-quadrant map */
+  .quad{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px}
+  .qbox{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:15px 17px; box-shadow:var(--shadow)}
+  .qbox h3{margin:0 0 4px; font-size:1rem; font-weight:690; display:flex; align-items:center; gap:8px}
+  .qbox .qk{font-size:.74rem; color:var(--ink-faint); font-weight:500; margin:0 0 10px}
+  .qbox.kk{border-top:3px solid var(--done)} .qbox.ku{border-top:3px solid var(--info)}
+  .qbox.uk{border-top:3px solid var(--decision)} .qbox.uu{border-top:3px solid var(--risk)}
+  .qbox ul{margin:0; padding-left:18px} .qbox li{margin:.28em 0; color:var(--ink-soft)}
+  .qbox li b{color:var(--ink); font-weight:640}
+
+  /* findings / references */
+  .list{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden}
+  .list .item{padding:13px 17px; border-top:1px solid var(--border)} .list .item:first-child{border-top:none}
+  .item .it-h{display:flex; align-items:center; gap:9px; flex-wrap:wrap; margin-bottom:3px}
+  .item .it-t{font-weight:640}
+  .item p{margin:.25em 0 0; color:var(--ink-soft); font-size:.94rem}
+  .callout{background:var(--accent-soft); border:1px solid var(--accent-line); border-radius:var(--radius); padding:12px 16px; color:var(--ink-soft); font-size:.94rem}
+
+  /* copy-back */
+  .copywrap{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; box-shadow:var(--shadow)}
+  textarea#cb{width:100%; min-height:120px; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:.86rem; line-height:1.5; color:var(--ink); background:var(--bg); border:1px solid var(--border);
+    border-radius:8px; padding:12px 13px; resize:vertical}
+  .btnrow{display:flex; gap:10px; align-items:center; margin-top:10px; flex-wrap:wrap}
+  button.copy{font:inherit; font-size:.86rem; font-weight:650; color:#fff; background:var(--accent);
+    border:none; padding:9px 16px; border-radius:8px; cursor:pointer}
+  button.copy:hover{filter:brightness(1.06)} button.copy:focus{outline:2px solid var(--accent); outline-offset:2px}
+  .copied{font-size:.82rem; color:var(--done); font-weight:650; opacity:0}
+  .copied.show{opacity:1}
+
+  footer{border-top:1px solid var(--border); padding:22px 0 40px; color:var(--ink-faint); font-size:.86rem}
+
+  @media (max-width:680px){ .quad{grid-template-columns:1fr} }
+
+  /* motion — guarded (WCAG 2.3.3) */
+  .reveal{opacity:0; transform:translateY(8px); transition:opacity .22s ease, transform .22s ease}
+  .reveal.in{opacity:1; transform:none}
+  .copied{transition:opacity .18s ease}
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important}
+    .reveal{opacity:1; transform:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Unknowns Map · /discover</span>
+    <!-- REPLACE h1 with the task/problem title -->
+    <h1>REPLACE — qué estamos por construir</h1>
+    <!-- REPLACE tldr: one-line frame of the discovery. Bold the highest-leverage open decision. -->
+    <p class="tldr">REPLACE — resumen de una línea. <b>La decisión que más mueve la arquitectura va en negrita.</b></p>
+    <p class="readline" id="readline"></p>
+    <!-- REPLACE stat values -->
+    <div class="stats">
+      <div class="stat s-done"><span class="n">REPLACE</span><span class="l">Unknowns resueltos</span></div>
+      <div class="stat s-risk"><span class="n">REPLACE</span><span class="l">Aún abiertos</span></div>
+      <div class="stat"><span class="n">REPLACE</span><span class="l">Referencias</span></div>
+      <div class="stat"><span class="v">REPLACE (Alta/Media/Baja)</span><span class="l">Readiness p/ spec</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="content">
+
+  <!-- ===== LEAD: decisions most likely to change ===== -->
+  <section class="block reveal" id="decisions">
+    <div class="h-row"><h2>Decisiones que más probablemente cambian</h2><span class="h-sub">responder acá alimenta el copy-back de abajo</span></div>
+
+    <!-- REPLACE: one .dcard per architecture-moving decision. Use class "dcard open" for unresolved. -->
+    <div class="dcard open">
+      <div class="dh"><span class="badge b-open">◇ Abierto</span><span class="dt">REPLACE — pregunta que cambia la arquitectura</span></div>
+      <p>REPLACE — por qué mueve la aguja; las opciones en juego.</p>
+      <div class="ans"><label for="a1">Tu decisión</label><input id="a1" data-q="REPLACE pregunta corta" placeholder="escribí tu respuesta…"></div>
+    </div>
+
+    <div class="dcard">
+      <div class="dh"><span class="badge b-decision">◆ Resuelto</span><span class="dt">REPLACE — decisión ya cerrada en la entrevista</span></div>
+      <p>REPLACE — qué se decidió y por qué.</p>
+    </div>
+  </section>
+
+  <!-- ===== Four-quadrant map ===== -->
+  <section class="block reveal" id="quadrants">
+    <div class="h-row"><h2>Mapa de los cuatro cuadrantes</h2><span class="h-sub">map vs territory</span></div>
+    <div class="quad">
+      <div class="qbox kk">
+        <h3><span class="badge b-done">✓ KK</span> Known knowns</h3>
+        <p class="qk">lo que ya dijiste que querés</p>
+        <ul><!-- REPLACE --><li>REPLACE</li></ul>
+      </div>
+      <div class="qbox ku">
+        <h3><span class="badge b-info">● KU</span> Known unknowns</h3>
+        <p class="qk">lo que sabés que falta resolver</p>
+        <ul><!-- REPLACE --><li>REPLACE</li></ul>
+      </div>
+      <div class="qbox uk">
+        <h3><span class="badge b-decision">◆ UK</span> Unknown knowns</h3>
+        <p class="qk">obvio de más para escribirlo, lo reconocés al verlo</p>
+        <ul><!-- REPLACE --><li>REPLACE</li></ul>
+      </div>
+      <div class="qbox uu">
+        <h3><span class="badge b-risk">▲ UU</span> Unknown unknowns</h3>
+        <p class="qk">lo que reveló el blindspot pass</p>
+        <ul><!-- REPLACE --><li>REPLACE</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Blindspot findings ===== -->
+  <section class="block reveal" id="blindspot">
+    <div class="h-row"><h2>Blindspot pass</h2><span class="h-sub">grounded en el codebase real</span></div>
+    <div class="list">
+      <!-- REPLACE: one .item per finding, each anchored to a real path:line -->
+      <div class="item">
+        <div class="it-h"><span class="badge b-risk">▲ Pothole</span><span class="it-t">REPLACE — hallazgo</span> <code>REPLACE path:line</code></div>
+        <p>REPLACE — qué es, por qué importa, qué preguntar.</p>
+      </div>
+      <div class="item">
+        <div class="it-h"><span class="badge b-info">● Contexto</span><span class="it-t">REPLACE — trabajo histórico / patrón existente</span> <code>REPLACE path:line</code></div>
+        <p>REPLACE.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== References ===== -->
+  <section class="block reveal" id="references">
+    <div class="h-row"><h2>Referencias</h2><span class="h-sub">source code &gt; diseño &gt; docs &gt; capturas</span></div>
+    <div class="list">
+      <!-- REPLACE: one .item per reference. Prefer source-code references. -->
+      <div class="item">
+        <div class="it-h"><span class="badge b-decision">◆ Source</span><span class="it-t">REPLACE — qué imitar</span> <code>REPLACE path o URL</code></div>
+        <p>REPLACE — qué semántica/estructura tomar de acá.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Copy-back → /spec ===== -->
+  <section class="block reveal" id="copyback">
+    <div class="h-row"><h2>Copiar a /spec</h2><span class="h-sub">directiva en lenguaje natural, autocontenida</span></div>
+    <div class="copywrap">
+      <p style="margin:0 0 10px; color:var(--ink-soft); font-size:.92rem">El artefacto no puede hablarle a Claude. Respondé las decisiones de arriba, después copiá esto y pegalo en <code>/spec</code>.</p>
+      <!-- REPLACE the textarea's ENTIRE content with the baseline copy-back: a natural-language
+           summary of the task + resolved decisions + references. Open answers get appended live.
+           NOTE: do NOT put HTML comments inside the textarea — they render as literal text. -->
+      <textarea id="cb" spellcheck="false" aria-label="Prompt para /spec">Contexto de /discover para REPLACE tarea. Decisiones resueltas: REPLACE. Referencias: REPLACE.</textarea>
+      <div class="btnrow">
+        <button class="copy" id="copyBtn" type="button">Copiar para /spec</button>
+        <span class="copied" id="copied" role="status">Copiado ✓</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="block reveal" id="next">
+    <div class="callout">
+      <b>Siguiente paso.</b> ¿Unknowns resueltos lo suficiente para diseñar? → <code>/spec</code> (pegá el copy-back). Si todavía hace falta un spike visual, hacelo barato y recién después planificá. Descubrir no decide por vos.
+    </div>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  Generado por <b>/discover</b> · reusa las principles.md de <code>html</code> · el <code>.md</code> es la fuente de verdad, este HTML es una vista regenerable.
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  // Reading-time estimate (Brysbaert 2019: ~238 wpm)
+  try{
+    var words = (document.getElementById('content').innerText || '').trim().split(/\s+/).length;
+    var mins = Math.max(1, Math.ceil(words / 238));
+    document.getElementById('readline').textContent = '~' + mins + ' min de lectura';
+  }catch(e){}
+
+  // Guarded reveal-on-scroll (motion disabled via CSS under prefers-reduced-motion)
+  try{
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  }catch(e){ document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); }
+
+  // localStorage — guarded with in-memory fallback
+  var mem = {};
+  var store = {
+    get:function(k){ try{ return localStorage.getItem(k); }catch(e){ return mem[k]!=null?mem[k]:null; } },
+    set:function(k,v){ try{ localStorage.setItem(k,v); }catch(e){ mem[k]=v; } }
+  };
+  // Key includes pathname + title so two maps don't collide (generator: keep <title> unique — slug + date)
+  var KEY = 'discover:' + (location.pathname || '') + ':' + (document.title || 'map');
+
+  var baseCB = (document.getElementById('cb').value || '').trim();
+  var inputs = Array.prototype.slice.call(document.querySelectorAll('.ans input'));
+
+  function rebuild(){
+    var answered = inputs.filter(function(i){ return i.value.trim(); });
+    var open = inputs.filter(function(i){ return !i.value.trim(); });
+    var txt = baseCB;
+    if(answered.length){
+      txt += '\n\nDecisiones tomadas en /discover:';
+      answered.forEach(function(i){ txt += '\n- ' + (i.dataset.q || 'decisión') + ': ' + i.value.trim(); });
+    }
+    if(open.length){
+      txt += '\n\nSin responder (' + open.length + '): ' + open.map(function(i){ return i.dataset.q || 'decisión'; }).join('; ') + '.';
+    }
+    document.getElementById('cb').value = txt;
+    var save = {}; inputs.forEach(function(i,ix){ save['q'+ix]=i.value; });
+    store.set(KEY, JSON.stringify(save));
+  }
+
+  // restore
+  try{
+    var saved = JSON.parse(store.get(KEY) || '{}');
+    inputs.forEach(function(i,ix){ if(saved['q'+ix]) i.value = saved['q'+ix]; });
+  }catch(e){}
+  if(inputs.length) rebuild();
+
+  inputs.forEach(function(i){ i.addEventListener('input', rebuild); });
+
+  // Copy — iframe-safe (Clipboard API may be blocked by Permissions Policy)
+  var copied = document.getElementById('copied');
+  function flash(){ copied.classList.add('show'); setTimeout(function(){ copied.classList.remove('show'); }, 1600); }
+  document.getElementById('copyBtn').addEventListener('click', function(){
+    var ta = document.getElementById('cb');
+    var text = ta.value;
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(flash, fallback);
+    } else { fallback(); }
+    function fallback(){
+      ta.focus(); ta.select();
+      try{ document.execCommand('copy'); flash(); }catch(e){ /* selection left for manual copy */ }
+    }
+  });
+})();
+</script>
+</body>
+</html>

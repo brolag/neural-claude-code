@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
-  ResultViewer template · html skill
-  HOW TO USE: copy this file, replace every <!-- REPLACE ... --> block with the real
+  ResultViewer template · html-artifact-builder skill
+  HOW TO USE: copy this file, replace every "REPLACE ..." comment block with the real
   run report. Keep <style>/<script> as-is unless the project defines its own palette.
   Sections (in order): Summary · Files Changed · Commands Run · Errors/Warnings · Next Steps.
   Self-contained: no CDN, no build, no external fonts, no required localStorage.
@@ -151,7 +151,12 @@
   .na-list li a{display:flex; gap:9px; align-items:flex-start; padding:9px 10px; border-radius:8px; color:var(--ink); font-size:.85rem; line-height:1.4}
   .na-list li a:hover{background:var(--surface-2); text-decoration:none}
   .na-empty{padding:18px 14px; text-align:center; color:var(--ink-soft); font-size:.88rem}
-  .na-reopen{position:fixed; right:18px; bottom:18px; z-index:50; display:none; align-items:center; gap:7px; font:inherit; font-size:.8rem; font-weight:650; color:var(--bg); background:var(--ink); border:none; padding:9px 14px; border-radius:999px; cursor:pointer; box-shadow:var(--shadow-pop)}
+  .na-reopen{position:fixed; right:18px; bottom:18px; z-index:50; display:none; align-items:stretch; border-radius:999px; overflow:hidden; box-shadow:var(--shadow-pop)}
+  .na-reopen.show{display:inline-flex}
+  .na-reopen button{font:inherit; font-size:.8rem; font-weight:650; color:var(--bg); background:var(--ink); border:none; cursor:pointer}
+  .na-reopen .nr-main{padding:9px 13px; display:inline-flex; align-items:center; gap:7px}
+  .na-reopen .nr-x{padding:9px 12px; border-left:1px solid rgba(255,255,255,.22); font-weight:800}
+  .na-reopen button:hover{filter:brightness(1.35)}
 
   .reveal{opacity:0; transform:translateY(10px)} .reveal.in{opacity:1; transform:none; transition:opacity .24s ease, transform .24s ease}
   @media (prefers-reduced-motion: reduce){
@@ -291,7 +296,7 @@ npm run test:unit</pre></div>
                 <span class="s-num">05</span><span class="s-title">Next Steps</span><span class="s-tag" id="nsTag">próximos pasos</span></summary>
               <div class="body">
                 <!-- REPLACE: one .ns li per step. data-id stable. Check = done. "Copiar próximos pasos"
-                     exports the PENDING ones as a markdown checklist to paste back into chat. -->
+                     exports the PENDING ones as a natural-language directive list to paste back into chat. -->
                 <div class="ns-bar">
                   <button class="copyans" id="copyNext">Copiar próximos pasos</button>
                   <span class="q-summary" id="nsSummary" style="font-size:.85rem;color:var(--ink-soft)"></span>
@@ -321,7 +326,7 @@ npm run test:unit</pre></div>
     <li><a href="#errors"><span style="color:var(--risk)" aria-hidden="true">▲</span><span><strong>Filtro currency</strong> — reemplazar por computed</span></a></li>
   </ul>
 </aside>
-<button class="na-reopen" id="naReopen"><span aria-hidden="true">▲</span> Needs attention (<span id="naReopenN">2</span>)</button>
+<div class="na-reopen" id="naReopen"><button class="nr-main" id="naReopenMain"><span aria-hidden="true">▲</span> Needs attention (<span id="naReopenN">2</span>)</button><button class="nr-x" id="naReopenX" aria-label="Ocultar del todo">×</button></div>
 
 <script>
 (function(){
@@ -372,8 +377,9 @@ npm run test:unit</pre></div>
     document.body.appendChild(ta); ta.focus(); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); cb(); }catch(e){} }
 
   var na=document.getElementById('na'), reopen=document.getElementById('naReopen');
-  document.getElementById('naClose').addEventListener('click',function(){ na.style.display='none'; reopen.style.display='inline-flex'; });
-  reopen.addEventListener('click',function(){ na.style.display=''; reopen.style.display='none'; });
+  document.getElementById('naClose').addEventListener('click',function(){ na.style.display='none'; reopen.classList.add('show'); });
+  document.getElementById('naReopenMain').addEventListener('click',function(){ na.style.display=''; reopen.classList.remove('show'); });
+  document.getElementById('naReopenX').addEventListener('click',function(){ reopen.classList.remove('show'); });
 })();
 
 /* ---- next-steps checklist: mark done & export pending ---- */
@@ -404,10 +410,16 @@ npm run test:unit</pre></div>
   });
   var copyBtn=document.getElementById('copyNext');
   if(copyBtn) copyBtn.addEventListener('click',function(){
-    var lines=['## Próximos pasos',''];
-    items.forEach(function(li){ var c=li.querySelector('input').checked;
-      lines.push('- ['+(c?'x':' ')+'] '+li.querySelector('.tx').textContent.replace(/\s+/g,' ').trim()); });
-    var text=lines.join('\n');
+    // Directive list of PENDING steps only, not a checkbox dump (SKILL.md §7).
+    // Strip the <small> annotation so it doesn't concatenate into the step text.
+    var pend=[];
+    items.forEach(function(li){ if(!li.querySelector('input').checked){
+      var tx=li.querySelector('.tx').cloneNode(true);
+      var sm=tx.querySelector('small'); if(sm) sm.parentNode.removeChild(sm);
+      pend.push('- '+tx.textContent.replace(/\s+/g,' ').trim()); }});
+    var text=pend.length
+      ? 'Seguí con estos próximos pasos pendientes:\n'+pend.join('\n')
+      : 'Todos los próximos pasos quedaron hechos; no hay pendientes.';
     function ok(){ copyBtn.textContent='Copiado ✓'; copyBtn.classList.add('ok');
       setTimeout(function(){ copyBtn.textContent='Copiar próximos pasos'; copyBtn.classList.remove('ok'); },1500); }
     if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(ok).catch(function(){ nfb(text,ok); }); } else nfb(text,ok);

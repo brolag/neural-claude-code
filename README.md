@@ -7,7 +7,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Claude%20Code-Harness-6366f1?style=for-the-badge&logo=anthropic" alt="Claude Code Harness">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License">
-  <img src="https://img.shields.io/badge/Version-2.0.0-ec4899?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/Version-2.1.0-ec4899?style=for-the-badge" alt="Version">
   <img src="https://img.shields.io/badge/Tokens-~635/msg-10b981?style=for-the-badge" alt="Token Budget">
 </p>
 
@@ -27,11 +27,11 @@ Every Claude Code session runs without guardrails. No security hooks. No structu
 
 ## The Solution
 
-A 23-file starter kit that gives you production-grade guardrails in one command:
+A lightweight starter kit that gives you production-grade guardrails in one command:
 
 ```
 v1 (150+ files, ~4300 tokens/msg):  Commands, TTS, squads, custom memory...
-v2 (23 files, ~635 tokens/msg):     Hooks + skills + rules. That's it.
+v2 (~635 tokens/msg):               Hooks + skills + rules. That's it.
 ```
 
 ---
@@ -57,12 +57,14 @@ Skills only load into context when you invoke them. No overhead otherwise.
 | Skill | What it does |
 |-------|-------------|
 | `/init` | Scans your project and generates a customized CLAUDE.md |
+| `/discover` | Surfaces unknown-unknowns before you plan. Blindspot pass, four quadrants, interview. Hands off to `/spec` |
 | `/spec` | Plans a non-trivial change into an approvable artifact (signatures, CWE invariants, executable acceptance). Stops for review; writes no code |
 | `/craft` | Builds an approved `/spec` plan: baseline, execute, review, measure, stop for ship |
-| `/vet` | Clean-context review gate. A fresh independent reviewer challenges the diff. Verdict SHIP/HOLD/BLOCK |
+| `/vet` | Clean-context review gate. A fresh independent reviewer challenges the diff (correctness, acceptance, consistency, slop). Verdict SHIP/HOLD/BLOCK |
 | `/exercise` | Behavioral gate: runs tests, then drives the running app as a real user. Reports PASS/FAIL with evidence |
 | `/git-save` | Conventional commits workflow with safety checks |
-| `/slop-scan` | Detects AI slop, tech debt, dead code, and anti-patterns |
+| `/slop-scan` | Detects AI slop, tech debt, dead code (default: recent changes only) |
+| `/html` | On-demand PlanViewer / ResultViewer. `/spec` and `/discover` reuse its templates |
 
 Everything runs on vanilla Claude Code (the `Agent` tool + native tools). No second model, local LLM,
 or extra subscription is required. Optional enhancements (a second model via the Codex CLI for `/vet`,
@@ -112,14 +114,15 @@ cd your-project
 # 3. Generate a project-specific CLAUDE.md
 /init
 
-# 4. Plan a change, then build it
-/spec "add user authentication"   # produces an approvable plan, stops for review
-/craft                            # executes the approved plan, reviews, stops for ship
+# 4. Discover (if unfamiliar), plan, then build
+/discover "add user authentication"   # optional: unknowns map, then stop
+/spec "add user authentication"       # produces an approvable plan, stops for review
+/craft                                # executes the approved plan, reviews, stops for ship
 ```
 
 ### What the Installer Does
 
-1. Clones the repo to `~/Sites/neural-claude-code`
+1. Clones the repo to `~/.neural-claude-code` (override with `NEURAL_INSTALL_DIR`)
 2. Copies hooks to `~/.claude/hooks/neural/`
 3. Copies skills to `~/.claude/skills/`
 4. Copies rules to `~/.claude/rules/neural/`
@@ -131,7 +134,7 @@ cd your-project
 ## Install as a Plugin
 
 Prefer Claude Code's native plugin system? Neural ships as a plugin too — no shell script, and it
-installs the **5 security hooks + the 7 skills**:
+installs the **5 security hooks + the 9 skills**:
 
 ```
 /plugin marketplace add brolag/neural-claude-code
@@ -146,7 +149,7 @@ Update later with `/plugin marketplace update neural-claude-code`; remove with `
 | | Plugin (`/plugin install`) | Curl (`install.sh`) |
 |---|:---:|:---:|
 | Security hooks | yes | yes |
-| Skills (spec / craft / vet / exercise / init / git-save / slop-scan) | yes (`/neural:` prefix) | yes (`/` prefix) |
+| Skills (discover / spec / craft / vet / exercise / init / git-save / slop-scan / html) | yes (`/neural:` prefix) | yes (`/` prefix) |
 | Compact rules (always-on guidance) | no¹ | yes |
 | CLAUDE.md template + `outputStyle: concise` | no¹ | yes |
 
@@ -160,10 +163,13 @@ curl-installer-only. The hooks — which *enforce* most of what the rules merely
 Planning, building, and review are separate skills so each runs in a clean context. The flow:
 
 ```
-/spec "add pagination to API"   -> approvable plan, then STOP for review
+/discover "add pagination to API"   -> unknowns map (skip if you already know the change)
+        |
+        v
+/spec                               -> approvable plan, then STOP for review
         |
         v   (you approve)
-/craft                          -> builds the plan, then runs the gates below
+/craft                              -> builds the plan, then runs the gates below
         |
         +--> /vet        code review in a clean context  -> SHIP / HOLD / BLOCK
         +--> /exercise   tests + drive the app as a user  -> PASS / FAIL
@@ -172,10 +178,16 @@ Planning, building, and review are separate skills so each runs in a clean conte
       report + wait for human confirmation (commit with /git-save when you say so)
 ```
 
+### `/discover` — find your unknowns first
+
+When the code, domain, or taste is unfamiliar: blindspot pass, four-quadrant map, interview, pin
+references. Writes `unknowns-map.md` (and HTML by default) and stops. `/spec` consumes the map.
+
 ### `/spec` — plan first
 
 Research the code, decompose into independent subtasks, lock signatures, note CWE invariants, write
-executable acceptance, scan for contradictions. Produces `plans/<date-task>/plan.md` and stops. No code.
+executable acceptance, scan for contradictions. Produces `plans/<date-task>/plan.md` via the `html`
+PlanViewer and stops. No code.
 
 ### `/craft` — build the approved plan
 
@@ -185,7 +197,7 @@ vs baseline, and stops for ship. Never self-reviews; never auto-commits.
 
 ### `/vet` and `/exercise` — the gates
 
-`/vet` is a fresh reviewer with no author context (correctness + acceptance + consistency). `/exercise`
+`/vet` is a fresh reviewer with no author context (correctness + acceptance + consistency + slop). `/exercise`
 runs the tests and drives the running app as a real user, reporting PASS/FAIL with evidence. Both can also
 be run standalone before a PR.
 
@@ -215,7 +227,7 @@ See [Customization Guide](docs/customization.md) for details.
 ## Uninstall
 
 ```bash
-bash ~/Sites/neural-claude-code/uninstall.sh
+bash ~/.neural-claude-code/uninstall.sh
 ```
 
 Removes hooks, skills, and rules. Does not modify `settings.json` (manual cleanup needed for hook entries).
