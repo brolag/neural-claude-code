@@ -64,11 +64,15 @@ Skills only load into context when you invoke them. No overhead otherwise.
 | `/exercise` | Behavioral gate: runs tests, then drives the running app as a real user. Reports PASS/FAIL with evidence |
 | `/git-save` | Conventional commits workflow with safety checks |
 | `/slop-scan` | Detects AI slop, tech debt, dead code (default: recent changes only) |
-| `/html` | On-demand PlanViewer / ResultViewer. `/spec` and `/discover` reuse its templates |
+| `/html` | On-demand PlanViewer / ResultViewer. `/spec` and `/discover` write Markdown only |
 
 Everything runs on vanilla Claude Code (the `Agent` tool + native tools). No second model, local LLM,
 or extra subscription is required. Optional enhancements (a second model via the Codex CLI for `/vet`,
 browser/computer-use MCP for `/exercise`) are auto-detected and never assumed.
+
+Pipeline skills (`/discover`, `/spec`, `/craft`, `/vet`, `/exercise`) are the Claude Code port of
+[neural-codex](https://github.com/brolag/neural-codex). Same contracts: unknowns map, locked signatures,
+independent review, evidence-backed exercise. Slash invocation and `Agent` as the default reviewer.
 
 ### Compact Rules (~135 tokens total)
 
@@ -186,8 +190,8 @@ references. Writes `unknowns-map.md` (and HTML by default) and stops. `/spec` co
 ### `/spec` — plan first
 
 Research the code, decompose into independent subtasks, lock signatures, note CWE invariants, write
-executable acceptance, scan for contradictions. Produces `plans/<date-task>/plan.md` via the `html`
-PlanViewer and stops. No code.
+executable acceptance, scan for contradictions. Produces `plans/<date-task>/plan.md` and stops. No code.
+`/html` is on-demand if you want a PlanViewer.
 
 ### `/craft` — build the approved plan
 

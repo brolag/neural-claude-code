@@ -7,7 +7,7 @@ AI coding agents start every session from zero. They don't know your conventions
 Neural Claude Code fixes this with the minimum viable harness:
 
 1. **Security hooks** prevent destructive actions and secret leaks (zero token cost)
-2. **Dev pipeline** gives you a repeatable workflow: `/discover` (unknowns) -> `/spec` (plan) -> `/craft` (build) -> `/vet` + `/exercise` (review)
+2. **Dev pipeline** gives you a repeatable workflow: `/discover` (unknowns) -> `/spec` (plan) -> `/craft` (build) -> `/vet` + `/exercise` (review). Same contracts as [neural-codex](https://github.com/brolag/neural-codex).
 3. **Compact rules** guide behavior without burning tokens every message
 
 ## Design Principles

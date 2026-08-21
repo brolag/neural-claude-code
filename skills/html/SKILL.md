@@ -20,7 +20,7 @@ Build a single-file, framework-free HTML artifact that makes a plan or a run rep
 ## When NOT to use
 - A one-line answer, a single code snippet, or prose explanation.
 - The user wants plain text or markdown only.
-- Do NOT auto-fire as a slash command on every plan. `/spec` and `/discover` already read these templates to emit `plan.html` / `unknowns-map.html`. This skill is **on-demand and standalone** when the user asks for an HTML artifact.
+- Do NOT auto-fire on every plan. `/spec` and `/discover` write Markdown only (Neural Codex contract). This skill is **on-demand and standalone** when the user asks for an HTML artifact.
 
 ## 1. Pick the template
 - **PlanViewer** (pre-execution) → `templates/plan-viewer.html`. Sections: Overview · Phases & Tasks · Decisions · Risks · Open Questions.
@@ -29,7 +29,7 @@ Build a single-file, framework-free HTML artifact that makes a plan or a run rep
 
 If the user's intent is ambiguous (could be either), ask once; otherwise infer from tense ("show me the plan" → Plan, "what changed" → Result).
 
-This skill is the **calm, self-contained** look only. `/spec` and `/discover` reuse these templates; they do not hand-roll HTML.
+This skill is the **calm, self-contained** look only. Invoke it when the user wants a PlanViewer or ResultViewer. `/spec` and `/discover` do not auto-emit HTML.
 
 ## 2. Build it
 1. **Read** the chosen template in full.
@@ -70,7 +70,7 @@ The factual blocks (Files Changed, Commands Run, diffs, stats, the stat-hero met
 
 ## 5. Aesthetic — avoid AI slop
 - Commit to ONE calm, legible, professional look. Neutral-dominant palette + 1-2 sharp accents via CSS variables (colors only).
-- **Reuse the project's palette if it defines one** (tailwind `theme.colors`, CSS `:root` vars, a brand/design doc) — same instinct as `spec`'s `plan.html`. Otherwise the template defaults.
+- **Reuse the project's palette if it defines one** (tailwind `theme.colors`, CSS `:root` vars, a brand/design doc). Otherwise the template defaults.
 - Avoid: purple-on-white gradients, uniformly rounded everything, dead-centered layouts, maximalism. This is a working tool, not a poster — prioritize calm and legibility.
 - Dark mode is automatic via `prefers-color-scheme`; keep both palettes legible.
 
